@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:paddingLeft="54.0dip" android:paddingRight="54.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+        <view android:id="@id/alipay_icon" android:src="@drawable/ic_alipay" app:packageName="@string/alipay_package" class="com.miui.touchassistant.entries.PayEntriesDialog$AppSelectionIcon" style="@style/AppSelectionIconStyle" />
+        <TextView android:id="@id/alipay_title" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/AppSelectionTitleStyle" />
+    </LinearLayout>
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
+        <view android:id="@id/wechat_icon" android:src="@drawable/ic_wechat" app:packageName="@string/wechat_package" class="com.miui.touchassistant.entries.PayEntriesDialog$AppSelectionIcon" style="@style/AppSelectionIconStyle" />
+        <TextView android:id="@id/wechat_tile" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/AppSelectionTitleStyle" />
+    </LinearLayout>
+</LinearLayout>

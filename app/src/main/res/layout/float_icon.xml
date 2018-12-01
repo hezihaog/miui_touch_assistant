@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<view android:background="@drawable/float_icon_bg" android:padding="@dimen/float_icon_padding" android:layout_width="@dimen/float_icon_size" android:layout_height="@dimen/float_icon_size" app:foreground="@drawable/float_icon_fg" class="com.miui.touchassistant.view.FloatPanelView$ForegroundImageView"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" />

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="icon_foreground_pressed">#1affffff</color>
+    <color name="primary_color_activated">#ff0d9aff</color>
+    <color name="primary_color_normal">#e62b2e33</color>
+    <color name="primary_color_normal_dark">#ddffffff</color>
+</resources>

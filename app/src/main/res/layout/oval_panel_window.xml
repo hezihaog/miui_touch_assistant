@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:focusable="false" android:clickable="false" android:clipChildren="false" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.miui.touchassistant.view.OvalPanelLayout android:id="@id/oval_panel_layout" android:focusable="false" android:clickable="false" android:clipChildren="false" android:layout_width="@dimen/float_panel_width" android:layout_height="@dimen/float_panel_height" android:layout_alignParentRight="true" android:layout_alignParentBottom="true" />
+</RelativeLayout>
