@@ -17,7 +17,9 @@
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-    <uses-permission android:name=" android.permission.INTERACT_ACROSS_USERS" />
+    <!-- 保活 -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
 
     <application
         android:name="com.miui.touchassistant.AssistantApp"
@@ -47,5 +49,16 @@
             </intent-filter>
         </receiver>
         <service android:name="com.miui.touchassistant.service.CoreService" />
+
+        <!--保活-->
+        <receiver android:name="com.fanjun.keeplive.receiver.NotificationClickReceiver" />
+        <activity android:name="com.fanjun.keeplive.activity.OnePixelActivity" />
+        <service android:name="com.fanjun.keeplive.service.LocalService" />
+        <service
+            android:name="com.fanjun.keeplive.service.JobHandlerService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name="com.fanjun.keeplive.service.RemoteService"
+            android:process=":remote" />
     </application>
 </manifest>
