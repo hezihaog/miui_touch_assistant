@@ -4,31 +4,23 @@
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.DEVICE_POWER" />
-    <uses-permission android:name="android.permission.INJECT_EVENTS" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
-    <uses-permission android:name="android.permission.SET_ORIENTATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.REAL_GET_TASKS" />
-    <uses-permission android:name="android.permission.SET_ACTIVITY_WATCHER" />
-    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
     <uses-permission android:name="miui.permission.USE_INTERNAL_GENERAL_API" />
     <uses-permission android:name="android.permission.READ_SYNC_STATS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-    <uses-permission android:name=" android.permission.INTERACT_ACROSS_USERS"/>
+    <uses-permission android:name=" android.permission.INTERACT_ACROSS_USERS" />
 
     <application
+        android:name="com.miui.touchassistant.AssistantApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -49,36 +41,11 @@
             </intent-filter>
         </activity>
 
-        <!--<activity-->
-        <!--android:name="com.miui.touchassistant.EntriesActivity"-->
-        <!--android:label="@string/customize_entries" />-->
-        <!--<activity-->
-        <!--android:name="com.miui.touchassistant.EntryPickerActivity"-->
-        <!--android:label="@string/customize_entries" />-->
-        <!--<activity-->
-        <!--android:name="com.miui.touchassistant.AutoHideActivity"-->
-        <!--android:label="@string/hide_touch_assistant" />-->
-        <!--<activity-->
-        <!--android:name="com.miui.touchassistant.entries.PayEntriesDialog"-->
-        <!--android:process=":float"-->
-        <!--android:taskAffinity=""-->
-        <!--android:theme="@style/PayEntriesDialogTheme" />-->
-        <!--<activity-->
-        <!--android:name="com.miui.touchassistant.AppPickerActivity"-->
-        <!--android:label="@string/applications" />-->
-
-        <!--<service-->
-        <!--android:name="com.miui.touchassistant.CoreService"-->
-        <!--android:process=":float" />-->
-        <!--<provider-->
-        <!--android:name="com.miui.touchassistant.settings.AssistantProvider"-->
-        <!--android:authorities="touchassistant"-->
-        <!--android:exported="false"-->
-        <!--android:process=":float" />-->
-        <!--<receiver android:name="com.miui.touchassistant.receiver.BootReceiver">-->
-        <!--<intent-filter android:priority="1000">-->
-        <!--<action android:name="android.intent.action.BOOT_COMPLETED" />-->
-        <!--</intent-filter>-->
-        <!--</receiver>-->
+        <receiver android:name="com.miui.touchassistant.receiver.BootReceiver">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.miui.touchassistant.service.CoreService" />
     </application>
 </manifest>
