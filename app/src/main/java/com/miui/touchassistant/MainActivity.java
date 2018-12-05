@@ -11,16 +11,17 @@ import android.support.v7.app.AppCompatDelegate;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.miui.touchassistant.floating.FloatMoveEnum;
+import com.miui.touchassistant.floating.FloatWindowController;
+import com.miui.touchassistant.floating.FloatWindowOption;
+import com.miui.touchassistant.floating.IFloatWindowAgent;
+import com.miui.touchassistant.floating.SimpleFloatWindowPermissionCallback;
+import com.miui.touchassistant.floating.SimpleFloatWindowViewStateCallback;
 import com.miui.touchassistant.util.RxPreventJitter;
 import com.miui.touchassistant.view.ControlPanelView;
 import com.miui.touchassistant.view.ForegroundImageView;
-import com.yhao.floatwindow.FloatWindow;
-import com.yhao.floatwindow.IFloatWindow;
-import com.yhao.floatwindow.MoveType;
-import com.yhao.floatwindow.PermissionListener;
-import com.yhao.floatwindow.ViewStateListenerAdapter;
 import com.zh.touchassistant.R;
 
 import io.reactivex.functions.Consumer;
@@ -47,74 +48,69 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //填充浮动按钮和浮动面板
-        View floatButtonView = getLayoutInflater().inflate(R.layout.float_button, null);
-        final View floatPanelLayout = getLayoutInflater().inflate(R.layout.view_float_control_panel, null);
-        final ControlPanelView floatControlPanelView = floatPanelLayout.findViewById(R.id.control_panel_view);
-        final ForegroundImageView floatButton = floatButtonView.findViewById(R.id.foreground_iv);
+        View buttonView = getLayoutInflater().inflate(R.layout.float_button, null);
+        final View panelLayout = getLayoutInflater().inflate(R.layout.view_float_control_panel, null);
+        final ControlPanelView floatControlPanelView = panelLayout.findViewById(R.id.control_panel_view);
+        final ForegroundImageView floatButton = buttonView.findViewById(R.id.foreground_iv);
+        //创建悬浮窗
+        final FloatWindowController floatWindowController = new FloatWindowController();
         //面板区域
-        FloatWindow
-                .with(getApplicationContext())
-                .setTag(PANEL_TAG)
-                .setView(floatPanelLayout)
-                .setDesktopShow(true)
-                .setMoveType(MoveType.inactive)
-                .build();
+        floatWindowController
+                .makeFloatWindow(this,
+                        panelLayout,
+                        PANEL_TAG,
+                        FloatWindowOption.create(new FloatWindowOption.Builder()
+                                .desktopShow(true)
+                                .setFloatMoveType(FloatMoveEnum.INACTIVE)));
         //悬浮球
-        FloatWindow
-                .with(getApplicationContext())
-                .setTag(BUTTON_TAG)
-                .setView(floatButtonView)
-                .setDesktopShow(true)
-                .setMoveType(MoveType.active)
-                .setViewStateListener(new ViewStateListenerAdapter() {
-                    private ControlPanelView getPanelView() {
-                        IFloatWindow floatPanelWindow = FloatWindow
-                                .get(PANEL_TAG);
-                        ViewGroup layout = (ViewGroup) floatPanelWindow.getView();
-                        return layout.findViewById(R.id.control_panel_view);
-                    }
+        floatWindowController
+                .makeFloatWindow(this,
+                        buttonView,
+                        BUTTON_TAG,
+                        FloatWindowOption.create(new FloatWindowOption.Builder()
+                                .desktopShow(true)
+                                .setFloatMoveType(FloatMoveEnum.ACTIVE)
+                                .setViewStateCallback(new SimpleFloatWindowViewStateCallback() {
+                                    private ControlPanelView getPanelView() {
+                                        return floatWindowController
+                                                .getView(PANEL_TAG)
+                                                .findViewById(R.id.control_panel_view);
+                                    }
 
-                    private IFloatWindow getButtonFloatWindow() {
-                        return FloatWindow
-                                .get(PANEL_TAG);
-                    }
+                                    @Override
+                                    public void onPositionUpdate(IFloatWindowAgent agent, int x, int y) {
+                                        super.onPositionUpdate(agent, x, y);
+                                        ControlPanelView panelView = getPanelView();
+                                        IFloatWindowAgent floatWindowAgent = floatWindowController
+                                                .getFloatWindowAgent(PANEL_TAG);
+                                        //如果正在打开，先关闭
+                                        boolean isOpen = panelView.isOpen();
+                                        if (isOpen) {
+                                            panelView.toggleControlPanel();
+                                        }
+                                        //判断在屏幕左边还是右边，切换位置
+                                        int halfScreenWidth = getScreenWidth(MainActivity.this) / 2;
+                                        if (x < halfScreenWidth) {
+                                            //左边
+                                            panelView.setOrientation(true);
+                                        } else {
+                                            //右边
+                                            panelView.setOrientation(false);
+                                        }
+                                        //跟随
+                                        int[] result = panelView.fixFollowPosition(x, y);
+                                        floatWindowAgent.updateX(result[0]);
+                                        floatWindowAgent.updateY(result[1]);
+                                    }
+                                })
+                                .setFloatWindowPermissionCallback(new SimpleFloatWindowPermissionCallback() {
 
-                    @Override
-                    public void onPositionUpdate(int x, int y) {
-                        super.onPositionUpdate(x, y);
-                        ControlPanelView panelView = getPanelView();
-                        IFloatWindow floatPanelWindow = FloatWindow
-                                .get(PANEL_TAG);
-                        //如果正在打开，先关闭
-                        boolean isOpen = panelView.isOpen();
-                        if (isOpen) {
-                            panelView.toggleControlPanel();
-                        }
-                        //判断在屏幕左边还是右边，切换位置
-                        int halfScreenWidth = getScreenWidth(MainActivity.this) / 2;
-                        if (x < halfScreenWidth) {
-                            //左边
-                            panelView.setOrientation(true);
-                        } else {
-                            //右边
-                            panelView.setOrientation(false);
-                        }
-                        //跟随
-                        int[] result = panelView.fixFollowPosition(x, y);
-                        floatPanelWindow.updateX(result[0]);
-                        floatPanelWindow.updateY(result[1]);
-                    }
-                })    //监听悬浮控件状态改变
-                .setPermissionListener(new PermissionListener() {
-                    @Override
-                    public void onSuccess() {
-                    }
-
-                    @Override
-                    public void onFail() {
-                    }
-                })  //监听权限申请结果
-                .build();
+                                    @Override
+                                    public void onPermissionReject(IFloatWindowAgent agent) {
+                                        Toast.makeText(MainActivity.this,
+                                                "允许权限才能使用悬浮球喔", Toast.LENGTH_SHORT).show();
+                                    }
+                                })));
         RxPreventJitter
                 .preventJitter(floatButton)
                 .subscribe(new Consumer<Object>() {
@@ -141,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
                             .scaleY(0.8f)
                             .alpha(1.0f)
                             .start();
-                    FloatWindow
-                            .get(PANEL_TAG)
+                    floatWindowController
+                            .getFloatWindowAgent(PANEL_TAG)
                             .show();
                 } else {
                     floatButton.setSelected(false);
@@ -152,8 +148,8 @@ public class MainActivity extends AppCompatActivity {
                             .scaleY(1f)
                             .alpha(0.2f)
                             .start();
-                    FloatWindow
-                            .get(PANEL_TAG)
+                    floatWindowController
+                            .getFloatWindowAgent(PANEL_TAG)
                             .hide();
                 }
             }
@@ -163,8 +159,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         //一开始先隐藏
-                        FloatWindow
-                                .get(PANEL_TAG)
+                        floatWindowController
+                                .getFloatWindowAgent(PANEL_TAG)
                                 .hide();
                     }
                 });
