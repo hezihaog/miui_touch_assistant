@@ -1,4 +1,4 @@
-package com.miui.touchassistant.view;
+package com.zh.touchassistant.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -191,8 +191,14 @@ public class ControlPanelView extends FrameLayout {
      */
     public void toggleControlPanel() {
         if (isOpen) {
+            if (mOffAnimator != null && mOffAnimator.isRunning()) {
+                return;
+            }
             off();
         } else {
+            if (mOpenAnimator != null && mOpenAnimator.isRunning()) {
+                return;
+            }
             open();
         }
         isOpen = !isOpen;
@@ -206,13 +212,11 @@ public class ControlPanelView extends FrameLayout {
      * 打开动画
      */
     private void open() {
-        if (mOpenAnimator != null) {
-            mOpenAnimator.end();
+        if (mOpenAnimator != null && mOpenAnimator.isRunning()) {
+            return;
         }
-        if (mOpenAnimator == null) {
-            //不断放大开关到子控件圆心的距离，从而形成散开的效果
-            mOpenAnimator = ValueAnimator.ofInt(0, mRadius);
-        }
+        //不断放大开关到子控件圆心的距离，从而形成散开的效果
+        mOpenAnimator = ValueAnimator.ofInt(0, mRadius);
         mOpenAnimator.setDuration(250);
         mOpenAnimator.setInterpolator(AnimationUtils.loadInterpolator(getContext(), R.anim.decelerate_interpolator_more));
         mOpenAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -249,13 +253,11 @@ public class ControlPanelView extends FrameLayout {
      * 关闭动画
      */
     private void off() {
-        if (mOffAnimator != null) {
-            mOffAnimator.end();
+        if (mOffAnimator != null && mOffAnimator.isRunning()) {
+            return;
         }
-        if (mOffAnimator == null) {
-            //不断缩小开关到子控件圆心的距离，从而形成缩小的效果
-            mOffAnimator = ValueAnimator.ofInt(mRadius, 0);
-        }
+        //不断缩小开关到子控件圆心的距离，从而形成缩小的效果
+        mOffAnimator = ValueAnimator.ofInt(mRadius, 0);
         mOffAnimator = ValueAnimator.ofInt(mRadius, 0);
         mOffAnimator.setDuration(200);
         mOffAnimator.setInterpolator(AnimationUtils.loadInterpolator(getContext(), R.anim.decelerate_interpolator_more));

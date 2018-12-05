@@ -1,4 +1,4 @@
-package com.miui.touchassistant.floating;
+package com.zh.touchassistant.floating;
 
 import android.content.Context;
 import android.view.View;
@@ -6,7 +6,7 @@ import android.view.View;
 import java.util.HashMap;
 
 /**
- * <b>Package:</b> com.miui.touchassistant <br>
+ * <b>Package:</b> com.zh.touchassistant <br>
  * <b>FileName:</b> FloatWindowController <br>
  * <b>Create Date:</b> 2018/12/5  下午6:24 <br>
  * <b>Author:</b> zihe <br>

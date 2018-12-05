@@ -12,7 +12,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="miui.permission.USE_INTERNAL_GENERAL_API" />
     <uses-permission android:name="android.permission.READ_SYNC_STATS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -22,7 +21,7 @@
     <uses-permission android:name="android.permission.REORDER_TASKS" />
 
     <application
-        android:name="com.miui.touchassistant.AssistantApp"
+        android:name=".AssistantApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -30,7 +29,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.miui.touchassistant.MainActivity"
+            android:name=".MainActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:label="@string/app_name">
@@ -43,12 +42,12 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.miui.touchassistant.receiver.BootReceiver">
+        <receiver android:name=".receiver.BootReceiver">
             <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <service android:name="com.miui.touchassistant.service.CoreService" />
+        <service android:name=".service.CoreService" />
 
         <!--保活-->
         <receiver android:name="com.fanjun.keeplive.receiver.NotificationClickReceiver" />

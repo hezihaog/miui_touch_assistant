@@ -1,4 +1,4 @@
-package com.miui.touchassistant.service;
+package com.zh.touchassistant.service;
 
 import android.app.Notification;
 import android.app.Service;
@@ -13,30 +13,32 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.miui.touchassistant.floating.FloatMoveEnum;
-import com.miui.touchassistant.floating.FloatWindowController;
-import com.miui.touchassistant.floating.FloatWindowOption;
-import com.miui.touchassistant.floating.IFloatWindowAgent;
-import com.miui.touchassistant.floating.SimpleFloatWindowPermissionCallback;
-import com.miui.touchassistant.floating.SimpleFloatWindowViewStateCallback;
-import com.miui.touchassistant.util.RxPreventJitter;
-import com.miui.touchassistant.view.ControlPanelView;
-import com.miui.touchassistant.view.ForegroundImageView;
+import com.zh.touchassistant.floating.FloatMoveEnum;
+import com.zh.touchassistant.floating.FloatWindowController;
+import com.zh.touchassistant.floating.FloatWindowOption;
+import com.zh.touchassistant.floating.IFloatWindowAgent;
+import com.zh.touchassistant.floating.SimpleFloatWindowPermissionCallback;
+import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
+import com.zh.touchassistant.util.RxPreventJitter;
+import com.zh.touchassistant.view.ControlPanelView;
+import com.zh.touchassistant.view.ForegroundImageView;
 import com.zh.touchassistant.R;
 
 import io.reactivex.functions.Consumer;
 
 /**
- * <b>Package:</b> com.miui.touchassistant <br>
+ * <b>Package:</b> com.zh.touchassistant <br>
  * <b>FileName:</b> CoreService <br>
  * <b>Create Date:</b> 2018/12/6  上午12:39 <br>
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
 public class CoreService extends Service {
-    private static final String BUTTON_TAG = "button_tag";
-    private static final String PANEL_TAG = "panel_tag";
+    private static final String TAG_BUTTON = "button_tag";
+    private static final String TAG_PANEL = "panel_tag";
+
     private FloatWindowController mFloatWindowController;
+    private LayoutInflater mInflater;
 
     public static class Action {
         public static final String ACTION_SHOW_FLOATING_WINDOW = "com.zh.touchassistant.SHOW_FLOATING_WINDOW";
@@ -50,7 +52,10 @@ public class CoreService extends Service {
     }
 
     private LayoutInflater getLayoutInflater() {
-        return LayoutInflater.from(getApplicationContext());
+        if (mInflater == null) {
+            mInflater = LayoutInflater.from(getApplicationContext());
+        }
+        return mInflater;
     }
 
     @Override
@@ -78,12 +83,12 @@ public class CoreService extends Service {
         View buttonView = getLayoutInflater().inflate(R.layout.float_button, null);
         final View panelLayout = getLayoutInflater().inflate(R.layout.view_float_control_panel, null);
         final ControlPanelView floatControlPanelView = panelLayout.findViewById(R.id.control_panel_view);
-        final ForegroundImageView floatButton = buttonView.findViewById(R.id.foreground_iv);
+        final ForegroundImageView floatButton = buttonView.findViewById(R.id.float_btn);
         //面板区域
         mFloatWindowController
                 .makeFloatWindow(this,
                         panelLayout,
-                        PANEL_TAG,
+                        TAG_PANEL,
                         FloatWindowOption.create(new FloatWindowOption.Builder()
                                 .desktopShow(true)
                                 .setFloatMoveType(FloatMoveEnum.INACTIVE)));
@@ -91,14 +96,14 @@ public class CoreService extends Service {
         mFloatWindowController
                 .makeFloatWindow(this,
                         buttonView,
-                        BUTTON_TAG,
+                        TAG_BUTTON,
                         FloatWindowOption.create(new FloatWindowOption.Builder()
                                 .desktopShow(true)
                                 .setFloatMoveType(FloatMoveEnum.ACTIVE)
                                 .setViewStateCallback(new SimpleFloatWindowViewStateCallback() {
                                     private ControlPanelView getPanelView() {
                                         return mFloatWindowController
-                                                .getView(PANEL_TAG)
+                                                .getView(TAG_PANEL)
                                                 .findViewById(R.id.control_panel_view);
                                     }
 
@@ -107,12 +112,12 @@ public class CoreService extends Service {
                                         super.onPositionUpdate(agent, x, y);
                                         ControlPanelView panelView = getPanelView();
                                         IFloatWindowAgent floatWindowAgent = mFloatWindowController
-                                                .getFloatWindowAgent(PANEL_TAG);
+                                                .getFloatWindowAgent(TAG_PANEL);
                                         //如果正在打开，先关闭
-                                        boolean isOpen = panelView.isOpen();
-                                        if (isOpen) {
-                                            panelView.toggleControlPanel();
-                                        }
+//                                        boolean isOpen = panelView.isOpen();
+//                                        if (isOpen) {
+//                                            panelView.toggleControlPanel();
+//                                        }
                                         //判断在屏幕左边还是右边，切换位置
                                         int halfScreenWidth = getScreenWidth(getApplicationContext()) / 2;
                                         if (x < halfScreenWidth) {
@@ -163,7 +168,7 @@ public class CoreService extends Service {
                             .alpha(1.0f)
                             .start();
                     mFloatWindowController
-                            .getFloatWindowAgent(PANEL_TAG)
+                            .getFloatWindowAgent(TAG_PANEL)
                             .show();
                 } else {
                     floatButton.setSelected(false);
@@ -174,7 +179,7 @@ public class CoreService extends Service {
                             .alpha(0.2f)
                             .start();
                     mFloatWindowController
-                            .getFloatWindowAgent(PANEL_TAG)
+                            .getFloatWindowAgent(TAG_PANEL)
                             .hide();
                 }
             }
@@ -184,18 +189,20 @@ public class CoreService extends Service {
                     @Override
                     public void run() {
                         //一开始先隐藏
-                        mFloatWindowController
-                                .getFloatWindowAgent(PANEL_TAG)
-                                .hide();
+                        IFloatWindowAgent agent = mFloatWindowController
+                                .getFloatWindowAgent(TAG_PANEL);
+                        if (agent.isShowing()) {
+                            agent.hide();
+                        }
                     }
                 });
     }
 
     private void hideFloatWindow() {
         mFloatWindowController
-                .getFloatWindowAgent(BUTTON_TAG)
+                .getFloatWindowAgent(TAG_BUTTON)
                 .hide();
-        mFloatWindowController.getFloatWindowAgent(PANEL_TAG)
+        mFloatWindowController.getFloatWindowAgent(TAG_PANEL)
                 .hide();
     }
 

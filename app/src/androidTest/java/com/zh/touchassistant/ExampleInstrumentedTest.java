@@ -1,4 +1,4 @@
-package com.miui.touchassistant;
+package com.zh.touchassistant;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.miui.touchassistant", appContext.getPackageName());
+        assertEquals("com.zh.touchassistant", appContext.getPackageName());
     }
 }

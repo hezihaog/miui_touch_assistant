@@ -1,13 +1,13 @@
-package com.miui.touchassistant.receiver;
+package com.zh.touchassistant.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.miui.touchassistant.service.CoreService;
+import com.zh.touchassistant.service.CoreService;
 
 /**
- * <b>Package:</b> com.miui.touchassistant <br>
+ * <b>Package:</b> com.zh.touchassistant <br>
  * <b>FileName:</b> BootReceiver <br>
  * <b>Create Date:</b> 2018/12/6  上午12:51 <br>
  * <b>Author:</b> zihe <br>

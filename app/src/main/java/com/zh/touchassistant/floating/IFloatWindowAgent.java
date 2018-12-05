@@ -1,10 +1,10 @@
-package com.miui.touchassistant.floating;
+package com.zh.touchassistant.floating;
 
 import android.content.Context;
 import android.view.View;
 
 /**
- * <b>Package:</b> com.miui.touchassistant.floating <br>
+ * <b>Package:</b> com.zh.touchassistant.floating <br>
  * <b>FileName:</b> IFloatWindowAgent <br>
  * <b>Create Date:</b> 2018/12/5  下午6:25 <br>
  * <b>Author:</b> zihe <br>

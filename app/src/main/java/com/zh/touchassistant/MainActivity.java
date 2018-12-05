@@ -1,4 +1,4 @@
-package com.miui.touchassistant;
+package com.zh.touchassistant;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -6,10 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 
-import com.zh.touchassistant.R;
-
 /**
- * <b>Package:</b> com.miui.touchassistant <br>
+ * <b>Package:</b> com.zh.touchassistant <br>
  * <b>FileName:</b> MainActivity <br>
  * <b>Create Date:</b> 2018/12/2  下午4:43 <br>
  * <b>Author:</b> zihe <br>
@@ -26,5 +24,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }

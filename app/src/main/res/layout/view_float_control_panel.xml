@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     android:clipChildren="false">
 
-    <com.miui.touchassistant.view.ControlPanelView
+    <com.zh.touchassistant.view.ControlPanelView
         android:id="@+id/control_panel_view"
         android:layout_width="@dimen/float_panel_width"
         android:layout_height="@dimen/float_panel_height">
 
-        <com.miui.touchassistant.view.ForegroundImageView
+        <com.zh.touchassistant.view.ForegroundImageView
             android:layout_width="@dimen/float_icon_size"
             android:layout_height="@dimen/float_icon_size"
             android:layout_gravity="center"
@@ -19,7 +19,7 @@
             android:padding="@dimen/float_icon_padding"
             android:src="@drawable/ic_key_home" />
 
-        <com.miui.touchassistant.view.ForegroundImageView
+        <com.zh.touchassistant.view.ForegroundImageView
             android:layout_width="@dimen/float_icon_size"
             android:layout_height="@dimen/float_icon_size"
             android:layout_gravity="center"
@@ -28,7 +28,7 @@
             android:padding="@dimen/float_icon_padding"
             android:src="@drawable/ic_key_menu" />
 
-        <com.miui.touchassistant.view.ForegroundImageView
+        <com.zh.touchassistant.view.ForegroundImageView
             android:layout_width="@dimen/float_icon_size"
             android:layout_height="@dimen/float_icon_size"
             android:layout_gravity="center"
@@ -37,7 +37,7 @@
             android:padding="@dimen/float_icon_padding"
             android:src="@drawable/ic_toggle_lock" />
 
-        <com.miui.touchassistant.view.ForegroundImageView
+        <com.zh.touchassistant.view.ForegroundImageView
             android:layout_width="@dimen/float_icon_size"
             android:layout_height="@dimen/float_icon_size"
             android:layout_gravity="center"
@@ -46,7 +46,7 @@
             android:padding="@dimen/float_icon_padding"
             android:src="@drawable/ic_toggle_screenshot" />
 
-        <com.miui.touchassistant.view.ForegroundImageView
+        <com.zh.touchassistant.view.ForegroundImageView
             android:layout_width="@dimen/float_icon_size"
             android:layout_height="@dimen/float_icon_size"
             android:layout_gravity="center"
@@ -54,5 +54,5 @@
             android:clickable="true"
             android:padding="@dimen/float_icon_padding"
             android:src="@drawable/ic_key_back" />
-    </com.miui.touchassistant.view.ControlPanelView>
+    </com.zh.touchassistant.view.ControlPanelView>
 </FrameLayout>

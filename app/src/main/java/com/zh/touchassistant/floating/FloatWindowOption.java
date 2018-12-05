@@ -1,7 +1,7 @@
-package com.miui.touchassistant.floating;
+package com.zh.touchassistant.floating;
 
 /**
- * <b>Package:</b> com.miui.touchassistant.floating <br>
+ * <b>Package:</b> com.zh.touchassistant.floating <br>
  * <b>FileName:</b> FloatWindowOption <br>
  * <b>Create Date:</b> 2018/12/5  下午6:32 <br>
  * <b>Author:</b> zihe <br>

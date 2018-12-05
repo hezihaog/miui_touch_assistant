@@ -1,4 +1,4 @@
-package com.miui.touchassistant;
+package com.zh.touchassistant;
 
 import org.junit.Test;
 

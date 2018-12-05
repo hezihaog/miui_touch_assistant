@@ -1,4 +1,4 @@
-package com.miui.touchassistant;
+package com.zh.touchassistant;
 
 import android.app.Application;
 import android.content.Context;
@@ -8,11 +8,10 @@ import com.fanjun.keeplive.KeepLive;
 import com.fanjun.keeplive.config.ForegroundNotification;
 import com.fanjun.keeplive.config.ForegroundNotificationClickListener;
 import com.fanjun.keeplive.config.KeepLiveService;
-import com.miui.touchassistant.service.CoreService;
-import com.zh.touchassistant.R;
+import com.zh.touchassistant.service.CoreService;
 
 /**
- * <b>Package:</b> com.miui.touchassistant <br>
+ * <b>Package:</b> com.zh.touchassistant <br>
  * <b>FileName:</b> AssistantApp <br>
  * <b>Create Date:</b> 2018/12/6  上午1:03 <br>
  * <b>Author:</b> zihe <br>
@@ -24,14 +23,17 @@ public class AssistantApp extends Application {
         super.onCreate();
         //保活
         //定义前台服务的默认样式。即标题、描述和图标
-        ForegroundNotification foregroundNotification = new ForegroundNotification("悬浮球","悬浮球正在运行", R.drawable.ic_launcher,
-                //定义前台服务的通知点击事件
-                new ForegroundNotificationClickListener() {
+        ForegroundNotification foregroundNotification =
+                new ForegroundNotification(getResources().getString(R.string.app_name),
+                        "悬浮球正在运行",
+                        R.drawable.ic_launcher,
+                        //定义前台服务的通知点击事件
+                        new ForegroundNotificationClickListener() {
 
-                    @Override
-                    public void foregroundNotificationClick(Context context, Intent intent) {
-                    }
-                });
+                            @Override
+                            public void foregroundNotificationClick(Context context, Intent intent) {
+                            }
+                        });
         //启动保活服务
         KeepLive.startWork(this, KeepLive.RunMode.ROGUE, foregroundNotification,
                 //你需要保活的服务，如socket连接、定时任务等，建议不用匿名内部类的方式在这里写

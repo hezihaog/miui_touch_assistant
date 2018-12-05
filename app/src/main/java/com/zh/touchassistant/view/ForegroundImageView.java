@@ -1,4 +1,4 @@
-package com.miui.touchassistant.view;
+package com.zh.touchassistant.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
