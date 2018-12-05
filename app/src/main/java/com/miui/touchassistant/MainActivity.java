@@ -1,118 +1,202 @@
 package com.miui.touchassistant;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Intent;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceScreen;
-import com.miui.touchassistant.b.a;
-import com.miui.touchassistant.settings.b;
-import miui.preference.PreferenceActivity;
-import miui.widget.SimpleDialogFragment;
-import miui.widget.SimpleDialogFragment.AlertDialogFragmentBuilder;
+import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewGroup;
 
-public class MainActivity
-  extends PreferenceActivity
-  implements OnPreferenceChangeListener, OnPreferenceClickListener
-{
-  private CheckBoxPreference a;
-  private Preference b;
-  private Preference c;
-  
-  public void a(boolean paramBoolean)
-  {
-    if (paramBoolean)
-    {
-      getPreferenceScreen().removePreference(this.b);
-      getPreferenceScreen().removePreference(this.c);
-    }
-    for (;;)
-    {
-      return;
-      getPreferenceScreen().addPreference(this.b);
-      getPreferenceScreen().addPreference(this.c);
-    }
-  }
-  
-  protected void onCreate(Bundle paramBundle)
-  {
-    super.onCreate(paramBundle);
-    addPreferencesFromResource(2131034113);
-    this.a = ((CheckBoxPreference)findPreference("enabled"));
-    this.a.setChecked(b.b(this));
-    this.a.setOnPreferenceChangeListener(this);
-    findPreference("function_settings").setIntent(new Intent(this, EntriesActivity.class));
-    findPreference("auto_hide").setIntent(new Intent(this, AutoHideActivity.class));
-    findPreference("restore_to_default").setOnPreferenceClickListener(this);
-    this.b = findPreference("category_setting");
-    this.c = findPreference("category_others");
-    if (!b.b(this)) {}
-    for (boolean bool = true;; bool = false)
-    {
-      a(bool);
-      if (b.b(this)) {
-        startService(new Intent("com.miui.touchassistant.SHOW_FLOATING_WINDOW").setClass(this, CoreService.class));
-      }
-      return;
-    }
-  }
-  
-  public boolean onPreferenceChange(Preference paramPreference, Object paramObject)
-  {
-    boolean bool2 = true;
-    boolean bool1 = false;
-    if (paramPreference == this.a)
-    {
-      boolean bool3 = ((Boolean)paramObject).booleanValue();
-      if (!bool3) {
-        bool1 = true;
-      }
-      a(bool1);
-      b.a(this, bool3);
-      if (bool3)
-      {
-        paramPreference = new Intent(this, CoreService.class);
-        paramPreference.setAction("com.miui.touchassistant.SHOW_FLOATING_WINDOW");
-        startService(paramPreference);
-        a.b("enable_touchassistant");
-        bool1 = bool2;
-      }
-    }
-    for (;;)
-    {
-      return bool1;
-      a.b("disable_touchassistant");
-      bool1 = bool2;
-      continue;
-      bool1 = false;
-    }
-  }
-  
-  public boolean onPreferenceClick(Preference paramPreference)
-  {
-    boolean bool = true;
-    if ("restore_to_default".equals(paramPreference.getKey()))
-    {
-      paramPreference = new SimpleDialogFragment.AlertDialogFragmentBuilder(1).setTitle(getString(2131296289)).setCancelable(true).setMessage(getString(2131296290)).create();
-      paramPreference.setPositiveButton(17039370, new r(this));
-      paramPreference.setNegativeButton(17039360, null);
-      getFragmentManager().beginTransaction().add(paramPreference, "dialog").commit();
-      a.b("click_restore");
-    }
-    for (;;)
-    {
-      return bool;
-      bool = false;
-    }
-  }
-}
+import com.miui.touchassistant.util.RxPreventJitter;
+import com.miui.touchassistant.view.ControlPanelView;
+import com.miui.touchassistant.view.ForegroundImageView;
+import com.yhao.floatwindow.FloatWindow;
+import com.yhao.floatwindow.IFloatWindow;
+import com.yhao.floatwindow.MoveType;
+import com.yhao.floatwindow.PermissionListener;
+import com.yhao.floatwindow.ViewStateListenerAdapter;
+import com.zh.touchassistant.R;
 
+import io.reactivex.functions.Consumer;
 
-/* Location:              /Users/wally/Downloads/091615pltj0byl8hjhyp8b-dex/classes-d2j.jar!/com/miui/touchassistant/MainActivity.class
- * Java compiler version: 6 (50.0)
- * JD-Core Version:       0.7.1
+/**
+ * <b>Package:</b> com.miui.touchassistant <br>
+ * <b>FileName:</b> MainActivity <br>
+ * <b>Create Date:</b> 2018/12/2  下午4:43 <br>
+ * <b>Author:</b> zihe <br>
+ * <b>Description:</b>  <br>
  */
+public class MainActivity extends AppCompatActivity {
+    private static final String BUTTON_TAG = "button_tag";
+    private static final String PANEL_TAG = "panel_tag";
+
+    //布局文件中 含有 vector矢量图 的 Activity 还需要添加一句以下代码
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        //填充浮动按钮和浮动面板
+        View floatButtonView = getLayoutInflater().inflate(R.layout.float_button, null);
+        final View floatPanelLayout = getLayoutInflater().inflate(R.layout.view_float_control_panel, null);
+        final ControlPanelView floatControlPanelView = floatPanelLayout.findViewById(R.id.control_panel_view);
+        final ForegroundImageView floatButton = floatButtonView.findViewById(R.id.foreground_iv);
+        //面板区域
+        FloatWindow
+                .with(getApplicationContext())
+                .setTag(PANEL_TAG)
+                .setView(floatPanelLayout)
+                .setDesktopShow(true)
+                .setMoveType(MoveType.inactive)
+                .build();
+        //悬浮球
+        FloatWindow
+                .with(getApplicationContext())
+                .setTag(BUTTON_TAG)
+                .setView(floatButtonView)
+                .setDesktopShow(true)
+                .setMoveType(MoveType.active)
+                .setViewStateListener(new ViewStateListenerAdapter() {
+                    private ControlPanelView getPanelView() {
+                        IFloatWindow floatPanelWindow = FloatWindow
+                                .get(PANEL_TAG);
+                        ViewGroup layout = (ViewGroup) floatPanelWindow.getView();
+                        return layout.findViewById(R.id.control_panel_view);
+                    }
+
+                    private IFloatWindow getButtonFloatWindow() {
+                        return FloatWindow
+                                .get(PANEL_TAG);
+                    }
+
+                    @Override
+                    public void onPositionUpdate(int x, int y) {
+                        super.onPositionUpdate(x, y);
+                        ControlPanelView panelView = getPanelView();
+                        IFloatWindow floatPanelWindow = FloatWindow
+                                .get(PANEL_TAG);
+                        //如果正在打开，先关闭
+                        boolean isOpen = panelView.isOpen();
+                        if (isOpen) {
+                            panelView.toggleControlPanel();
+                        }
+                        //判断在屏幕左边还是右边，切换位置
+                        int halfScreenWidth = getScreenWidth(MainActivity.this) / 2;
+                        if (x < halfScreenWidth) {
+                            //左边
+                            panelView.setOrientation(true);
+                        } else {
+                            //右边
+                            panelView.setOrientation(false);
+                        }
+                        //跟随
+                        int[] result = panelView.fixFollowPosition(x, y);
+                        floatPanelWindow.updateX(result[0]);
+                        floatPanelWindow.updateY(result[1]);
+                    }
+                })    //监听悬浮控件状态改变
+                .setPermissionListener(new PermissionListener() {
+                    @Override
+                    public void onSuccess() {
+                    }
+
+                    @Override
+                    public void onFail() {
+                    }
+                })  //监听权限申请结果
+                .build();
+        RxPreventJitter
+                .preventJitter(floatButton)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        boolean isOpen = floatControlPanelView.isOpen();
+                        if (isOpen) {
+                            floatButton.setSelected(false);
+                        } else {
+                            floatButton.setSelected(true);
+                        }
+                        floatControlPanelView.toggleControlPanel();
+                    }
+                });
+        floatControlPanelView.setOnTogglePanelListener(new ControlPanelView.OnTogglePanelListener() {
+            @Override
+            public void onToggleChange(boolean isOpen) {
+                //最新为打开
+                if (isOpen) {
+                    floatButton.setSelected(true);
+                    floatButton
+                            .animate()
+                            .scaleX(0.8f)
+                            .scaleY(0.8f)
+                            .alpha(1.0f)
+                            .start();
+                    FloatWindow
+                            .get(PANEL_TAG)
+                            .show();
+                } else {
+                    floatButton.setSelected(false);
+                    floatButton
+                            .animate()
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .alpha(0.2f)
+                            .start();
+                    FloatWindow
+                            .get(PANEL_TAG)
+                            .hide();
+                }
+            }
+        });
+        new Handler(getMainLooper())
+                .post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //一开始先隐藏
+                        FloatWindow
+                                .get(PANEL_TAG)
+                                .hide();
+                    }
+                });
+    }
+
+    public static int dip2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
+    }
+
+    public static int px2dp(Context context, float pxValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+    }
+
+    private int sp2px(Context context, float spVal) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                spVal, context.getResources().getDisplayMetrics());
+    }
+
+    public static int spToPixel(Context context, float spValue) {
+        final float fontScale = getDisplayMetrics(context).scaledDensity;
+        return (int) (spValue * fontScale + 0.5f);
+    }
+
+    public static DisplayMetrics getDisplayMetrics(Context context) {
+        return context.getResources().getDisplayMetrics();
+    }
+
+    public static int getScreenWidth(Activity activity) {
+        DisplayMetrics localDisplayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(localDisplayMetrics);
+        return localDisplayMetrics.widthPixels;
+    }
+}

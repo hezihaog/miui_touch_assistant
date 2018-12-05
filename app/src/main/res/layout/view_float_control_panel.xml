@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false">
+
+    <com.miui.touchassistant.view.ControlPanelView
+        android:id="@+id/control_panel_view"
+        android:layout_width="@dimen/float_panel_width"
+        android:layout_height="@dimen/float_panel_height">
+
+        <com.miui.touchassistant.view.ForegroundImageView
+            android:layout_width="@dimen/float_icon_size"
+            android:layout_height="@dimen/float_icon_size"
+            android:layout_gravity="center"
+            android:background="@drawable/float_icon_bg"
+            android:clickable="true"
+            android:padding="@dimen/float_icon_padding"
+            android:src="@drawable/ic_key_home" />
+
+        <com.miui.touchassistant.view.ForegroundImageView
+            android:layout_width="@dimen/float_icon_size"
+            android:layout_height="@dimen/float_icon_size"
+            android:layout_gravity="center"
+            android:background="@drawable/float_icon_bg"
+            android:clickable="true"
+            android:padding="@dimen/float_icon_padding"
+            android:src="@drawable/ic_key_menu" />
+
+        <com.miui.touchassistant.view.ForegroundImageView
+            android:layout_width="@dimen/float_icon_size"
+            android:layout_height="@dimen/float_icon_size"
+            android:layout_gravity="center"
+            android:background="@drawable/float_icon_bg"
+            android:clickable="true"
+            android:padding="@dimen/float_icon_padding"
+            android:src="@drawable/ic_toggle_lock" />
+
+        <com.miui.touchassistant.view.ForegroundImageView
+            android:layout_width="@dimen/float_icon_size"
+            android:layout_height="@dimen/float_icon_size"
+            android:layout_gravity="center"
+            android:background="@drawable/float_icon_bg"
+            android:clickable="true"
+            android:padding="@dimen/float_icon_padding"
+            android:src="@drawable/ic_toggle_screenshot" />
+
+        <com.miui.touchassistant.view.ForegroundImageView
+            android:layout_width="@dimen/float_icon_size"
+            android:layout_height="@dimen/float_icon_size"
+            android:layout_gravity="center"
+            android:background="@drawable/float_icon_bg"
+            android:clickable="true"
+            android:padding="@dimen/float_icon_padding"
+            android:src="@drawable/ic_key_back" />
+    </com.miui.touchassistant.view.ControlPanelView>
+</FrameLayout>

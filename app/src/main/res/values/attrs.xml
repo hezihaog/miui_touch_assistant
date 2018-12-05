@@ -4,4 +4,8 @@
     <attr name="checkBox" format="reference" />
     <attr name="checkBoxOffset" format="dimension" />
     <attr name="foreground" format="reference" />
+
+    <declare-styleable name="ForegroundImageView">
+        <attr name="ForegroundImageView" format="reference" />
+    </declare-styleable>
 </resources>

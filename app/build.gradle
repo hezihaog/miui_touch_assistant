@@ -2,14 +2,17 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
+
     defaultConfig {
-        applicationId "com.miui.touchassistant"
-        minSdkVersion 15
+        applicationId "com.zh.touchassistant"
+        minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 100
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -25,4 +28,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //悬浮窗
+    implementation 'com.github.yhaolpz:FloatWindow:1.0.9'
+    //RxJava
+    implementation "io.reactivex.rxjava2:rxjava:$rx_java_version"
+    //RxAndroid
+    implementation "io.reactivex.rxjava2:rxandroid:$rx_android_version"
+    //RxBinging
+    implementation "com.jakewharton.rxbinding2:rxbinding:$rxbinding_version"
 }

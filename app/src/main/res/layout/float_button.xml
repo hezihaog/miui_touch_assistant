@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.miui.touchassistant.view.ForegroundImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/foreground_iv"
+    android:layout_width="@dimen/float_ball_size"
+    android:layout_height="@dimen/float_ball_size"
+    android:layout_gravity="center"
+    android:background="@drawable/float_icon_bg"
+    android:src="@drawable/ic_float" />

@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference android:title="@string/enable_touch_assistant" android:key="enabled" />
-    <PreferenceCategory android:title="@string/category_setting" android:key="category_setting">
-        <Preference android:title="@string/customize_entries" android:key="function_settings" />
-        <Preference android:title="@string/hide_touch_assistant" android:key="auto_hide" android:summary="@string/hide_touch_assistant_intro" />
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="enabled"
+        android:title="@string/enable_touch_assistant" />
+    <PreferenceCategory
+        android:key="category_setting"
+        android:title="@string/category_setting">
+        <Preference
+            android:key="function_settings"
+            android:title="@string/customize_entries" />
+        <Preference
+            android:key="auto_hide"
+            android:summary="@string/hide_touch_assistant_intro"
+            android:title="@string/hide_touch_assistant" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/category_others" android:key="category_others">
-        <Preference android:title="@string/restore_default" android:key="restore_to_default" />
+    <PreferenceCategory
+        android:key="category_others"
+        android:title="@string/category_others">
+        <Preference
+            android:key="restore_to_default"
+            android:title="@string/restore_default" />
     </PreferenceCategory>
 </PreferenceScreen>

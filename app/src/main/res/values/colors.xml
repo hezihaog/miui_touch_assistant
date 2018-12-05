@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="icon_foreground_pressed">#1affffff</color>
-    <color name="primary_color_activated">#ff0d9aff</color>
-    <color name="primary_color_normal">#e62b2e33</color>
-    <color name="primary_color_normal_dark">#ddffffff</color>
+    <color name="icon_foreground_pressed">#1AFFFFFF</color>
+    <color name="primary_color_pressed">#80000000</color>
+    <!--<color name="primary_color_pressed">#4DFFFFFF</color>-->
+    <color name="primary_color_normal">#80000000</color>
+    <color name="primary_color_normal_dark">#DDFFFFFF</color>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
 </resources>

@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/pref_category_system" android:key="system_settings" />
-    <PreferenceCategory android:title="@string/pref_category_quick_settings" android:key="quick_settings" />
-    <PreferenceCategory android:title="@string/pref_category_quick_pay" android:key="quick_pay" />
-    <PreferenceCategory android:title="@string/category_others" android:key="others">
-        <Preference android:title="@string/applications" android:key="applications" />
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="system_settings"
+        android:title="@string/pref_category_system" />
+    <PreferenceCategory
+        android:key="quick_settings"
+        android:title="@string/pref_category_quick_settings" />
+    <PreferenceCategory
+        android:key="quick_pay"
+        android:title="@string/pref_category_quick_pay" />
+    <PreferenceCategory
+        android:key="others"
+        android:title="@string/category_others">
+        <Preference
+            android:key="applications"
+            android:title="@string/applications" />
     </PreferenceCategory>
 </PreferenceScreen>

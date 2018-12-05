@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="alipay_package">com.eg.android.AlipayGphone</string>
+    <!--<string name="alipay_package">com.eg.android.AlipayGphone</string>-->
     <string name="app_name">Touch Assistant</string>
     <string name="app_not_installed">Not installed</string>
     <string name="applications">Applications</string>
