@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.zh.touchassistant.R;
 
 public class ForegroundImageView extends ImageView {
-    private Drawable a;
+    private Drawable mDrawable;
 
     public ForegroundImageView(Context context) {
         super(context);
@@ -20,15 +20,15 @@ public class ForegroundImageView extends ImageView {
     public ForegroundImageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.ForegroundImageView);
-        this.a = typedArray.getDrawable(R.styleable.ForegroundImageView_ForegroundImageView);
+        this.mDrawable = typedArray.getDrawable(R.styleable.ForegroundImageView_ForegroundImageView);
         typedArray.recycle();
     }
 
     @Override
     protected void drawableStateChanged() {
         super.drawableStateChanged();
-        if (this.a != null) {
-            this.a.setState(getDrawableState());
+        if (this.mDrawable != null) {
+            this.mDrawable.setState(getDrawableState());
         }
         postInvalidateOnAnimation();
     }
@@ -36,9 +36,9 @@ public class ForegroundImageView extends ImageView {
     @Override
     protected void onDraw(Canvas paramCanvas) {
         super.onDraw(paramCanvas);
-        if (this.a != null) {
-            this.a.setBounds(0, 0, getWidth(), getHeight());
-            this.a.draw(paramCanvas);
+        if (this.mDrawable != null) {
+            this.mDrawable.setBounds(0, 0, getWidth(), getHeight());
+            this.mDrawable.draw(paramCanvas);
         }
     }
 }
