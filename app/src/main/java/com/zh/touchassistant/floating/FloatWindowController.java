@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <b>Package:</b> com.zh.touchassistant <br>
@@ -15,8 +16,16 @@ import java.util.HashMap;
 public class FloatWindowController {
     private HashMap<String, IFloatWindowAgent> mWindowAgents;
 
-    public FloatWindowController() {
+    private FloatWindowController() {
         mWindowAgents = new HashMap<>(5);
+    }
+
+    public static final class SingleHolder {
+        private static final FloatWindowController INSTANCE = new FloatWindowController();
+    }
+
+    public static FloatWindowController getInstance() {
+        return SingleHolder.INSTANCE;
     }
 
     /**
@@ -112,5 +121,14 @@ public class FloatWindowController {
         IFloatWindowAgent agent = mWindowAgents.get(tag);
         assertNotNull(agent);
         return agent.getView();
+    }
+
+    public void destroyAll() {
+        if (mWindowAgents != null) {
+            for (Map.Entry<String, IFloatWindowAgent> entry : mWindowAgents.entrySet()) {
+                IFloatWindowAgent agent = entry.getValue();
+                agent.destroy();
+            }
+        }
     }
 }

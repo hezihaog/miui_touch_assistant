@@ -100,7 +100,8 @@ public class FloatWindowAgentImpl implements IFloatWindowAgent {
                     .setDesktopShow(option.isShowDesktop())
                     .setMoveType(moveType)
                     .setViewStateListener(viewStateListener)
-                    .setPermissionListener(permissionListener).build();
+                    .setPermissionListener(permissionListener)
+                    .build();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -165,5 +166,11 @@ public class FloatWindowAgentImpl implements IFloatWindowAgent {
     @Override
     public String getTag() {
         return mTag;
+    }
+
+    @Override
+    public void destroy() {
+        FloatWindow
+                .destroy(mTag);
     }
 }

@@ -66,4 +66,9 @@ public interface IFloatWindowAgent {
      * 获取当前悬浮窗的Tag
      */
     String getTag();
+
+    /**
+     * 销毁
+     */
+    void destroy();
 }

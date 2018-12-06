@@ -1,6 +1,5 @@
 package com.zh.touchassistant.service;
 
-import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.zh.touchassistant.R;
 import com.zh.touchassistant.floating.FloatMoveEnum;
 import com.zh.touchassistant.floating.FloatWindowController;
 import com.zh.touchassistant.floating.FloatWindowOption;
@@ -22,7 +22,6 @@ import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
 import com.zh.touchassistant.util.RxPreventJitter;
 import com.zh.touchassistant.view.ControlPanelView;
 import com.zh.touchassistant.view.ForegroundImageView;
-import com.zh.touchassistant.R;
 
 import io.reactivex.functions.Consumer;
 
@@ -61,8 +60,7 @@ public class CoreService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        mFloatWindowController = new FloatWindowController();
-        startForeground(0, new Notification());
+        mFloatWindowController = FloatWindowController.getInstance();
     }
 
     @Override

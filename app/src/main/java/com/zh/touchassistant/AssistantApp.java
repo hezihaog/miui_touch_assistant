@@ -8,6 +8,7 @@ import com.fanjun.keeplive.KeepLive;
 import com.fanjun.keeplive.config.ForegroundNotification;
 import com.fanjun.keeplive.config.ForegroundNotificationClickListener;
 import com.fanjun.keeplive.config.KeepLiveService;
+import com.zh.touchassistant.floating.FloatWindowController;
 import com.zh.touchassistant.service.CoreService;
 
 /**
@@ -56,6 +57,9 @@ public class AssistantApp extends Application {
                      */
                     @Override
                     public void onStop(Context context) {
+                        FloatWindowController
+                                .getInstance()
+                                .destroyAll();
                     }
                 }
         );
