@@ -1,4 +1,4 @@
-package com.zh.touchassistant.view;
+package com.zh.touchassistant.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,6 +12,10 @@ import com.zh.touchassistant.R;
 
 public class ForegroundImageView extends ImageView {
     private Drawable a;
+
+    public ForegroundImageView(Context context) {
+        super(context);
+    }
 
     public ForegroundImageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);

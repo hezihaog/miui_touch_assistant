@@ -28,6 +28,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- 全局Context提供者 -->
+        <provider
+            android:name="com.zh.touchassistant.ApplicationContextProvider"
+            android:authorities="${applicationId}.contextprovider"
+            android:exported="false"/>
+
         <activity
             android:name=".MainActivity"
             android:excludeFromRecents="true"

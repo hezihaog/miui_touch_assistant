@@ -1,4 +1,4 @@
-package com.zh.touchassistant.view;
+package com.zh.touchassistant.widget;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -13,6 +13,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
 import com.zh.touchassistant.R;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class ControlPanelView extends FrameLayout {
     /**
@@ -287,8 +290,26 @@ public class ControlPanelView extends FrameLayout {
     }
 
     public void setOrientation(boolean isLeft) {
+        if (this.isLeft == isLeft) {
+            return;
+        }
         this.isLeft = isLeft;
         setStartAngle();
+        reverseChildView();
+    }
+
+    private void reverseChildView() {
+        int childCount = getChildCount();
+        ArrayList<View> childViews = new ArrayList<>();
+        for (int i = 0; i < childCount; i++) {
+            View childView = getChildAt(i);
+            childViews.add(childView);
+        }
+        Collections.reverse(childViews);
+        removeAllViews();
+        for (View childView : childViews) {
+            addView(childView);
+        }
     }
 
     /**

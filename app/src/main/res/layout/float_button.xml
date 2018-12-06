@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zh.touchassistant.view.ForegroundImageView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zh.touchassistant.widget.ForegroundImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/float_btn"
     android:layout_width="@dimen/float_ball_size"
     android:layout_height="@dimen/float_ball_size"

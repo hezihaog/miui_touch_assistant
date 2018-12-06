@@ -3,13 +3,14 @@ package com.zh.touchassistant.service;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.zh.touchassistant.R;
@@ -19,9 +20,15 @@ import com.zh.touchassistant.floating.FloatWindowOption;
 import com.zh.touchassistant.floating.IFloatWindowAgent;
 import com.zh.touchassistant.floating.SimpleFloatWindowPermissionCallback;
 import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
+import com.zh.touchassistant.floating.action.IFloatWindowAction;
+import com.zh.touchassistant.model.FloatWindowActionModel;
+import com.zh.touchassistant.setting.FloatWindowSetting;
 import com.zh.touchassistant.util.RxPreventJitter;
-import com.zh.touchassistant.view.ControlPanelView;
-import com.zh.touchassistant.view.ForegroundImageView;
+import com.zh.touchassistant.widget.ControlPanelView;
+import com.zh.touchassistant.widget.ForegroundImageView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.functions.Consumer;
 
@@ -82,6 +89,26 @@ public class CoreService extends Service {
         final View panelLayout = getLayoutInflater().inflate(R.layout.view_float_control_panel, null);
         final ControlPanelView floatControlPanelView = panelLayout.findViewById(R.id.control_panel_view);
         final ForegroundImageView floatButton = buttonView.findViewById(R.id.float_btn);
+        //读取配置的Action数据
+        HashMap<FloatWindowActionModel, IFloatWindowAction> actions = FloatWindowSetting.getInstance().getFloatWindowActions();
+        for (final Map.Entry<FloatWindowActionModel, IFloatWindowAction> entry : actions.entrySet()) {
+            ForegroundImageView actionView = new ForegroundImageView(getApplicationContext());
+            int iconSize = getApplication().getResources().getDimensionPixelSize(R.dimen.float_icon_size);
+            int iconPadding = getApplication().getResources().getDimensionPixelSize(R.dimen.float_icon_padding);
+            FrameLayout.LayoutParams params = new ControlPanelView.LayoutParams(iconSize, iconSize);
+            params.gravity = Gravity.CENTER;
+            actionView.setPadding(iconPadding, iconPadding, iconPadding, iconPadding);
+            actionView.setImageResource(entry.getKey().getActionIcon());
+            actionView.setBackground(getResources().getDrawable(R.drawable.float_icon_bg));
+            actionView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    entry.getValue().onAction();
+                    floatControlPanelView.toggleControlPanel();
+                }
+            });
+            floatControlPanelView.addView(actionView, params);
+        }
         //面板区域
         mFloatWindowController
                 .makeFloatWindow(this,
@@ -112,10 +139,10 @@ public class CoreService extends Service {
                                         IFloatWindowAgent floatWindowAgent = mFloatWindowController
                                                 .getFloatWindowAgent(TAG_PANEL);
                                         //如果正在打开，先关闭
-//                                        boolean isOpen = panelView.isOpen();
-//                                        if (isOpen) {
-//                                            panelView.toggleControlPanel();
-//                                        }
+                                        boolean isOpen = panelView.isOpen();
+                                        if (isOpen) {
+                                            panelView.toggleControlPanel();
+                                        }
                                         //判断在屏幕左边还是右边，切换位置
                                         int halfScreenWidth = getScreenWidth(getApplicationContext()) / 2;
                                         if (x < halfScreenWidth) {
@@ -182,18 +209,18 @@ public class CoreService extends Service {
                 }
             }
         });
-        new Handler(getMainLooper())
-                .post(new Runnable() {
-                    @Override
-                    public void run() {
-                        //一开始先隐藏
-                        IFloatWindowAgent agent = mFloatWindowController
-                                .getFloatWindowAgent(TAG_PANEL);
-                        if (agent.isShowing()) {
-                            agent.hide();
-                        }
-                    }
-                });
+//        new Handler(getMainLooper())
+//                .post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        //一开始先隐藏
+//                        IFloatWindowAgent agent = mFloatWindowController
+//                                .getFloatWindowAgent(TAG_PANEL);
+//                        if (agent.isShowing()) {
+//                            agent.hide();
+//                        }
+//                    }
+//                });
     }
 
     private void hideFloatWindow() {

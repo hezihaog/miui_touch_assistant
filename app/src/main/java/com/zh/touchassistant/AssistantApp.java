@@ -10,6 +10,7 @@ import com.fanjun.keeplive.config.ForegroundNotificationClickListener;
 import com.fanjun.keeplive.config.KeepLiveService;
 import com.zh.touchassistant.floating.FloatWindowController;
 import com.zh.touchassistant.service.CoreService;
+import com.zh.touchassistant.setting.FloatWindowSetting;
 
 /**
  * <b>Package:</b> com.zh.touchassistant <br>
@@ -22,6 +23,9 @@ public class AssistantApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        FloatWindowSetting
+                .getInstance()
+                .initDefaultFloatWindowAction();
         //保活
         //定义前台服务的默认样式。即标题、描述和图标
         ForegroundNotification foregroundNotification =
