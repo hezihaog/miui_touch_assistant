@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -35,10 +34,10 @@ public class ControlPanelView extends FrameLayout {
      */
     int mChildRadius;
     /**
-     * 按钮的X,Y
+     * 按钮的中心点X,Y
      */
-    int mButtonX;
-    int mButtonY;
+    int mButtonCenterX;
+    int mButtonCenterY;
     /**
      * 打开的动画
      */
@@ -58,6 +57,9 @@ public class ControlPanelView extends FrameLayout {
      */
     private int mWidth;
     private int mHeight;
+    /**
+     * 是否在屏幕左边
+     */
     private boolean isLeft = false;
     /**
      * 左边或右边的偏移量
@@ -116,9 +118,14 @@ public class ControlPanelView extends FrameLayout {
         //计算出半圆的圆心心到子控件圆心的距离，就是我们半圆的半径
         //基本是高的一半减去子控件的2倍半径
         mRadius = Math.max(widthSize, heightSize) / 2 - (mChildRadius * 2);
-        //计算按钮的位置
-        mButtonX = -mWidth;
-        mButtonY = heightSize / 2 - mChildRadius;
+        //计算按钮的位置，左、右的中间
+        if (isLeft) {
+            mButtonCenterX = mOffset;
+            mButtonCenterY = mWidth / 2;
+        } else {
+            mButtonCenterX = mWidth - mOffset;
+            mButtonCenterY = mWidth / 2;
+        }
         setMeasuredDimension(widthSize, heightSize);
     }
 
@@ -162,17 +169,6 @@ public class ControlPanelView extends FrameLayout {
         }
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        //将圆形平移到中间
-        if (isLeft) {
-            canvas.translate(mOffset, mWidth / 2);
-        } else {
-            canvas.translate(mWidth - mOffset, mWidth / 2);
-        }
-    }
-
     /**
      * 依圆心坐标，半径，扇形角度，计算出扇形终射线与圆弧交叉点的xy坐标
      *
@@ -183,9 +179,9 @@ public class ControlPanelView extends FrameLayout {
         //Math类的三角函数是弧度制，所以要将角度转换为弧度才能进行计算
         double arcAngle = Math.toRadians(angle);
         //求子控件的X坐标，邻边 / 斜边，斜边的值刚好就是半径，cos值乘以斜边，就能求出邻边，而这个邻边的长度，就是点的x坐标
-        point[0] = (float) (Math.cos(arcAngle) * panelRadius);
+        point[0] = (float) (mButtonCenterX + Math.cos(arcAngle) * panelRadius);
         //求子控件的Y坐标，对边 / 斜边，斜边的值刚好就是半径，sin值乘以斜边，就能求出对边，而这个对边的长度，就是点的y坐标
-        point[1] = (float) ((getWidth() / 2) + Math.sin(arcAngle) * panelRadius);
+        point[1] = (float) (mButtonCenterY + (getWidth() / 2) + Math.sin(arcAngle) * panelRadius);
         return point;
     }
 
@@ -194,14 +190,8 @@ public class ControlPanelView extends FrameLayout {
      */
     public void toggleControlPanel() {
         if (isOpen) {
-            if (mOffAnimator != null && mOffAnimator.isRunning()) {
-                return;
-            }
             off();
         } else {
-            if (mOpenAnimator != null && mOpenAnimator.isRunning()) {
-                return;
-            }
             open();
         }
         isOpen = !isOpen;
@@ -209,6 +199,16 @@ public class ControlPanelView extends FrameLayout {
 
     public boolean isOpen() {
         return isOpen;
+    }
+
+    public boolean isAnimationRuning() {
+        if (mOpenAnimator != null && mOpenAnimator.isRunning()) {
+            return true;
+        }
+        if (mOffAnimator != null && mOffAnimator.isRunning()) {
+            return true;
+        }
+        return false;
     }
 
     /**

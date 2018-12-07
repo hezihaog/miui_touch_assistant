@@ -23,14 +23,11 @@ import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
 import com.zh.touchassistant.floating.action.IFloatWindowAction;
 import com.zh.touchassistant.model.FloatWindowActionModel;
 import com.zh.touchassistant.setting.FloatWindowSetting;
-import com.zh.touchassistant.util.RxPreventJitter;
 import com.zh.touchassistant.widget.ControlPanelView;
 import com.zh.touchassistant.widget.ForegroundImageView;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import io.reactivex.functions.Consumer;
 
 /**
  * <b>Package:</b> com.zh.touchassistant <br>
@@ -107,6 +104,7 @@ public class CoreService extends Service {
                     floatControlPanelView.toggleControlPanel();
                 }
             });
+            actionView.setVisibility(View.GONE);
             floatControlPanelView.addView(actionView, params);
         }
         //面板区域
@@ -136,8 +134,9 @@ public class CoreService extends Service {
                                     public void onPositionUpdate(IFloatWindowAgent agent, int x, int y) {
                                         super.onPositionUpdate(agent, x, y);
                                         ControlPanelView panelView = getPanelView();
-                                        IFloatWindowAgent floatWindowAgent = mFloatWindowController
-                                                .getFloatWindowAgent(TAG_PANEL);
+                                        if (panelView.isAnimationRuning()) {
+                                            return;
+                                        }
                                         //如果正在打开，先关闭
                                         boolean isOpen = panelView.isOpen();
                                         if (isOpen) {
@@ -153,6 +152,8 @@ public class CoreService extends Service {
                                             panelView.setOrientation(false);
                                         }
                                         //跟随
+                                        IFloatWindowAgent floatWindowAgent = mFloatWindowController
+                                                .getFloatWindowAgent(TAG_PANEL);
                                         int[] result = panelView.fixFollowPosition(x, y);
                                         floatWindowAgent.updateX(result[0]);
                                         floatWindowAgent.updateY(result[1]);
@@ -166,20 +167,21 @@ public class CoreService extends Service {
                                                 "允许权限才能使用悬浮球喔", Toast.LENGTH_SHORT).show();
                                     }
                                 })));
-        RxPreventJitter
-                .preventJitter(floatButton)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        boolean isOpen = floatControlPanelView.isOpen();
-                        if (isOpen) {
-                            floatButton.setSelected(false);
-                        } else {
-                            floatButton.setSelected(true);
-                        }
-                        floatControlPanelView.toggleControlPanel();
-                    }
-                });
+        floatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (floatControlPanelView.isAnimationRuning()) {
+                    return;
+                }
+                boolean isOpen = floatControlPanelView.isOpen();
+                if (isOpen) {
+                    floatButton.setSelected(false);
+                } else {
+                    floatButton.setSelected(true);
+                }
+                floatControlPanelView.toggleControlPanel();
+            }
+        });
         floatControlPanelView.setOnTogglePanelListener(new ControlPanelView.OnTogglePanelListener() {
             @Override
             public void onToggleChange(boolean isOpen) {
