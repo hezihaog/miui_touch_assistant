@@ -57,6 +57,8 @@ public interface IFloatWindowAgent {
      */
     void updateY(int newY);
 
+    void updateXY(int newX, int newY);
+
     /**
      * 获取悬浮窗View
      */

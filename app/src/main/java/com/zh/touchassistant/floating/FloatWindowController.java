@@ -115,6 +115,15 @@ public class FloatWindowController {
     }
 
     /**
+     * 更新悬浮窗的X，Y坐标
+     */
+    public void updateXY(String tag, int newX, int newY) {
+        IFloatWindowAgent agent = mWindowAgents.get(tag);
+        assertNotNull(agent);
+        agent.updateXY(newX, newY);
+    }
+
+    /**
      * 获取悬浮窗View
      */
     public View getView(String tag) {

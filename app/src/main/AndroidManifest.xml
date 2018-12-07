@@ -58,6 +58,7 @@
         <!-- 截屏 -->
         <activity
             android:name=".screenshot.ScreenshotActivity"
+            android:launchMode="singleInstance"
             android:theme="@style/TranslucentTheme" />
 
         <receiver android:name=".receiver.BootReceiver">

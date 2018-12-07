@@ -13,6 +13,7 @@ import com.zh.touchassistant.floating.FloatWindowController;
 import com.zh.touchassistant.service.CoreService;
 import com.zh.touchassistant.setting.FloatWindowSetting;
 import com.zh.touchassistant.util.AccessibilityHelper;
+import com.zh.touchassistant.util.PropertyHelper;
 
 /**
  * <b>Package:</b> com.zh.touchassistant <br>
@@ -27,6 +28,7 @@ public class AssistantApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        PropertyHelper.init(this);
         FloatWindowSetting
                 .getInstance()
                 .initDefaultFloatWindowAction();

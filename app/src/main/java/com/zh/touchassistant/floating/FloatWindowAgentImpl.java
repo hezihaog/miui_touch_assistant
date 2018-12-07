@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.yhao.floatwindow.FloatWindow;
+import com.yhao.floatwindow.IFloatWindow;
 import com.yhao.floatwindow.MoveType;
 import com.yhao.floatwindow.PermissionListener;
 import com.yhao.floatwindow.ViewStateListener;
@@ -153,6 +154,15 @@ public class FloatWindowAgentImpl implements IFloatWindowAgent {
     public void updateY(int newY) {
         FloatWindow
                 .get(mTag)
+                .updateY(newY);
+    }
+
+    @Override
+    public void updateXY(int newX, int newY) {
+        IFloatWindow floatWindow = FloatWindow
+                .get(mTag);
+        floatWindow.updateX(newX);
+        floatWindow
                 .updateY(newY);
     }
 

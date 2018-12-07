@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.zh.touchassistant.AssistantApp;
+import com.zh.touchassistant.Const;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.floating.FloatMoveEnum;
 import com.zh.touchassistant.floating.FloatWindowController;
@@ -20,6 +21,7 @@ import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
 import com.zh.touchassistant.floating.action.IFloatWindowAction;
 import com.zh.touchassistant.model.FloatWindowActionModel;
 import com.zh.touchassistant.setting.FloatWindowSetting;
+import com.zh.touchassistant.util.PropertyHelper;
 import com.zh.touchassistant.util.ScreenUtil;
 import com.zh.touchassistant.widget.ControlPanelView;
 import com.zh.touchassistant.widget.ForegroundImageView;
@@ -140,6 +142,17 @@ public class CoreService extends AccessibilityService {
                                     }
 
                                     @Override
+                                    public void onShow(IFloatWindowAgent agent) {
+                                        super.onShow(agent);
+                                        mFloatWindowController.updateXY(TAG_BUTTON,
+                                                PropertyHelper.getProperty(Const.Config.KEY_FLOAT_BUTTON_X, 0),
+                                                PropertyHelper.getProperty(Const.Config.KEY_FLOAT_BUTTON_Y, 0));
+                                        mFloatWindowController.updateXY(TAG_PANEL,
+                                                PropertyHelper.getProperty(Const.Config.KEY_FLOAT_PANEL_X, 0),
+                                                PropertyHelper.getProperty(Const.Config.KEY_FLOAT_PANEL_Y, 0));
+                                    }
+
+                                    @Override
                                     public void onPositionUpdate(IFloatWindowAgent agent, int x, int y) {
                                         super.onPositionUpdate(agent, x, y);
                                         ControlPanelView panelView = getPanelView();
@@ -166,6 +179,11 @@ public class CoreService extends AccessibilityService {
                                         int[] result = panelView.fixFollowPosition(x, y);
                                         floatWindowAgent.updateX(result[0]);
                                         floatWindowAgent.updateY(result[1]);
+                                        //记录位置
+                                        PropertyHelper.setProperty(Const.Config.KEY_FLOAT_BUTTON_X, x);
+                                        PropertyHelper.setProperty(Const.Config.KEY_FLOAT_BUTTON_Y, y);
+                                        PropertyHelper.setProperty(Const.Config.KEY_FLOAT_PANEL_X, result[0]);
+                                        PropertyHelper.setProperty(Const.Config.KEY_FLOAT_PANEL_Y, result[1]);
                                     }
                                 })
                                 .setFloatWindowPermissionCallback(new SimpleFloatWindowPermissionCallback() {
