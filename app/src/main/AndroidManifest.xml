@@ -89,17 +89,5 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
-
-        <!--保活-->
-        <receiver android:name="com.fanjun.keeplive.receiver.NotificationClickReceiver" />
-        <activity android:name="com.fanjun.keeplive.activity.OnePixelActivity" />
-
-        <service android:name="com.fanjun.keeplive.service.LocalService" />
-        <service
-            android:name="com.fanjun.keeplive.service.JobHandlerService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
-            android:name="com.fanjun.keeplive.service.RemoteService"
-            android:process=":remote" />
     </application>
 </manifest>
