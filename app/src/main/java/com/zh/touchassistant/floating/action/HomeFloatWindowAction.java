@@ -15,4 +15,9 @@ public class HomeFloatWindowAction extends AbsFloatWindowAction {
             getAccessibilityHelper().doGoHome();
         }
     }
+
+    @Override
+    public int getActionId() {
+        return 4;
+    }
 }

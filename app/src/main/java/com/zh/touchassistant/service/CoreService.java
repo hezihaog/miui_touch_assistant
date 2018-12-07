@@ -98,7 +98,7 @@ public class CoreService extends AccessibilityService {
         final ControlPanelView floatControlPanelView = panelLayout.findViewById(R.id.control_panel_view);
         final ForegroundImageView floatButton = buttonView.findViewById(R.id.float_btn);
         //读取配置的Action数据
-        HashMap<FloatWindowActionModel, IFloatWindowAction> actions = FloatWindowSetting.getInstance().getFloatWindowActions();
+        HashMap<FloatWindowActionModel, IFloatWindowAction> actions = FloatWindowSetting.getInstance().getCurrentActions();
         for (final Map.Entry<FloatWindowActionModel, IFloatWindowAction> entry : actions.entrySet()) {
             ForegroundImageView actionView = new ForegroundImageView(getApplicationContext());
             int iconSize = getApplication().getResources().getDimensionPixelSize(R.dimen.float_icon_size);
@@ -156,7 +156,7 @@ public class CoreService extends AccessibilityService {
                                     public void onPositionUpdate(IFloatWindowAgent agent, int x, int y) {
                                         super.onPositionUpdate(agent, x, y);
                                         ControlPanelView panelView = getPanelView();
-                                        if (panelView.isAnimationRuning()) {
+                                        if (panelView.isAnimationRunning()) {
                                             return;
                                         }
                                         //如果正在打开，先关闭
@@ -197,7 +197,7 @@ public class CoreService extends AccessibilityService {
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (floatControlPanelView.isAnimationRuning()) {
+                if (floatControlPanelView.isAnimationRunning()) {
                     return;
                 }
                 boolean isOpen = floatControlPanelView.isOpen();

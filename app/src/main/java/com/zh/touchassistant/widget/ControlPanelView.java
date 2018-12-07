@@ -201,7 +201,7 @@ public class ControlPanelView extends FrameLayout {
         return isOpen;
     }
 
-    public boolean isAnimationRuning() {
+    public boolean isAnimationRunning() {
         if (mOpenAnimator != null && mOpenAnimator.isRunning()) {
             return true;
         }
@@ -295,7 +295,10 @@ public class ControlPanelView extends FrameLayout {
         }
         this.isLeft = isLeft;
         setStartAngle();
-        reverseChildView();
+        //右边屏幕展示时，元素是从顺时针的，将元素反转
+        if (!this.isLeft) {
+            reverseChildView();
+        }
     }
 
     private void reverseChildView() {

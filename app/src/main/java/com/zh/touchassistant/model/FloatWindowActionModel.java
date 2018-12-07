@@ -12,21 +12,39 @@ import java.util.Objects;
 public class FloatWindowActionModel {
     private String actionName;
     private int actionIcon;
+    private int actionId;
 
     public FloatWindowActionModel() {
     }
 
-    public FloatWindowActionModel(String actionName, int actionIcon) {
+    public FloatWindowActionModel(String actionName, int actionIcon, int actionId) {
         this.actionName = actionName;
         this.actionIcon = actionIcon;
+        this.actionId = actionId;
     }
 
     public String getActionName() {
         return actionName;
     }
 
+    public void setActionName(String actionName) {
+        this.actionName = actionName;
+    }
+
     public int getActionIcon() {
         return actionIcon;
+    }
+
+    public void setActionIcon(int actionIcon) {
+        this.actionIcon = actionIcon;
+    }
+
+    public int getActionId() {
+        return actionId;
+    }
+
+    public void setActionId(int actionId) {
+        this.actionId = actionId;
     }
 
     @Override
@@ -37,14 +55,16 @@ public class FloatWindowActionModel {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        FloatWindowActionModel that = (FloatWindowActionModel) o;
-        return actionIcon == that.actionIcon &&
-                Objects.equals(actionName, that.actionName);
+        FloatWindowActionModel model = (FloatWindowActionModel) o;
+        return actionIcon == model.actionIcon &&
+                actionId == model.actionId &&
+                Objects.equals(actionName, model.actionName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(actionName, actionIcon);
+
+        return Objects.hash(actionName, actionIcon, actionId);
     }
 
     @Override
@@ -52,6 +72,7 @@ public class FloatWindowActionModel {
         return "FloatWindowActionModel{" +
                 "actionName='" + actionName + '\'' +
                 ", actionIcon=" + actionIcon +
+                ", actionId=" + actionId +
                 '}';
     }
 }

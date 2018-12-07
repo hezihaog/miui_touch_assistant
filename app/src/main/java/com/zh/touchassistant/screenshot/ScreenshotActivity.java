@@ -1,5 +1,6 @@
 package com.zh.touchassistant.screenshot;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -45,6 +46,10 @@ public class ScreenshotActivity extends FragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_CANCELED) {
+            finish();
+            return;
+        }
         if (mCaptureAgent != null) {
             mCaptureAgent.onActivityResult(requestCode, resultCode, data);
         }

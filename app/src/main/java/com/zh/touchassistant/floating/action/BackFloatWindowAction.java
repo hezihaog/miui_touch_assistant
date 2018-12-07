@@ -15,4 +15,9 @@ public class BackFloatWindowAction extends AbsFloatWindowAction {
             getAccessibilityHelper().doBack();
         }
     }
+
+    @Override
+    public int getActionId() {
+        return 0;
+    }
 }

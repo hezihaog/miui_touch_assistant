@@ -27,4 +27,9 @@ public class LockFloatWindowAction extends AbsFloatWindowAction{
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
+
+    @Override
+    public int getActionId() {
+        return 2;
+    }
 }

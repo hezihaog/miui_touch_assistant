@@ -22,4 +22,9 @@ public class ScreenshotFloatWindowAction extends AbsFloatWindowAction{
             application.startActivity(intent);
         }
     }
+
+    @Override
+    public int getActionId() {
+        return 1;
+    }
 }

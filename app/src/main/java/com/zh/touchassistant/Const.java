@@ -9,9 +9,16 @@ package com.zh.touchassistant;
  */
 public class Const {
     public static final class Config {
+        /**
+         * 悬浮窗坐标
+         */
         public static final String KEY_FLOAT_BUTTON_X = "float_button_x";
         public static final String KEY_FLOAT_BUTTON_Y = "float_button_y";
         public static final String KEY_FLOAT_PANEL_X = "float_panel_x";
         public static final String KEY_FLOAT_PANEL_Y = "float_panel_y";
+        /**
+         * 自定义菜单
+         */
+        public static final String KEY_CUSTOM_MENU_DATA = "custom_menu_data";
     }
 }

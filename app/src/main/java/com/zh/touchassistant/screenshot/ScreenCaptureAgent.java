@@ -76,7 +76,7 @@ public class ScreenCaptureAgent {
     }
 
     public void onActivityResult(int requestCode, final int resultCode, final Intent data) {
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_SCREEN_CAPTURE && data != null) {
+        if (requestCode == REQUEST_CODE_SCREEN_CAPTURE && resultCode == Activity.RESULT_OK && data != null) {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {

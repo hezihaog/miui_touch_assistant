@@ -12,4 +12,9 @@ public interface IFloatWindowAction {
      * 对应操作
      */
     void onAction();
+
+    /**
+     * Action的Id
+     */
+    int getActionId();
 }

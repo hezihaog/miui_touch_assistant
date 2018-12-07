@@ -6,8 +6,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
-import com.zh.touchassistant.ContextProvider;
-
 /**
  * <b>Package:</b> com.zh.lock <br>
  * <b>FileName:</b> LockAgent <br>
@@ -46,18 +44,10 @@ public class LockAgent {
     }
 
     public boolean checkPermission() {
-        Context context = ContextProvider.get().getContext();
-        mPolicyManager = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
-        mComponentName = new ComponentName(context, OneScreenLockAdminReceiver.class);
-        boolean isActive = mPolicyManager.isAdminActive(mComponentName);
-        //没有授权
-        if (!isActive) {
-            activeManage();
-            return false;
-        } else {
-            //授权了
-            return true;
-        }
+        Activity activity = getActivity();
+        mPolicyManager = (DevicePolicyManager) activity.getSystemService(Context.DEVICE_POLICY_SERVICE);
+        mComponentName = new ComponentName(activity, OneScreenLockAdminReceiver.class);
+        return mPolicyManager.isAdminActive(mComponentName);
     }
 
     /**

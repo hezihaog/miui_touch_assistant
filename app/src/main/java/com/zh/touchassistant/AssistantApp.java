@@ -31,7 +31,7 @@ public class AssistantApp extends Application {
         PropertyHelper.init(this);
         FloatWindowSetting
                 .getInstance()
-                .initDefaultFloatWindowAction();
+                .initFloatWindowActions();
         //保活
         //定义前台服务的默认样式。即标题、描述和图标
         ForegroundNotification foregroundNotification =
