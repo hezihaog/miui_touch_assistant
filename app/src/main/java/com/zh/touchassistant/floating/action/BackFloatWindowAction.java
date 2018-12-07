@@ -7,10 +7,12 @@ package com.zh.touchassistant.floating.action;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class BackFloatWindowAction implements IFloatWindowAction {
+public class BackFloatWindowAction extends AbsFloatWindowAction {
 
     @Override
     public void onAction() {
-
+        if (checkAccessibilityIsOpen()) {
+            getAccessibilityHelper().doBack();
+        }
     }
 }

@@ -34,4 +34,8 @@
     <string name="pref_category_system">系统设置</string>
     <string name="restore_default">恢复到默认设置</string>
     <string name="restore_intro">将悬浮助手的功能恢复到默认设置，包括菜单功能、按钮顺序等。此项操作不会删除您手机的数据。</string>
+
+    <string name="accessibility_desc">开启悬浮球辅助功能</string>
+    <string name="tip">为保证悬浮球正常使用，请将其加入系统清理白名单</string>
+    <string name="request_lock_permission_fail">允许锁屏权限，才能锁屏哦</string>
 </resources>

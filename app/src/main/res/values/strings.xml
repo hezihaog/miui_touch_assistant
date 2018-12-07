@@ -39,4 +39,8 @@
     <string name="vector_large_crossA">M160,160 L240,240</string>
     <string name="vector_large_crossB">M240,160 L160,240</string>
     <string name="wechat_package">com.tencent.mm</string>
+
+    <string name="accessibility_desc">Turn on the auxiliary function of suspension ball</string>
+    <string name="tip">In order to ensure the normal use of the suspension ball, Please add it to the system to clean up the white list.</string>
+    <string name="request_lock_permission_fail">Allow the lock screen permission to lock the screen</string>
 </resources>

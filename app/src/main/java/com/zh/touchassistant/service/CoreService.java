@@ -1,18 +1,15 @@
 package com.zh.touchassistant.service;
 
-import android.app.Service;
-import android.content.Context;
+import android.accessibilityservice.AccessibilityService;
 import android.content.Intent;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.zh.touchassistant.AssistantApp;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.floating.FloatMoveEnum;
 import com.zh.touchassistant.floating.FloatWindowController;
@@ -23,6 +20,7 @@ import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
 import com.zh.touchassistant.floating.action.IFloatWindowAction;
 import com.zh.touchassistant.model.FloatWindowActionModel;
 import com.zh.touchassistant.setting.FloatWindowSetting;
+import com.zh.touchassistant.util.ScreenUtil;
 import com.zh.touchassistant.widget.ControlPanelView;
 import com.zh.touchassistant.widget.ForegroundImageView;
 
@@ -36,7 +34,7 @@ import java.util.Map;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class CoreService extends Service {
+public class CoreService extends AccessibilityService {
     private static final String TAG_BUTTON = "button_tag";
     private static final String TAG_PANEL = "panel_tag";
 
@@ -48,10 +46,12 @@ public class CoreService extends Service {
         public static final String ACTION_HIDE_FLOATING_WINDOW = "com.zh.touchassistant.HIDE_FLOATING_WINDOW";
     }
 
-    @Nullable
     @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    public void onAccessibilityEvent(AccessibilityEvent event) {
+    }
+
+    @Override
+    public void onInterrupt() {
     }
 
     private LayoutInflater getLayoutInflater() {
@@ -65,6 +65,7 @@ public class CoreService extends Service {
     public void onCreate() {
         super.onCreate();
         mFloatWindowController = FloatWindowController.getInstance();
+        ((AssistantApp) getApplication()).setAccessibility(this);
     }
 
     @Override
@@ -78,6 +79,14 @@ public class CoreService extends Service {
             hideFloatWindow();
         }
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        FloatWindowController
+                .getInstance()
+                .destroyAll();
     }
 
     private void showFloatWindow() {
@@ -100,8 +109,8 @@ public class CoreService extends Service {
             actionView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    entry.getValue().onAction();
                     floatControlPanelView.toggleControlPanel();
+                    entry.getValue().onAction();
                 }
             });
             actionView.setVisibility(View.GONE);
@@ -143,7 +152,7 @@ public class CoreService extends Service {
                                             panelView.toggleControlPanel();
                                         }
                                         //判断在屏幕左边还是右边，切换位置
-                                        int halfScreenWidth = getScreenWidth(getApplicationContext()) / 2;
+                                        int halfScreenWidth = ScreenUtil.getScreenWidth(getApplicationContext()) / 2;
                                         if (x < halfScreenWidth) {
                                             //左边
                                             panelView.setOrientation(true);
@@ -211,18 +220,6 @@ public class CoreService extends Service {
                 }
             }
         });
-//        new Handler(getMainLooper())
-//                .post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        //一开始先隐藏
-//                        IFloatWindowAgent agent = mFloatWindowController
-//                                .getFloatWindowAgent(TAG_PANEL);
-//                        if (agent.isShowing()) {
-//                            agent.hide();
-//                        }
-//                    }
-//                });
     }
 
     private void hideFloatWindow() {
@@ -231,12 +228,5 @@ public class CoreService extends Service {
                 .hide();
         mFloatWindowController.getFloatWindowAgent(TAG_PANEL)
                 .hide();
-    }
-
-    public static int getScreenWidth(Context context) {
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getMetrics(outMetrics);
-        return outMetrics.widthPixels;
     }
 }

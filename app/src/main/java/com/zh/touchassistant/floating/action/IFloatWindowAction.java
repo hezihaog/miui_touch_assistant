@@ -8,5 +8,8 @@ package com.zh.touchassistant.floating.action;
  * <b>Description:</b>  <br>
  */
 public interface IFloatWindowAction {
+    /**
+     * 对应操作
+     */
     void onAction();
 }

@@ -1,5 +1,11 @@
 package com.zh.touchassistant.floating.action;
 
+import android.content.Context;
+import android.content.Intent;
+
+import com.zh.touchassistant.ContextProvider;
+import com.zh.touchassistant.lock.OneScreenLockActivity;
+
 /**
  * <b>Package:</b> com.zh.touchassistant.floating.action <br>
  * <b>FileName:</b> LockFloatWindowAction <br>
@@ -7,10 +13,18 @@ package com.zh.touchassistant.floating.action;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class LockFloatWindowAction implements IFloatWindowAction{
+public class LockFloatWindowAction extends AbsFloatWindowAction{
 
     @Override
     public void onAction() {
-
+        Context context = ContextProvider
+                .get()
+                .getContext();
+        if (context == null) {
+            return;
+        }
+        Intent intent = new Intent(context, OneScreenLockActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }

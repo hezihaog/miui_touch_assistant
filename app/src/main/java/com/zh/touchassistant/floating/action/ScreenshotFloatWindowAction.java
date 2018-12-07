@@ -1,5 +1,10 @@
 package com.zh.touchassistant.floating.action;
 
+import android.content.Intent;
+
+import com.zh.touchassistant.AssistantApp;
+import com.zh.touchassistant.screenshot.ScreenshotActivity;
+
 /**
  * <b>Package:</b> com.zh.touchassistant.floating.action <br>
  * <b>FileName:</b> ScreenshotFloatWindowAction <br>
@@ -7,9 +12,14 @@ package com.zh.touchassistant.floating.action;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class ScreenshotFloatWindowAction implements IFloatWindowAction{
+public class ScreenshotFloatWindowAction extends AbsFloatWindowAction{
     @Override
     public void onAction() {
-
+        AssistantApp application = getApplication();
+        if (application != null) {
+            Intent intent = new Intent(application, ScreenshotActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            application.startActivity(intent);
+        }
     }
 }

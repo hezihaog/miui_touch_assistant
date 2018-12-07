@@ -1,5 +1,6 @@
 package com.zh.touchassistant;
 
+import android.accessibilityservice.AccessibilityService;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import com.fanjun.keeplive.config.KeepLiveService;
 import com.zh.touchassistant.floating.FloatWindowController;
 import com.zh.touchassistant.service.CoreService;
 import com.zh.touchassistant.setting.FloatWindowSetting;
+import com.zh.touchassistant.util.AccessibilityHelper;
 
 /**
  * <b>Package:</b> com.zh.touchassistant <br>
@@ -20,6 +22,8 @@ import com.zh.touchassistant.setting.FloatWindowSetting;
  * <b>Description:</b>  <br>
  */
 public class AssistantApp extends Application {
+    private AccessibilityHelper mAccessibilityHelper;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -67,5 +71,13 @@ public class AssistantApp extends Application {
                     }
                 }
         );
+    }
+
+    public void setAccessibility(AccessibilityService service) {
+        this.mAccessibilityHelper = new AccessibilityHelper(service);
+    }
+
+    public AccessibilityHelper getAccessibilityHelper() {
+        return mAccessibilityHelper;
     }
 }

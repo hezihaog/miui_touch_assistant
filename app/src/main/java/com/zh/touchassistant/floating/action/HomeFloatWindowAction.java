@@ -1,9 +1,5 @@
 package com.zh.touchassistant.floating.action;
 
-import android.widget.Toast;
-
-import com.zh.touchassistant.ContextProvider;
-
 /**
  * <b>Package:</b> com.zh.touchassistant.floating.action <br>
  * <b>FileName:</b> HomeFloatWindowAction <br>
@@ -11,10 +7,12 @@ import com.zh.touchassistant.ContextProvider;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class HomeFloatWindowAction implements IFloatWindowAction {
+public class HomeFloatWindowAction extends AbsFloatWindowAction {
 
     @Override
     public void onAction() {
-        Toast.makeText(ContextProvider.get().getContext(), "Home", Toast.LENGTH_SHORT).show();
+        if (checkAccessibilityIsOpen()) {
+            getAccessibilityHelper().doGoHome();
+        }
     }
 }

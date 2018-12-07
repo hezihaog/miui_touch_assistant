@@ -15,6 +15,9 @@
     <uses-permission android:name="android.permission.READ_SYNC_STATS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- 保活 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
@@ -32,7 +35,7 @@
         <provider
             android:name="com.zh.touchassistant.ApplicationContextProvider"
             android:authorities="${applicationId}.contextprovider"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity
             android:name=".MainActivity"
@@ -47,17 +50,49 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- 透明的一键锁屏 -->
+        <activity
+            android:name=".lock.OneScreenLockActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/TranslucentTheme" />
+        <!-- 截屏 -->
+        <activity
+            android:name=".screenshot.ScreenshotActivity"
+            android:theme="@style/TranslucentTheme" />
 
         <receiver android:name=".receiver.BootReceiver">
             <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <service android:name=".service.CoreService" />
+        <!-- 辅助服务 -->
+        <service
+            android:name=".service.CoreService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service" />
+        </service>
+        <!-- 一键锁屏，设备管理 -->
+        <receiver
+            android:name=".lock.OneScreenLockAdminReceiver"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/one_screen_lock" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
 
         <!--保活-->
         <receiver android:name="com.fanjun.keeplive.receiver.NotificationClickReceiver" />
         <activity android:name="com.fanjun.keeplive.activity.OnePixelActivity" />
+
         <service android:name="com.fanjun.keeplive.service.LocalService" />
         <service
             android:name="com.fanjun.keeplive.service.JobHandlerService"
