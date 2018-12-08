@@ -79,7 +79,8 @@ public class CoreService extends AccessibilityService {
             mFloatPanelVC.setOnStatusChangeListener(new FloatPanelViewController.OnStatusChangeListener() {
                 @Override
                 public void onStatusChange(boolean isOpen) {
-                    mFloatButtonVC.toggle();
+                    //点击子按钮，不需要让悬浮按钮再通知回调，不然又回调回来
+                    mFloatButtonVC.toggle(false);
                 }
             });
             isFirst = false;

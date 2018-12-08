@@ -45,7 +45,7 @@ public class FloatWindowSettingFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //开关悬浮球
-        SwitchCompat enableSwitch = view.findViewById(R.id.enable_switch);
+        final SwitchCompat enableSwitch = view.findViewById(R.id.enable_switch);
         //自定义菜单
         TextView customMenuTv = view.findViewById(R.id.custom_menu_tv);
         //指定页面隐藏悬浮球
@@ -58,6 +58,7 @@ public class FloatWindowSettingFragment extends Fragment {
             public void run() {
                 boolean isEnable = Property.getDefault().getProperty(Const.Config.KEY_ENABLE, false);
                 setEnableFloatWindow(isEnable);
+                enableSwitch.setChecked(isEnable);
             }
         });
         //设置监听

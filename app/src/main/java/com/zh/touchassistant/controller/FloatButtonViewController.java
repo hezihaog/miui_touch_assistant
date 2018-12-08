@@ -50,7 +50,7 @@ public class FloatButtonViewController extends BaseViewController {
         mFloatButtonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggle();
+                toggle(true);
             }
         });
     }
@@ -79,7 +79,7 @@ public class FloatButtonViewController extends BaseViewController {
                                         Property.getDefault().setProperty(Const.Config.KEY_FLOAT_BUTTON_Y, y);
                                         //如果正在打开，则关闭
                                         if (isOpen()) {
-                                            toggle();
+                                            toggle(true);
                                         }
                                         //让面板跟随按钮
                                         if (mButtonPositionUpdateListener != null) {
@@ -110,11 +110,11 @@ public class FloatButtonViewController extends BaseViewController {
         return mFloatButtonView;
     }
 
-    public void toggle() {
+    public void toggle(boolean needCallListener) {
         if (mCurrentStatus == STATUS_OPEN) {
-            off();
+            off(needCallListener);
         } else {
-            open();
+            open(needCallListener);
         }
     }
 
@@ -134,13 +134,15 @@ public class FloatButtonViewController extends BaseViewController {
                 .hide();
     }
 
-    private void open() {
+    private void open(boolean needCallListener) {
         if (this.mCurrentStatus != STATUS_OPEN) {
-            if (mStatusChangeListener != null) {
-                //不能改变则打断
-                boolean isCanChange = mStatusChangeListener.onPrepareStatusChange(STATUS_OPEN);
-                if (!isCanChange) {
-                    return;
+            if (needCallListener) {
+                if (mStatusChangeListener != null) {
+                    //不能改变则打断
+                    boolean isCanChange = mStatusChangeListener.onPrepareStatusChange(STATUS_OPEN);
+                    if (!isCanChange) {
+                        return;
+                    }
                 }
             }
             mFloatButtonView.setSelected(true);
@@ -151,13 +153,15 @@ public class FloatButtonViewController extends BaseViewController {
                     .scaleY(0.8f)
                     .alpha(1.0f)
                     .start();
-            if (mStatusChangeListener != null) {
-                mStatusChangeListener.onStatusChange(this.mCurrentStatus);
+            if (needCallListener) {
+                if (mStatusChangeListener != null) {
+                    mStatusChangeListener.onStatusChange(this.mCurrentStatus);
+                }
             }
         }
     }
 
-    private void off() {
+    private void off(boolean needCallListener) {
         if (this.mCurrentStatus != STATUS_OFF) {
             mFloatButtonView.setSelected(false);
             this.mCurrentStatus = STATUS_OFF;
@@ -167,8 +171,10 @@ public class FloatButtonViewController extends BaseViewController {
                     .scaleY(1f)
                     .alpha(0.2f)
                     .start();
-            if (mStatusChangeListener != null) {
-                mStatusChangeListener.onStatusChange(this.mCurrentStatus);
+            if (needCallListener) {
+                if (mStatusChangeListener != null) {
+                    mStatusChangeListener.onStatusChange(this.mCurrentStatus);
+                }
             }
         }
     }
