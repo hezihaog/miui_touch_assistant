@@ -225,7 +225,13 @@ public class ControlPanelView extends FrameLayout {
         mOpenAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                mPanelRadius = (int) valueAnimator.getAnimatedValue();
+                int cValue = (int) valueAnimator.getAnimatedValue();
+                float alpha = cValue * 1f / mRadius;
+                int childCount = getChildCount();
+                for (int i = 0; i < childCount; i++) {
+                    getChildAt(i).setAlpha(alpha);
+                }
+                mPanelRadius = cValue;
                 invalidate();
                 requestLayout();
             }
@@ -267,7 +273,14 @@ public class ControlPanelView extends FrameLayout {
         mOffAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                mPanelRadius = (int) valueAnimator.getAnimatedValue();
+                int cValue = (int) valueAnimator.getAnimatedValue();
+                //线性比值，交叉相乘，1/200 = x / 1
+                float alpha = cValue * 1f / mRadius;
+                int childCount = getChildCount();
+                for (int i = 0; i < childCount; i++) {
+                    getChildAt(i).setAlpha(alpha);
+                }
+                mPanelRadius = cValue;
                 invalidate();
                 requestLayout();
             }
@@ -318,7 +331,7 @@ public class ControlPanelView extends FrameLayout {
     /**
      * 修正跟随位置
      */
-    public int[] fixFollowPosition(int x, int y) {
+    public int[] followButtonPosition(int x, int y) {
         int[] result = new int[2];
         if (isLeft) {
             result[0] = x;

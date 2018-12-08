@@ -3,9 +3,11 @@
     <CheckBoxPreference
         android:key="enabled"
         android:title="@string/enable_touch_assistant" />
+
     <PreferenceCategory
         android:key="category_setting"
         android:title="@string/category_setting">
+
         <Preference
             android:key="function_settings"
             android:title="@string/customize_entries" />
@@ -14,6 +16,7 @@
             android:summary="@string/hide_touch_assistant_intro"
             android:title="@string/hide_touch_assistant" />
     </PreferenceCategory>
+
     <PreferenceCategory
         android:key="category_others"
         android:title="@string/category_others">

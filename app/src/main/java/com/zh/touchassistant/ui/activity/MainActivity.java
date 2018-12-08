@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.zh.touchassistant.R;
-import com.zh.touchassistant.ui.fragment.CustomMenuFragment;
+import com.zh.touchassistant.ui.fragment.FloatWindowSettingFragment;
 
 import java.util.List;
 
@@ -31,10 +31,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (getSupportFragmentManager().findFragmentByTag(CustomMenuFragment.class.getName()) == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.main_container, CustomMenuFragment.newInstance())
-                    .commit();
+        if (getSupportFragmentManager().findFragmentByTag(FloatWindowSettingFragment.class.getName()) == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.main_container, new FloatWindowSettingFragment(), FloatWindowSettingFragment.class.getName())
+            .commit();
         }
         AndPermission
                 .with(this)
