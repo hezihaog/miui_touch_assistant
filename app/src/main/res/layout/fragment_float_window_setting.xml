@@ -5,7 +5,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <include layout="@layout/layout_tool_bar" />
@@ -29,9 +29,10 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <Space
+        <View
             android:layout_width="match_parent"
-            android:layout_height="5dp" />
+            android:layout_height="1dp"
+            android:background="@drawable/base_divider_line" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
-                android:text="@string/enable_touch_assistant"
+                android:text="@string/customize_entries"
                 android:textColor="#202020"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -81,9 +82,10 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-        <Space
+        <View
             android:layout_width="match_parent"
-            android:layout_height="5dp" />
+            android:layout_height="1dp"
+            android:background="@drawable/base_divider_line" />
 
         <LinearLayout
             android:layout_width="match_parent"
