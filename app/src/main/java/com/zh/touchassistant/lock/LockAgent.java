@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * <b>Package:</b> com.zh.lock <br>
+ * <b>Package:</b> com.zh.lockNow <br>
  * <b>FileName:</b> LockAgent <br>
  * <b>Create Date:</b> 2018/12/2  下午2:41 <br>
  * <b>Author:</b> zihe <br>
@@ -29,7 +29,7 @@ public class LockAgent {
         return this.mActivity;
     }
 
-    public void lock() {
+    public void lockNow() {
         boolean isActive = checkPermission();
         //没有授权
         if (!isActive) {

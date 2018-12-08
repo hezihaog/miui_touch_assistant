@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.zh.touchassistant.R;
 
 /**
- * <b>Package:</b> com.zh.touchassistant.lock <br>
+ * <b>Package:</b> com.zh.touchassistant.lockNow <br>
  * <b>FileName:</b> OneScreenLockActivity <br>
  * <b>Create Date:</b> 2018/12/7  下午12:09 <br>
  * <b>Author:</b> zihe <br>
@@ -45,7 +45,7 @@ public class OneScreenLockActivity extends Activity {
                 finish();
             }
         });
-        mAgent.lock();
+        mAgent.lockNow();
     }
 
     @Override
