@@ -14,35 +14,35 @@ public interface FloatWindowViewStateCallback {
      * @param x x坐标
      * @param y y坐标
      */
-    void onPositionUpdate(IFloatWindowAgent agent, int x, int y);
+    void onPositionUpdate(int x, int y);
 
     /**
      * 当显示时回调
      */
-    void onShow(IFloatWindowAgent agent);
+    void onShow();
 
     /**
      * 当隐藏时回调
      */
-    void onHide(IFloatWindowAgent agent);
+    void onHide();
 
     /**
-     * 当关闭时回调
+     * 当被移除时回调
      */
-    void onDismiss(IFloatWindowAgent agent);
+    void onRemove();
 
     /**
      * 当移动动画开始时回调
      */
-    void onMoveAnimStart(IFloatWindowAgent agent);
+    void onMoveAnimStart();
 
     /**
      * 当移动动画结束时回调
      */
-    void onMoveAnimEnd(IFloatWindowAgent agent);
+    void onMoveAnimEnd();
 
     /**
      * 当返回桌面时回调
      */
-    void onBackToDesktop(IFloatWindowAgent agent);
+    void onBackToDesktop();
 }

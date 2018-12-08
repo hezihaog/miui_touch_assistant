@@ -11,10 +11,10 @@ public interface FloatWindowPermissionCallback {
     /**
      * 权限允许时回调
      */
-    void onPermissionAllow(IFloatWindowAgent agent);
+    void onPermissionAllow();
 
     /**
      * 权限拒绝时回调
      */
-    void onPermissionReject(IFloatWindowAgent agent);
+    void onPermissionReject();
 }

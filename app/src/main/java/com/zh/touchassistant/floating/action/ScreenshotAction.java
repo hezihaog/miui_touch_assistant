@@ -12,7 +12,7 @@ import com.zh.touchassistant.screenshot.ScreenshotActivity;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class ScreenshotFloatWindowAction extends AbsFloatWindowAction{
+public class ScreenshotAction extends AbsFloatWindowAction{
     @Override
     public void onAction() {
         AssistantApp application = getApplication();

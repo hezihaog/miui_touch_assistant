@@ -13,7 +13,7 @@ import com.zh.touchassistant.lock.OneScreenLockActivity;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class LockFloatWindowAction extends AbsFloatWindowAction{
+public class LockAction extends AbsFloatWindowAction{
 
     @Override
     public void onAction() {

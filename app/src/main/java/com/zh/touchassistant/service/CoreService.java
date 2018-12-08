@@ -7,7 +7,7 @@ import android.view.accessibility.AccessibilityEvent;
 import com.zh.touchassistant.AssistantApp;
 import com.zh.touchassistant.controller.FloatButtonViewController;
 import com.zh.touchassistant.controller.FloatPanelViewController;
-import com.zh.touchassistant.floating.FloatWindowController;
+import com.zh.touchassistant.floating.FloatWindowManager;
 
 /**
  * <b>Package:</b> com.zh.touchassistant <br>
@@ -19,12 +19,11 @@ import com.zh.touchassistant.floating.FloatWindowController;
 public class CoreService extends AccessibilityService {
     private FloatButtonViewController mFloatButtonVC;
     private FloatPanelViewController mFloatPanelVC;
-    private boolean isOpen = false;
+    private boolean isFirst = true;
 
     public static class Action {
         public static final String ACTION_SHOW_FLOATING_WINDOW = "com.zh.touchassistant.SHOW_FLOATING_WINDOW";
         public static final String ACTION_HIDE_FLOATING_WINDOW = "com.zh.touchassistant.HIDE_FLOATING_WINDOW";
-        public static final String ACTION_TOGGLE_FLOATING_WINDOW = "com.zh.touchassistant.TOGGLE_FLOATING_WINDOW";
     }
 
     @Override
@@ -48,68 +47,54 @@ public class CoreService extends AccessibilityService {
         }
         if (Action.ACTION_SHOW_FLOATING_WINDOW.equals(intent.getAction())) {
             showFloatWindow();
-            isOpen = true;
         } else if (Action.ACTION_HIDE_FLOATING_WINDOW.equals(intent.getAction())) {
             hideFloatWindow();
-            isOpen = false;
-        } else if (Action.ACTION_TOGGLE_FLOATING_WINDOW.equals(intent.getAction())) {
-            if (isOpen) {
-                hideFloatWindow();
-            } else {
-                showFloatWindow();
-            }
-            isOpen = !isOpen;
         }
         return super.onStartCommand(intent, flags, startId);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        FloatWindowController
-                .getInstance()
-                .destroyAll();
-    }
-
     private void showFloatWindow() {
-        //填充和浮动面板浮动按钮
-        mFloatPanelVC = new FloatPanelViewController(this);
-        mFloatButtonVC = new FloatButtonViewController(this);
-        mFloatButtonVC.setOnFloatButtonPositionUpdateListener(new FloatButtonViewController.OnFloatButtonPositionUpdateListener() {
-            @Override
-            public void onFloatButtonPositionUpdate(int newX, int newY) {
-                mFloatPanelVC.followButtonPosition(newX, newY);
-            }
-        });
-        mFloatButtonVC.setOnStatusChangeListener(new FloatButtonViewController.OnStatusChangeListener() {
-            @Override
-            public boolean onPrepareStatusChange(int prepareStatus) {
-                if (mFloatPanelVC.isCanChangeStatus()) {
-                    return true;
-                } else {
-                    return false;
+        if (isFirst) {
+            FloatWindowManager floatWindowManager = new FloatWindowManager(this);
+            //填充和浮动面板浮动按钮
+            mFloatPanelVC = new FloatPanelViewController(this, floatWindowManager);
+            mFloatButtonVC = new FloatButtonViewController(this, floatWindowManager);
+            mFloatButtonVC.setOnFloatButtonPositionUpdateListener(new FloatButtonViewController.OnFloatButtonPositionUpdateListener() {
+                @Override
+                public void onFloatButtonPositionUpdate(int newX, int newY) {
+                    mFloatPanelVC.followButtonPosition(newX, newY);
                 }
-            }
+            });
+            mFloatButtonVC.setOnStatusChangeListener(new FloatButtonViewController.OnStatusChangeListener() {
+                @Override
+                public boolean onPrepareStatusChange(int prepareStatus) {
+                    return mFloatPanelVC.isCanChangeStatus();
+                }
 
-            @Override
-            public void onStatusChange(int newStatus) {
-                mFloatPanelVC.toggle();
-            }
-        });
-        mFloatPanelVC.setOnStatusChangeListener(new FloatPanelViewController.OnStatusChangeListener() {
-            @Override
-            public void onStatusChange(boolean isOpen) {
-                mFloatButtonVC.toggle();
-            }
-        });
+                @Override
+                public void onStatusChange(int newStatus) {
+                    mFloatPanelVC.toggle();
+                }
+            });
+            mFloatPanelVC.setOnStatusChangeListener(new FloatPanelViewController.OnStatusChangeListener() {
+                @Override
+                public void onStatusChange(boolean isOpen) {
+                    mFloatButtonVC.toggle();
+                }
+            });
+            isFirst = false;
+        } else {
+            mFloatPanelVC.showFloatWindow();
+            mFloatButtonVC.showFloatWindow();
+        }
     }
 
     private void hideFloatWindow() {
         if (mFloatButtonVC != null) {
-            mFloatButtonVC.hide();
+            mFloatButtonVC.hideFloatWindow();
         }
         if (mFloatPanelVC != null) {
-            mFloatPanelVC.hide();
+            mFloatPanelVC.hideFloatWindow();
         }
     }
 }

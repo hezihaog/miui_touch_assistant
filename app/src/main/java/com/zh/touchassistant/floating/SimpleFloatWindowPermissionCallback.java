@@ -9,12 +9,12 @@ package com.zh.touchassistant.floating;
  */
 public class SimpleFloatWindowPermissionCallback implements FloatWindowPermissionCallback {
     @Override
-    public void onPermissionAllow(IFloatWindowAgent agent) {
+    public void onPermissionAllow() {
 
     }
 
     @Override
-    public void onPermissionReject(IFloatWindowAgent agent) {
+    public void onPermissionReject() {
 
     }
 }

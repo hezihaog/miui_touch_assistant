@@ -10,37 +10,37 @@ package com.zh.touchassistant.floating;
 public class SimpleFloatWindowViewStateCallback implements FloatWindowViewStateCallback {
 
     @Override
-    public void onPositionUpdate(IFloatWindowAgent agent, int x, int y) {
+    public void onPositionUpdate(int x, int y) {
 
     }
 
     @Override
-    public void onShow(IFloatWindowAgent agent) {
+    public void onShow() {
 
     }
 
     @Override
-    public void onHide(IFloatWindowAgent agent) {
+    public void onHide() {
 
     }
 
     @Override
-    public void onDismiss(IFloatWindowAgent agent) {
+    public void onRemove() {
 
     }
 
     @Override
-    public void onMoveAnimStart(IFloatWindowAgent agent) {
+    public void onMoveAnimStart() {
 
     }
 
     @Override
-    public void onMoveAnimEnd(IFloatWindowAgent agent) {
+    public void onMoveAnimEnd() {
 
     }
 
     @Override
-    public void onBackToDesktop(IFloatWindowAgent agent) {
+    public void onBackToDesktop() {
 
     }
 }

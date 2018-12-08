@@ -33,13 +33,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Toolbar toolbar = findViewById(R.id.tool_bar);
-        if (getSupportFragmentManager().findFragmentByTag(FloatWindowSettingFragment.class.getName()) == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.main_container, new FloatWindowSettingFragment(), FloatWindowSettingFragment.class.getName())
-            .commit();
-        }
         AndPermission
                 .with(this)
                 .permission(
@@ -48,8 +41,14 @@ public class MainActivity extends AppCompatActivity {
                 .onGranted(new Action() {
                     @Override
                     public void onAction(List<String> permissions) {
-                        Intent intent = new Intent(getApplicationContext(), CoreService.class);
-                        startService(intent.setAction(CoreService.Action.ACTION_SHOW_FLOATING_WINDOW));
+                        if (getSupportFragmentManager().findFragmentByTag(FloatWindowSettingFragment.class.getName()) == null) {
+                            getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .add(R.id.main_container,
+                                            new FloatWindowSettingFragment(),
+                                            FloatWindowSettingFragment.class.getName())
+                                    .commit();
+                        }
                     }
                 })
                 .onDenied(new Action() {

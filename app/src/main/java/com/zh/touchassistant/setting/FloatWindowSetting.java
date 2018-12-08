@@ -4,12 +4,12 @@ import android.text.TextUtils;
 
 import com.zh.touchassistant.Const;
 import com.zh.touchassistant.R;
-import com.zh.touchassistant.floating.action.BackFloatWindowAction;
-import com.zh.touchassistant.floating.action.HomeFloatWindowAction;
+import com.zh.touchassistant.floating.action.BackAction;
+import com.zh.touchassistant.floating.action.HomeAction;
 import com.zh.touchassistant.floating.action.IFloatWindowAction;
-import com.zh.touchassistant.floating.action.LockFloatWindowAction;
-import com.zh.touchassistant.floating.action.MenuFloatWindowAction;
-import com.zh.touchassistant.floating.action.ScreenshotFloatWindowAction;
+import com.zh.touchassistant.floating.action.LockAction;
+import com.zh.touchassistant.floating.action.MenuAction;
+import com.zh.touchassistant.floating.action.ScreenshotAction;
 import com.zh.touchassistant.model.FloatWindowActionListModel;
 import com.zh.touchassistant.model.FloatWindowActionModel;
 import com.zh.touchassistant.util.GsonUtils;
@@ -40,11 +40,11 @@ public class FloatWindowSetting {
     static {
         //添加ActionId和Action的映射
         actionMap = new LinkedHashMap();
-        BackFloatWindowAction backAction = new BackFloatWindowAction();
-        ScreenshotFloatWindowAction screenshotAction = new ScreenshotFloatWindowAction();
-        LockFloatWindowAction lockAction = new LockFloatWindowAction();
-        MenuFloatWindowAction menuAction = new MenuFloatWindowAction();
-        HomeFloatWindowAction homeAction = new HomeFloatWindowAction();
+        BackAction backAction = new BackAction();
+        ScreenshotAction screenshotAction = new ScreenshotAction();
+        LockAction lockAction = new LockAction();
+        MenuAction menuAction = new MenuAction();
+        HomeAction homeAction = new HomeAction();
         actionMap.put(backAction.getActionId(), backAction);
         actionMap.put(screenshotAction.getActionId(), screenshotAction);
         actionMap.put(lockAction.getActionId(), lockAction);
@@ -78,11 +78,11 @@ public class FloatWindowSetting {
 
     private void initActionFromDefault() {
         ArrayList<FloatWindowActionModel> actions = getActionModels();
-        actions.add(new FloatWindowActionModel("Home", R.drawable.ic_key_home, new HomeFloatWindowAction().getActionId()));
-        actions.add(new FloatWindowActionModel("Menu", R.drawable.ic_key_menu, new MenuFloatWindowAction().getActionId()));
-        actions.add(new FloatWindowActionModel("Lock", R.drawable.ic_toggle_lock, new LockFloatWindowAction().getActionId()));
-        actions.add(new FloatWindowActionModel("Screenshot", R.drawable.ic_toggle_screenshot, new ScreenshotFloatWindowAction().getActionId()));
-        actions.add(new FloatWindowActionModel("Back", R.drawable.ic_key_back, new BackFloatWindowAction().getActionId()));
+        actions.add(new FloatWindowActionModel("Home", R.drawable.ic_key_home, new HomeAction().getActionId()));
+        actions.add(new FloatWindowActionModel("Menu", R.drawable.ic_key_menu, new MenuAction().getActionId()));
+        actions.add(new FloatWindowActionModel("Lock", R.drawable.ic_toggle_lock, new LockAction().getActionId()));
+        actions.add(new FloatWindowActionModel("Screenshot", R.drawable.ic_toggle_screenshot, new ScreenshotAction().getActionId()));
+        actions.add(new FloatWindowActionModel("Back", R.drawable.ic_key_back, new BackAction().getActionId()));
         //第一次初始化完后，保存到Sp
         FloatWindowActionListModel listModel = new FloatWindowActionListModel();
         listModel.setModels(actions);

@@ -1,5 +1,7 @@
 package com.zh.touchassistant.floating;
 
+import android.animation.TimeInterpolator;
+
 /**
  * <b>Package:</b> com.zh.touchassistant.floating <br>
  * <b>FileName:</b> FloatWindowOption <br>
@@ -14,6 +16,8 @@ public class FloatWindowOption {
     private FloatMoveEnum mMoveType;
     private FloatWindowViewStateCallback mViewStateCallback;
     private FloatWindowPermissionCallback mPermissionCallback;
+    private TimeInterpolator mInterpolator;
+    private long mDuration;
 
     public static FloatWindowOption create(Builder builder) {
         return new FloatWindowOption(builder);
@@ -26,6 +30,8 @@ public class FloatWindowOption {
         this.mMoveType = builder.mMoveType != null ? builder.mMoveType : FloatMoveEnum.INACTIVE;
         this.mViewStateCallback = builder.mViewStateCallback;
         this.mPermissionCallback = builder.mPermissionCallback;
+        this.mInterpolator = builder.mInterpolator;
+        this.mDuration = builder.mDuration <= 0 ? 300 : builder.mDuration;
     }
 
     public int getX() {
@@ -48,16 +54,16 @@ public class FloatWindowOption {
         return mViewStateCallback;
     }
 
-    public void setViewStateCallback(FloatWindowViewStateCallback viewStateCallback) {
-        mViewStateCallback = viewStateCallback;
-    }
-
     public FloatWindowPermissionCallback getPermissionCallback() {
         return mPermissionCallback;
     }
 
-    public void setPermissionCallback(FloatWindowPermissionCallback permissionCallback) {
-        mPermissionCallback = permissionCallback;
+    public TimeInterpolator getInterpolator() {
+        return mInterpolator;
+    }
+
+    public long getDuration() {
+        return mDuration;
     }
 
     public static class Builder {
@@ -67,6 +73,8 @@ public class FloatWindowOption {
         private FloatMoveEnum mMoveType;
         private FloatWindowViewStateCallback mViewStateCallback;
         private FloatWindowPermissionCallback mPermissionCallback;
+        private TimeInterpolator mInterpolator;
+        private long mDuration;
 
         public Builder setX(int x) {
             mX = x;
@@ -95,6 +103,16 @@ public class FloatWindowOption {
 
         public Builder setFloatWindowPermissionCallback(FloatWindowPermissionCallback callback) {
             this.mPermissionCallback = callback;
+            return this;
+        }
+
+        public Builder setInterpolator(TimeInterpolator interpolator) {
+            mInterpolator = interpolator;
+            return this;
+        }
+
+        public Builder setDuration(long duration) {
+            mDuration = duration;
             return this;
         }
     }

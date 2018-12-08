@@ -7,9 +7,8 @@ import android.widget.Toast;
 import com.zh.touchassistant.Const;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.floating.FloatMoveEnum;
-import com.zh.touchassistant.floating.FloatWindowController;
+import com.zh.touchassistant.floating.FloatWindowManager;
 import com.zh.touchassistant.floating.FloatWindowOption;
-import com.zh.touchassistant.floating.IFloatWindowAgent;
 import com.zh.touchassistant.floating.SimpleFloatWindowPermissionCallback;
 import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
 import com.zh.touchassistant.util.Property;
@@ -32,17 +31,17 @@ public class FloatButtonViewController extends BaseViewController {
     private int mCurrentStatus = STATUS_OFF;
 
     private OnStatusChangeListener mStatusChangeListener;
-    private FloatWindowController mFloatWindowController;
     private OnFloatButtonPositionUpdateListener mButtonPositionUpdateListener;
+    private FloatWindowManager mFloatWindowManager;
 
-    public FloatButtonViewController(Context context) {
+    public FloatButtonViewController(Context context, FloatWindowManager floatWindowManager) {
         super(context);
+        this.mFloatWindowManager = floatWindowManager;
         init();
     }
 
     private void init() {
         mFloatButtonView = (FloatButton) getLayoutInflater().inflate(R.layout.float_button, null);
-        mFloatWindowController = FloatWindowController.getInstance();
         initListener();
         attachFloatWindow();
     }
@@ -57,8 +56,8 @@ public class FloatButtonViewController extends BaseViewController {
     }
 
     private void attachFloatWindow() {
-        mFloatWindowController
-                .makeFloatWindow(getApplicationContext(),
+        mFloatWindowManager
+                .makeFloatWindow(
                         mFloatButtonView,
                         TAG_BUTTON,
                         FloatWindowOption.create(new FloatWindowOption.Builder()
@@ -69,13 +68,13 @@ public class FloatButtonViewController extends BaseViewController {
                                 .setViewStateCallback(new SimpleFloatWindowViewStateCallback() {
 
                                     @Override
-                                    public void onShow(IFloatWindowAgent agent) {
-                                        super.onShow(agent);
+                                    public void onShow() {
+                                        super.onShow();
                                     }
 
                                     @Override
-                                    public void onPositionUpdate(IFloatWindowAgent agent, int x, int y) {
-                                        super.onPositionUpdate(agent, x, y);
+                                    public void onPositionUpdate(int x, int y) {
+                                        super.onPositionUpdate(x, y);
                                         Property.getDefault().setProperty(Const.Config.KEY_FLOAT_BUTTON_X, x);
                                         Property.getDefault().setProperty(Const.Config.KEY_FLOAT_BUTTON_Y, y);
                                         //如果正在打开，则关闭
@@ -91,7 +90,7 @@ public class FloatButtonViewController extends BaseViewController {
                                 .setFloatWindowPermissionCallback(new SimpleFloatWindowPermissionCallback() {
 
                                     @Override
-                                    public void onPermissionReject(IFloatWindowAgent agent) {
+                                    public void onPermissionReject() {
                                         Toast.makeText(getApplicationContext(),
                                                 "允许权限才能使用悬浮球喔", Toast.LENGTH_SHORT).show();
                                     }
@@ -123,9 +122,15 @@ public class FloatButtonViewController extends BaseViewController {
         return mCurrentStatus == STATUS_OPEN;
     }
 
-    public void hide() {
-        mFloatWindowController
-                .getFloatWindowAgent(TAG_BUTTON)
+    public void showFloatWindow() {
+        this.mFloatWindowManager
+                .getFloatWindow(TAG_BUTTON)
+                .show();
+    }
+
+    public void hideFloatWindow() {
+        this.mFloatWindowManager
+                .getFloatWindow(TAG_BUTTON)
                 .hide();
     }
 

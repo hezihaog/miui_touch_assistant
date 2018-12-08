@@ -8,9 +8,9 @@ import android.widget.FrameLayout;
 import com.zh.touchassistant.Const;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.floating.FloatMoveEnum;
-import com.zh.touchassistant.floating.FloatWindowController;
+import com.zh.touchassistant.floating.FloatWindow;
+import com.zh.touchassistant.floating.FloatWindowManager;
 import com.zh.touchassistant.floating.FloatWindowOption;
-import com.zh.touchassistant.floating.IFloatWindowAgent;
 import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
 import com.zh.touchassistant.floating.action.IFloatWindowAction;
 import com.zh.touchassistant.model.FloatWindowActionModel;
@@ -37,18 +37,19 @@ public class FloatPanelViewController extends BaseViewController {
 
     private View mPanelContainerLayout;
     private ControlPanelView mFloatControlPanelView;
-    private FloatWindowController mFloatWindowController;
+//    private FloatWindowController mFloatWindowController;
     private OnStatusChangeListener mListener;
+    private FloatWindowManager mFloatWindowManager;
 
-    public FloatPanelViewController(Context context) {
+    public FloatPanelViewController(Context context, FloatWindowManager floatWindowManager) {
         super(context);
+        this.mFloatWindowManager = floatWindowManager;
         init();
     }
 
     private void init() {
         mPanelContainerLayout = getLayoutInflater().inflate(R.layout.view_float_control_panel, null);
         mFloatControlPanelView = mPanelContainerLayout.findViewById(R.id.control_panel_view);
-        mFloatWindowController = FloatWindowController.getInstance();
         //根据数据添加子View
         addActionButton();
         //恢复上一次保存的位置
@@ -58,8 +59,8 @@ public class FloatPanelViewController extends BaseViewController {
     }
 
     private void attachFloatWindow() {
-        mFloatWindowController
-                .makeFloatWindow(getApplicationContext(),
+        mFloatWindowManager
+                .makeFloatWindow(
                         mPanelContainerLayout,
                         TAG_PANEL,
                         FloatWindowOption
@@ -70,8 +71,8 @@ public class FloatPanelViewController extends BaseViewController {
                                         .setFloatMoveType(FloatMoveEnum.INACTIVE)
                                         .setViewStateCallback(new SimpleFloatWindowViewStateCallback() {
                                             @Override
-                                            public void onShow(IFloatWindowAgent agent) {
-                                                super.onShow(agent);
+                                            public void onShow() {
+                                                super.onShow();
                                             }
                                         })));
     }
@@ -82,12 +83,12 @@ public class FloatPanelViewController extends BaseViewController {
             public void onToggleChange(boolean isOpen) {
                 //最新为打开
                 if (isOpen) {
-                    mFloatWindowController
-                            .getFloatWindowAgent(TAG_PANEL)
+                    mFloatWindowManager
+                            .getFloatWindow(TAG_PANEL)
                             .show();
                 } else {
-                    mFloatWindowController
-                            .getFloatWindowAgent(TAG_PANEL)
+                    mFloatWindowManager
+                            .getFloatWindow(TAG_PANEL)
                             .hide();
                 }
             }
@@ -152,13 +153,12 @@ public class FloatPanelViewController extends BaseViewController {
         panelView.setOrientation(isLeft);
         Property.getDefault().setProperty(Const.Config.KEY_FLOAT_WINDOW_IS_LEFT, isLeft);
         //更新浮窗
-        IFloatWindowAgent floatWindowAgent = mFloatWindowController
-                .getFloatWindowAgent(TAG_PANEL);
+        FloatWindow floatWindow = mFloatWindowManager.getFloatWindow(TAG_PANEL);
         int[] result = mFloatControlPanelView.followButtonPosition(buttonX, buttonY);
         int fixX = result[0];
         int fixY = result[1];
-        floatWindowAgent.updateX(fixX);
-        floatWindowAgent.updateY(fixY);
+        floatWindow.updateX(fixX);
+        floatWindow.updateY(fixY);
         //记录位置
         Property.getDefault().setProperty(Const.Config.KEY_FLOAT_PANEL_X, fixX);
         Property.getDefault().setProperty(Const.Config.KEY_FLOAT_PANEL_Y, fixY);
@@ -177,8 +177,15 @@ public class FloatPanelViewController extends BaseViewController {
         this.isOpen = !isOpen;
     }
 
-    public void hide() {
-        mFloatWindowController.getFloatWindowAgent(TAG_PANEL)
+    public void showFloatWindow() {
+        mFloatWindowManager
+                .getFloatWindow(TAG_PANEL)
+                .show();
+    }
+
+    public void hideFloatWindow() {
+        mFloatWindowManager
+                .getFloatWindow(TAG_PANEL)
                 .hide();
     }
 

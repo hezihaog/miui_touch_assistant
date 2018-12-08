@@ -26,5 +26,9 @@ public class Const {
          * 自定义菜单Json数据
          */
         public static final String KEY_CUSTOM_MENU_DATA = "custom_menu_data";
+        /**
+         * 是否开启悬浮窗
+         */
+        public static final String KEY_ENABLE = "enabled";
     }
 }
