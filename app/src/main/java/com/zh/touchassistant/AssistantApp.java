@@ -2,12 +2,10 @@ package com.zh.touchassistant;
 
 import android.accessibilityservice.AccessibilityService;
 import android.app.Application;
-import android.content.Intent;
 
-import com.zh.touchassistant.service.CoreService;
 import com.zh.touchassistant.setting.FloatWindowSetting;
 import com.zh.touchassistant.util.AccessibilityHelper;
-import com.zh.touchassistant.util.PropertyHelper;
+import com.zh.touchassistant.util.Property;
 
 /**
  * <b>Package:</b> com.zh.touchassistant <br>
@@ -22,12 +20,10 @@ public class AssistantApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        PropertyHelper.init(this);
+        new Property.PropertyBuilder().fileName(Const.Config.APP_SP_FILE_NAME).installDefaultProperty();
         FloatWindowSetting
                 .getInstance()
                 .initFloatWindowActions();
-        Intent intent = new Intent(getApplicationContext(), CoreService.class);
-        startService(intent.setAction(CoreService.Action.ACTION_SHOW_FLOATING_WINDOW));
     }
 
     public void setAccessibility(AccessibilityService service) {

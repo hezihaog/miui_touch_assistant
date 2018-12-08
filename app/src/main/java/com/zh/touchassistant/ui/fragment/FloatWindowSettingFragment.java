@@ -8,6 +8,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.View;
 
+import com.zh.touchassistant.Const;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.service.CoreService;
 import com.zh.touchassistant.ui.activity.CustomMenuActivity;
@@ -61,7 +62,7 @@ public class FloatWindowSettingFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle bundle, String rootKey) {
         //设置SharedPreferences文件名
-        getPreferenceManager().setSharedPreferencesName("float_window_setting");
+        getPreferenceManager().setSharedPreferencesName(Const.Config.APP_SP_FILE_NAME);
         addPreferencesFromResource(R.xml.main);
     }
 }

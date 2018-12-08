@@ -16,8 +16,8 @@ import com.zh.touchassistant.service.CoreService;
 public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent serviceIntent = new Intent(context, CoreService.class);
-        serviceIntent.setAction(CoreService.Action.ACTION_SHOW_FLOATING_WINDOW);
-        context.startService(serviceIntent);
+//        Intent serviceIntent = new Intent(context, CoreService.class);
+//        serviceIntent.setAction(CoreService.Action.ACTION_SHOW_FLOATING_WINDOW);
+//        context.startService(serviceIntent);
     }
 }

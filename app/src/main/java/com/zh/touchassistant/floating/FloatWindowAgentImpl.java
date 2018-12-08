@@ -91,21 +91,17 @@ public class FloatWindowAgentImpl implements IFloatWindowAgent {
                 }
             };
         }
-        try {
-            FloatWindow
-                    .with(mContext)
-                    .setTag(tag)
-                    .setView(view)
-                    .setX(option.getX())
-                    .setY(option.getY())
-                    .setDesktopShow(option.isShowDesktop())
-                    .setMoveType(moveType)
-                    .setViewStateListener(viewStateListener)
-                    .setPermissionListener(permissionListener)
-                    .build();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        FloatWindow
+                .with(mContext)
+                .setTag(tag)
+                .setView(view)
+                .setX(option.getX())
+                .setY(option.getY())
+                .setDesktopShow(option.isShowDesktop())
+                .setMoveType(moveType)
+                .setViewStateListener(viewStateListener)
+                .setPermissionListener(permissionListener)
+                .build();
     }
 
     @Override

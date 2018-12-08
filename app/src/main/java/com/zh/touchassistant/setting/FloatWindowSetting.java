@@ -13,7 +13,7 @@ import com.zh.touchassistant.floating.action.ScreenshotFloatWindowAction;
 import com.zh.touchassistant.model.FloatWindowActionListModel;
 import com.zh.touchassistant.model.FloatWindowActionModel;
 import com.zh.touchassistant.util.GsonUtils;
-import com.zh.touchassistant.util.PropertyHelper;
+import com.zh.touchassistant.util.Property;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,7 +68,7 @@ public class FloatWindowSetting {
     }
 
     public void initFloatWindowActions() {
-        String actionDatas = PropertyHelper.getProperty(Const.Config.KEY_CUSTOM_MENU_DATA, "");
+        String actionDatas = Property.getDefault().getProperty(Const.Config.KEY_CUSTOM_MENU_DATA, "");
         if (TextUtils.isEmpty(actionDatas)) {
             initActionFromDefault();
         } else {
@@ -87,7 +87,7 @@ public class FloatWindowSetting {
         FloatWindowActionListModel listModel = new FloatWindowActionListModel();
         listModel.setModels(actions);
         String json = GsonUtils.toJson(listModel);
-        PropertyHelper.setProperty(Const.Config.KEY_CUSTOM_MENU_DATA, json);
+        Property.getDefault().setProperty(Const.Config.KEY_CUSTOM_MENU_DATA, json);
     }
 
     private void initActionFromCustom(FloatWindowActionListModel customActions) {
@@ -100,7 +100,7 @@ public class FloatWindowSetting {
         FloatWindowActionListModel listModel = new FloatWindowActionListModel();
         listModel.setModels(newActions);
         String json = GsonUtils.toJson(listModel);
-        PropertyHelper.setProperty(Const.Config.KEY_CUSTOM_MENU_DATA, json);
+        Property.getDefault().setProperty(Const.Config.KEY_CUSTOM_MENU_DATA, json);
     }
 
     public LinkedHashMap<Integer, IFloatWindowAction> getActionMap() {

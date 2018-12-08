@@ -12,7 +12,7 @@ import com.zh.touchassistant.floating.FloatWindowOption;
 import com.zh.touchassistant.floating.IFloatWindowAgent;
 import com.zh.touchassistant.floating.SimpleFloatWindowPermissionCallback;
 import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
-import com.zh.touchassistant.util.PropertyHelper;
+import com.zh.touchassistant.util.Property;
 import com.zh.touchassistant.widget.FloatButton;
 
 /**
@@ -62,6 +62,8 @@ public class FloatButtonViewController extends BaseViewController {
                         mFloatButtonView,
                         TAG_BUTTON,
                         FloatWindowOption.create(new FloatWindowOption.Builder()
+                                .setX(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_BUTTON_X, 0))
+                                .setY(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_BUTTON_Y, 0))
                                 .desktopShow(true)
                                 .setFloatMoveType(FloatMoveEnum.ACTIVE)
                                 .setViewStateCallback(new SimpleFloatWindowViewStateCallback() {
@@ -69,16 +71,13 @@ public class FloatButtonViewController extends BaseViewController {
                                     @Override
                                     public void onShow(IFloatWindowAgent agent) {
                                         super.onShow(agent);
-                                        agent
-                                                .updateXY(PropertyHelper.getProperty(Const.Config.KEY_FLOAT_BUTTON_X, 0),
-                                                        PropertyHelper.getProperty(Const.Config.KEY_FLOAT_BUTTON_Y, 0));
                                     }
 
                                     @Override
                                     public void onPositionUpdate(IFloatWindowAgent agent, int x, int y) {
                                         super.onPositionUpdate(agent, x, y);
-                                        PropertyHelper.setProperty(Const.Config.KEY_FLOAT_BUTTON_X, x);
-                                        PropertyHelper.setProperty(Const.Config.KEY_FLOAT_BUTTON_Y, y);
+                                        Property.getDefault().setProperty(Const.Config.KEY_FLOAT_BUTTON_X, x);
+                                        Property.getDefault().setProperty(Const.Config.KEY_FLOAT_BUTTON_Y, y);
                                         //如果正在打开，则关闭
                                         if (isOpen()) {
                                             toggle();

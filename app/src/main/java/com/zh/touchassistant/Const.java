@@ -9,6 +9,8 @@ package com.zh.touchassistant;
  */
 public class Const {
     public static final class Config {
+        //SP文件名
+        public static final String APP_SP_FILE_NAME = "float_window_setting";
         /**
          * 悬浮窗坐标
          */

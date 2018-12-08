@@ -48,14 +48,17 @@ public class CoreService extends AccessibilityService {
         }
         if (Action.ACTION_SHOW_FLOATING_WINDOW.equals(intent.getAction())) {
             showFloatWindow();
+            isOpen = true;
         } else if (Action.ACTION_HIDE_FLOATING_WINDOW.equals(intent.getAction())) {
             hideFloatWindow();
+            isOpen = false;
         } else if (Action.ACTION_TOGGLE_FLOATING_WINDOW.equals(intent.getAction())) {
             if (isOpen) {
                 hideFloatWindow();
             } else {
                 showFloatWindow();
             }
+            isOpen = !isOpen;
         }
         return super.onStartCommand(intent, flags, startId);
     }

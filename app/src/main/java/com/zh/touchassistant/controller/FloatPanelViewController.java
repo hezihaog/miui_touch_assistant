@@ -15,7 +15,7 @@ import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
 import com.zh.touchassistant.floating.action.IFloatWindowAction;
 import com.zh.touchassistant.model.FloatWindowActionModel;
 import com.zh.touchassistant.setting.FloatWindowSetting;
-import com.zh.touchassistant.util.PropertyHelper;
+import com.zh.touchassistant.util.Property;
 import com.zh.touchassistant.util.ScreenUtil;
 import com.zh.touchassistant.widget.ControlPanelView;
 import com.zh.touchassistant.widget.FloatActionButton;
@@ -52,7 +52,7 @@ public class FloatPanelViewController extends BaseViewController {
         //根据数据添加子View
         addActionButton();
         //恢复上一次保存的位置
-        mFloatControlPanelView.setOrientation(PropertyHelper.getProperty(Const.Config.KEY_FLOAT_WINDOW_IS_LEFT, false));
+        mFloatControlPanelView.setOrientation(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_WINDOW_IS_LEFT, false));
         initListener();
         attachFloatWindow();
     }
@@ -64,15 +64,14 @@ public class FloatPanelViewController extends BaseViewController {
                         TAG_PANEL,
                         FloatWindowOption
                                 .create(new FloatWindowOption.Builder()
+                                        .setX(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_PANEL_X, 0))
+                                        .setY(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_PANEL_Y, 0))
                                         .desktopShow(true)
                                         .setFloatMoveType(FloatMoveEnum.INACTIVE)
                                         .setViewStateCallback(new SimpleFloatWindowViewStateCallback() {
-
                                             @Override
                                             public void onShow(IFloatWindowAgent agent) {
                                                 super.onShow(agent);
-                                                agent.updateXY(PropertyHelper.getProperty(Const.Config.KEY_FLOAT_PANEL_X, 0),
-                                                        PropertyHelper.getProperty(Const.Config.KEY_FLOAT_PANEL_Y, 0));
                                             }
                                         })));
     }
@@ -151,7 +150,7 @@ public class FloatPanelViewController extends BaseViewController {
             isLeft = false;
         }
         panelView.setOrientation(isLeft);
-        PropertyHelper.setProperty(Const.Config.KEY_FLOAT_WINDOW_IS_LEFT, isLeft);
+        Property.getDefault().setProperty(Const.Config.KEY_FLOAT_WINDOW_IS_LEFT, isLeft);
         //更新浮窗
         IFloatWindowAgent floatWindowAgent = mFloatWindowController
                 .getFloatWindowAgent(TAG_PANEL);
@@ -161,8 +160,8 @@ public class FloatPanelViewController extends BaseViewController {
         floatWindowAgent.updateX(fixX);
         floatWindowAgent.updateY(fixY);
         //记录位置
-        PropertyHelper.setProperty(Const.Config.KEY_FLOAT_PANEL_X, fixX);
-        PropertyHelper.setProperty(Const.Config.KEY_FLOAT_PANEL_Y, fixY);
+        Property.getDefault().setProperty(Const.Config.KEY_FLOAT_PANEL_X, fixX);
+        Property.getDefault().setProperty(Const.Config.KEY_FLOAT_PANEL_Y, fixY);
     }
 
     /**

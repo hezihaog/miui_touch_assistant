@@ -15,35 +15,35 @@ public class AccessibilityHelper {
     }
 
     /**
-     * µ¥»÷·µ»Ø¹¦ÄÜ
+     * æ‰§è¡Œè¿”å›é”®
      */
     public void doBack() {
         this.mService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
     }
 
     /**
-     * ÏÂÀ­´ò¿ªÍ¨ÖªÀ¸
+     * æ‰§è¡Œæ‹‰ä¸‹é€šçŸ¥æ 
      */
     public void doPullDownNotificationBar() {
         this.mService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS);
     }
 
     /**
-     * ÉÏÀ­·µ»Ø×ÀÃæ
+     * æ‰§è¡Œæ¡Œé¢é”®
      */
     public void doGoHome() {
         this.mService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME);
     }
 
     /**
-     * ×óÓÒ»¬¶¯´ò¿ª¶àÈÎÎñ
+     * æ‰§è¡Œä»»åŠ¡é”®
      */
     public void doGoTask() {
         this.mService.performGlobalAction(AccessibilityService.GLOBAL_ACTION_RECENTS);
     }
 
     /**
-     * ¼ì²éÊÇ·ñ¿ªÆôÁË¸¨Öú·şÎñ
+     * æ£€æŸ¥è¾…åŠ©æœåŠ¡æ˜¯å¦å¼€å¯
      */
     public boolean isAccessibilitySettingsOn(Context context) {
         int accessibilityEnabled = 0;
