@@ -33,9 +33,12 @@ import java.util.Map;
 public class FloatPanelViewController extends BaseViewController {
     private static final String TAG_PANEL = "panel_tag";
 
+    private boolean isOpen = false;
+
     private View mPanelContainerLayout;
     private ControlPanelView mFloatControlPanelView;
     private FloatWindowController mFloatWindowController;
+    private OnStatusChangeListener mListener;
 
     public FloatPanelViewController(Context context) {
         super(context);
@@ -48,6 +51,8 @@ public class FloatPanelViewController extends BaseViewController {
         mFloatWindowController = FloatWindowController.getInstance();
         //根据数据添加子View
         addActionButton();
+        //恢复上一次保存的位置
+        mFloatControlPanelView.setOrientation(PropertyHelper.getProperty(Const.Config.KEY_FLOAT_WINDOW_IS_LEFT, false));
         initListener();
         attachFloatWindow();
     }
@@ -68,12 +73,6 @@ public class FloatPanelViewController extends BaseViewController {
                                                 super.onShow(agent);
                                                 agent.updateXY(PropertyHelper.getProperty(Const.Config.KEY_FLOAT_PANEL_X, 0),
                                                         PropertyHelper.getProperty(Const.Config.KEY_FLOAT_PANEL_Y, 0));
-                                            }
-
-                                            @Override
-                                            public void onPositionUpdate(IFloatWindowAgent agent, int x, int y) {
-                                                super.onPositionUpdate(agent, x, y);
-
                                             }
                                         })));
     }
@@ -111,6 +110,9 @@ public class FloatPanelViewController extends BaseViewController {
                 @Override
                 public void onClick(View v) {
                     mFloatControlPanelView.toggleControlPanel();
+                    if (mListener != null) {
+                        mListener.onStatusChange(isOpen);
+                    }
                     entry.getValue().onAction();
                 }
             });
@@ -140,13 +142,16 @@ public class FloatPanelViewController extends BaseViewController {
         }
         //判断在屏幕左边还是右边，切换位置
         int halfScreenWidth = ScreenUtil.getScreenWidth(getApplicationContext()) / 2;
+        boolean isLeft;
         if (buttonX < halfScreenWidth) {
             //左边
-            panelView.setOrientation(true);
+            isLeft = true;
         } else {
             //右边
-            panelView.setOrientation(false);
+            isLeft = false;
         }
+        panelView.setOrientation(isLeft);
+        PropertyHelper.setProperty(Const.Config.KEY_FLOAT_WINDOW_IS_LEFT, isLeft);
         //更新浮窗
         IFloatWindowAgent floatWindowAgent = mFloatWindowController
                 .getFloatWindowAgent(TAG_PANEL);
@@ -170,10 +175,24 @@ public class FloatPanelViewController extends BaseViewController {
 
     public void toggle() {
         mFloatControlPanelView.toggleControlPanel();
+        this.isOpen = !isOpen;
     }
 
     public void hide() {
         mFloatWindowController.getFloatWindowAgent(TAG_PANEL)
                 .hide();
+    }
+
+    public interface OnStatusChangeListener {
+        /**
+         * 状态改变时回调
+         *
+         * @param isOpen 是否打开
+         */
+        void onStatusChange(boolean isOpen);
+    }
+
+    public void setOnStatusChangeListener(OnStatusChangeListener listener) {
+        this.mListener = listener;
     }
 }

@@ -303,14 +303,11 @@ public class ControlPanelView extends FrameLayout {
     }
 
     public void setOrientation(boolean isLeft) {
-        if (this.isLeft == isLeft) {
-            return;
-        }
-        this.isLeft = isLeft;
-        setStartAngle();
-        //右边屏幕展示时，元素是从顺时针的，将元素反转
-        if (!this.isLeft) {
-            reverseChildView();
+        if (this.isLeft != isLeft) {
+            this.isLeft = isLeft;
+            setStartAngle();
+            //右边屏幕展示时，元素是从逆时针的，将元素反转
+            //reverseChildView();
         }
     }
 

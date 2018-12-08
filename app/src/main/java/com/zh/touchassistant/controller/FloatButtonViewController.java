@@ -31,7 +31,7 @@ public class FloatButtonViewController extends BaseViewController {
     private FloatButton mFloatButtonView;
     private int mCurrentStatus = STATUS_OFF;
 
-    private OnFloatButtonStatusChangeListener mStatusChangeListener;
+    private OnStatusChangeListener mStatusChangeListener;
     private FloatWindowController mFloatWindowController;
     private OnFloatButtonPositionUpdateListener mButtonPositionUpdateListener;
 
@@ -169,7 +169,7 @@ public class FloatButtonViewController extends BaseViewController {
         }
     }
 
-    public interface OnFloatButtonStatusChangeListener {
+    public interface OnStatusChangeListener {
         /**
          * 当准备状态改变时回调
          *
@@ -186,7 +186,7 @@ public class FloatButtonViewController extends BaseViewController {
         void onStatusChange(int newStatus);
     }
 
-    public void setOnFloatButtonStatusChangeListener(OnFloatButtonStatusChangeListener listener) {
+    public void setOnStatusChangeListener(OnStatusChangeListener listener) {
         this.mStatusChangeListener = listener;
     }
 }

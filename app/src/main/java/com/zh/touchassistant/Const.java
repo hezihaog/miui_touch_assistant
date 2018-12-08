@@ -17,7 +17,11 @@ public class Const {
         public static final String KEY_FLOAT_PANEL_X = "float_panel_x";
         public static final String KEY_FLOAT_PANEL_Y = "float_panel_y";
         /**
-         * 自定义菜单
+         * 上一次移动时，悬浮面板是否在左边
+         */
+        public static final String KEY_FLOAT_WINDOW_IS_LEFT = "float_window_is_left";
+        /**
+         * 自定义菜单Json数据
          */
         public static final String KEY_CUSTOM_MENU_DATA = "custom_menu_data";
     }

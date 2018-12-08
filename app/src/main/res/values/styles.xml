@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -8,8 +8,8 @@
     </style>
 
     <!-- 透明主题 -->
-    <style name="TranslucentTheme" parent="android:Theme.Holo.NoActionBar.Fullscreen">
-        <item name="android:windowFullscreen">true</item>
+    <style name="TranslucentTheme" parent="android:Theme.Holo.NoActionBar">
+        <!--<item name="android:windowFullscreen">true</item>-->
         <!-- 透明背景 -->
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>

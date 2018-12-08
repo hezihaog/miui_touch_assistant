@@ -78,7 +78,7 @@ public class CoreService extends AccessibilityService {
                 mFloatPanelVC.followButtonPosition(newX, newY);
             }
         });
-        mFloatButtonVC.setOnFloatButtonStatusChangeListener(new FloatButtonViewController.OnFloatButtonStatusChangeListener() {
+        mFloatButtonVC.setOnStatusChangeListener(new FloatButtonViewController.OnStatusChangeListener() {
             @Override
             public boolean onPrepareStatusChange(int prepareStatus) {
                 if (mFloatPanelVC.isCanChangeStatus()) {
@@ -91,6 +91,12 @@ public class CoreService extends AccessibilityService {
             @Override
             public void onStatusChange(int newStatus) {
                 mFloatPanelVC.toggle();
+            }
+        });
+        mFloatPanelVC.setOnStatusChangeListener(new FloatPanelViewController.OnStatusChangeListener() {
+            @Override
+            public void onStatusChange(boolean isOpen) {
+                mFloatButtonVC.toggle();
             }
         });
     }
