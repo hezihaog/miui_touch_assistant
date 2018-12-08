@@ -30,6 +30,11 @@ public class SimpleFloatWindowViewStateCallback implements FloatWindowViewStateC
     }
 
     @Override
+    public boolean onPrepareDrag() {
+        return false;
+    }
+
+    @Override
     public void onMoveAnimStart() {
 
     }

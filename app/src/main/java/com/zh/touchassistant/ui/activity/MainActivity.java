@@ -1,7 +1,6 @@
 package com.zh.touchassistant.ui.activity;
 
 import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,6 @@ import android.widget.Toast;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.zh.touchassistant.R;
-import com.zh.touchassistant.service.CoreService;
 import com.zh.touchassistant.ui.fragment.FloatWindowSettingFragment;
 
 import java.util.List;
@@ -58,5 +56,10 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                     }
                 }).start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }

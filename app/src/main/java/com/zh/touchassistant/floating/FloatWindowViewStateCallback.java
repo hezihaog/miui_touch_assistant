@@ -32,6 +32,13 @@ public interface FloatWindowViewStateCallback {
     void onRemove();
 
     /**
+     * 当准备拖动时回调
+     *
+     * @return 返回true标识允许拖动，false则不允许
+     */
+    boolean onPrepareDrag();
+
+    /**
      * 当移动动画开始时回调
      */
     void onMoveAnimStart();

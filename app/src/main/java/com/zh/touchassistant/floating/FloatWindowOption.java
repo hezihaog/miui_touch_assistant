@@ -15,9 +15,9 @@ public class FloatWindowOption {
     private boolean mIsShowDesktop;
     private FloatMoveEnum mMoveType;
     private FloatWindowViewStateCallback mViewStateCallback;
-    private FloatWindowPermissionCallback mPermissionCallback;
     private TimeInterpolator mInterpolator;
     private long mDuration;
+    private Boolean isShow;
 
     public static FloatWindowOption create(Builder builder) {
         return new FloatWindowOption(builder);
@@ -29,9 +29,9 @@ public class FloatWindowOption {
         this.mIsShowDesktop = builder.mIsShowDesktop;
         this.mMoveType = builder.mMoveType != null ? builder.mMoveType : FloatMoveEnum.INACTIVE;
         this.mViewStateCallback = builder.mViewStateCallback;
-        this.mPermissionCallback = builder.mPermissionCallback;
         this.mInterpolator = builder.mInterpolator;
         this.mDuration = builder.mDuration <= 0 ? 300 : builder.mDuration;
+        this.isShow = builder.isShow == null ? true : builder.isShow;
     }
 
     public int getX() {
@@ -54,10 +54,6 @@ public class FloatWindowOption {
         return mViewStateCallback;
     }
 
-    public FloatWindowPermissionCallback getPermissionCallback() {
-        return mPermissionCallback;
-    }
-
     public TimeInterpolator getInterpolator() {
         return mInterpolator;
     }
@@ -66,15 +62,19 @@ public class FloatWindowOption {
         return mDuration;
     }
 
+    public Boolean isShow() {
+        return isShow;
+    }
+
     public static class Builder {
         private int mX;
         private int mY;
         private boolean mIsShowDesktop;
         private FloatMoveEnum mMoveType;
         private FloatWindowViewStateCallback mViewStateCallback;
-        private FloatWindowPermissionCallback mPermissionCallback;
         private TimeInterpolator mInterpolator;
         private long mDuration;
+        private Boolean isShow;
 
         public Builder setX(int x) {
             mX = x;
@@ -101,13 +101,13 @@ public class FloatWindowOption {
             return this;
         }
 
-        public Builder setFloatWindowPermissionCallback(FloatWindowPermissionCallback callback) {
-            this.mPermissionCallback = callback;
+        public Builder setInterpolator(TimeInterpolator interpolator) {
+            mInterpolator = interpolator;
             return this;
         }
 
-        public Builder setInterpolator(TimeInterpolator interpolator) {
-            mInterpolator = interpolator;
+        public Builder setShow(boolean show) {
+            isShow = show;
             return this;
         }
 

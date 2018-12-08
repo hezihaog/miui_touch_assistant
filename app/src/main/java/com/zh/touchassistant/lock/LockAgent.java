@@ -6,6 +6,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
+import com.zh.touchassistant.util.LockUtil;
+
 /**
  * <b>Package:</b> com.zh.lockNow <br>
  * <b>FileName:</b> LockAgent <br>
@@ -30,24 +32,19 @@ public class LockAgent {
     }
 
     public void lockNow() {
-        boolean isActive = checkPermission();
+        mPolicyManager = (DevicePolicyManager) getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
+        mComponentName = new ComponentName(getActivity(), OneScreenLockAdminReceiver.class);
+        boolean isActive = LockUtil.hasLockPermission(getActivity());
         //没有授权
         if (!isActive) {
             activeManage();
         } else {
             //授权了，直接锁屏
-            mPolicyManager.lockNow();
+            LockUtil.lockNow(getActivity());
             if (mListener != null) {
                 mListener.onLockSuccess();
             }
         }
-    }
-
-    public boolean checkPermission() {
-        Activity activity = getActivity();
-        mPolicyManager = (DevicePolicyManager) activity.getSystemService(Context.DEVICE_POLICY_SERVICE);
-        mComponentName = new ComponentName(activity, OneScreenLockAdminReceiver.class);
-        return mPolicyManager.isAdminActive(mComponentName);
     }
 
     /**
@@ -81,7 +78,7 @@ public class LockAgent {
                     }
                 } else {
                     //授予了权限，锁屏
-                    mPolicyManager.lockNow();
+                    LockUtil.lockNow(getActivity());
                     if (mListener != null) {
                         mListener.onLockSuccess();
                     }

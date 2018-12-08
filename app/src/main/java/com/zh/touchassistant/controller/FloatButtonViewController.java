@@ -2,16 +2,15 @@ package com.zh.touchassistant.controller;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.Toast;
 
 import com.zh.touchassistant.Const;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.floating.FloatMoveEnum;
 import com.zh.touchassistant.floating.FloatWindowManager;
 import com.zh.touchassistant.floating.FloatWindowOption;
-import com.zh.touchassistant.floating.SimpleFloatWindowPermissionCallback;
 import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
 import com.zh.touchassistant.util.Property;
+import com.zh.touchassistant.util.ScreenUtil;
 import com.zh.touchassistant.widget.FloatButton;
 
 /**
@@ -61,38 +60,28 @@ public class FloatButtonViewController extends BaseViewController {
                         mFloatButtonView,
                         TAG_BUTTON,
                         FloatWindowOption.create(new FloatWindowOption.Builder()
-                                .setX(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_BUTTON_X, 0))
-                                .setY(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_BUTTON_Y, 0))
+                                .setX(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_BUTTON_X,
+                                        ScreenUtil.getPointFromScreenWidthRatio(getApplicationContext(), 0.8f)))
+                                .setY(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_BUTTON_Y,
+                                        ScreenUtil.getPointFromScreenHeightRatio(getApplicationContext(), 0.3f)))
                                 .desktopShow(true)
                                 .setFloatMoveType(FloatMoveEnum.ACTIVE)
                                 .setViewStateCallback(new SimpleFloatWindowViewStateCallback() {
-
-                                    @Override
-                                    public void onShow() {
-                                        super.onShow();
-                                    }
 
                                     @Override
                                     public void onPositionUpdate(int x, int y) {
                                         super.onPositionUpdate(x, y);
                                         Property.getDefault().setProperty(Const.Config.KEY_FLOAT_BUTTON_X, x);
                                         Property.getDefault().setProperty(Const.Config.KEY_FLOAT_BUTTON_Y, y);
-                                        //如果正在打开，则关闭
-                                        if (isOpen()) {
-                                            toggle(true);
-                                        }
                                         //让面板跟随按钮
                                         if (mButtonPositionUpdateListener != null) {
                                             mButtonPositionUpdateListener.onFloatButtonPositionUpdate(x, y);
                                         }
                                     }
-                                })
-                                .setFloatWindowPermissionCallback(new SimpleFloatWindowPermissionCallback() {
 
                                     @Override
-                                    public void onPermissionReject() {
-                                        Toast.makeText(getApplicationContext(),
-                                                "允许权限才能使用悬浮球喔", Toast.LENGTH_SHORT).show();
+                                    public boolean onPrepareDrag() {
+                                        return !isOpen();
                                     }
                                 })));
     }

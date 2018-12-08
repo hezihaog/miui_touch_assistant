@@ -33,6 +33,19 @@ public class ScreenUtil {
         return outMetrics.heightPixels;
     }
 
+    /**
+     * 屏幕宽度和指定比率计算位置
+     *
+     * @param ratio 比率
+     */
+    public static int getPointFromScreenWidthRatio(Context context, float ratio) {
+        return (int) (getScreenWidth(context) * ratio);
+    }
+
+    public static int getPointFromScreenHeightRatio(Context context, float ratio) {
+        return (int) (getScreenHeight(context) * ratio);
+    }
+
     public static int dip2px(Context context, float dipValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);

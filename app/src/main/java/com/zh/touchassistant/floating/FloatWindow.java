@@ -20,7 +20,7 @@ public class FloatWindow {
     private String mTag;
 
     private View mView;
-    private boolean isShow = false;
+    private boolean isShow = true;
     private boolean isRemove = false;
     private int mX;
     private int mY;
@@ -45,15 +45,23 @@ public class FloatWindow {
         mLayoutParams = new WindowManager.LayoutParams();
         mLayoutParams.format = PixelFormat.RGBA_8888;
         mLayoutParams.flags =
+                //在此模式下，系统会将当前Window区域以外的单击事件传递给底层的Window，
+                // 当前Window区域以内的单击事件则自己处理，这个标记很重要，
+                // 一般来说都需要开启此标记，否则其他Window将无法收到单击事件
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+                        //表示Window不需要获取焦点，也不需要接收各种输入事件，最终事件会直接传递给下层的具有焦点的Window
+                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                        //忽略周围的装饰，例如状态栏。解决切换全屏模式时，位置上移的问题
+                        | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                        //允许悬浮窗范围越界到屏幕外
+                        | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
         mLayoutParams.windowAnimations = 0;
         mLayoutParams.gravity = Gravity.LEFT | Gravity.TOP;
         mLayoutParams.x = option.getX();
         mLayoutParams.y = option.getY();
         mLayoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
         mLayoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        //7.0使用新的Type类型
+        //8.0使用新的Type类型
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mLayoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         } else {
@@ -63,6 +71,9 @@ public class FloatWindow {
         //处理手势
         handleGesture();
         mWindowManager.addView(mView, mLayoutParams);
+        if (!mWindowOption.isShow()) {
+            hide();
+        }
     }
 
     private void handleGesture() {
@@ -72,8 +83,12 @@ public class FloatWindow {
                 break;
             default:
                 getView().setOnTouchListener(new View.OnTouchListener() {
-                    float lastX, lastY, changeX, changeY;
-                    int newX, newY;
+                    float lastX;
+                    float lastY;
+                    float changeX;
+                    float changeY;
+                    int newX;
+                    int newY;
 
                     @SuppressLint("ClickableViewAccessibility")
                     @Override
@@ -88,6 +103,13 @@ public class FloatWindow {
                                 cancelAnimator();
                                 break;
                             case MotionEvent.ACTION_MOVE:
+                                //移动前，回调给外面，如果外面限制不能拖动，则不拖动
+                                if (mWindowOption.getViewStateCallback() != null) {
+                                    boolean isCanDrag = mWindowOption.getViewStateCallback().onPrepareDrag();
+                                    if (!isCanDrag) {
+                                        return mClick;
+                                    }
+                                }
                                 changeX = event.getRawX() - lastX;
                                 changeY = event.getRawY() - lastY;
                                 newX = (int) (getX() + changeX);

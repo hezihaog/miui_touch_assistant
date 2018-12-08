@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.zh.touchassistant.ContextProvider;
 import com.zh.touchassistant.lock.OneScreenLockActivity;
+import com.zh.touchassistant.util.LockUtil;
 
 /**
  * <b>Package:</b> com.zh.touchassistant.floating.action <br>
@@ -23,9 +24,14 @@ public class LockAction extends AbsFloatWindowAction{
         if (context == null) {
             return;
         }
-        Intent intent = new Intent(context, OneScreenLockActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        //如果已经有权限，则不需要跳转到代理申请的Activity
+        if (LockUtil.hasLockPermission(context)) {
+            LockUtil.lockNow(context);
+        } else {
+            Intent intent = new Intent(context, OneScreenLockActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
     }
 
     @Override

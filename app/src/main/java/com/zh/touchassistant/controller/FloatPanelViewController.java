@@ -37,7 +37,6 @@ public class FloatPanelViewController extends BaseViewController {
 
     private View mPanelContainerLayout;
     private ControlPanelView mFloatControlPanelView;
-//    private FloatWindowController mFloatWindowController;
     private OnStatusChangeListener mListener;
     private FloatWindowManager mFloatWindowManager;
 
@@ -68,6 +67,7 @@ public class FloatPanelViewController extends BaseViewController {
                                         .setX(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_PANEL_X, 0))
                                         .setY(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_PANEL_Y, 0))
                                         .desktopShow(true)
+                                        .setShow(false)
                                         .setFloatMoveType(FloatMoveEnum.INACTIVE)
                                         .setViewStateCallback(new SimpleFloatWindowViewStateCallback() {
                                             @Override
