@@ -85,7 +85,6 @@ public class CoreService extends AccessibilityService {
             });
             isFirst = false;
         } else {
-            mFloatPanelVC.showFloatWindow();
             mFloatButtonVC.showFloatWindow();
         }
     }
@@ -93,9 +92,6 @@ public class CoreService extends AccessibilityService {
     private void hideFloatWindow() {
         if (mFloatButtonVC != null) {
             mFloatButtonVC.hideFloatWindow();
-        }
-        if (mFloatPanelVC != null) {
-            mFloatPanelVC.hideFloatWindow();
         }
     }
 }

@@ -65,15 +65,13 @@ public class FloatWindowSettingFragment extends Fragment {
         enableSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
-                if (isChecked) {
-                    executeWindowAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            setEnableFloatWindow(isChecked);
-                            Property.getDefault().setProperty(Const.Config.KEY_ENABLE, isChecked);
-                        }
-                    });
-                }
+                executeWindowAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        setEnableFloatWindow(isChecked);
+                        Property.getDefault().setProperty(Const.Config.KEY_ENABLE, isChecked);
+                    }
+                });
             }
         });
         customMenuTv.setOnClickListener(new View.OnClickListener() {
