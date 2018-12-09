@@ -30,7 +30,7 @@ public class FloatWindowOption {
         this.mMoveType = builder.mMoveType != null ? builder.mMoveType : FloatMoveEnum.INACTIVE;
         this.mViewStateCallback = builder.mViewStateCallback;
         this.mInterpolator = builder.mInterpolator;
-        this.mDuration = builder.mDuration <= 0 ? 300 : builder.mDuration;
+        this.mDuration = builder.mDuration <= 0 ? 450 : builder.mDuration;
         this.isShow = builder.isShow == null ? true : builder.isShow;
     }
 
