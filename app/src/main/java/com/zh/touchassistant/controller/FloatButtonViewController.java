@@ -67,7 +67,7 @@ public class FloatButtonViewController extends BaseViewController {
                                 .setY(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_BUTTON_Y,
                                         ScreenUtil.getPointFromScreenHeightRatio(getApplicationContext(), 0.3f)))
                                 .desktopShow(true)
-                                .setFloatMoveType(FloatMoveEnum.ACTIVE)
+                                .setFloatMoveType(FloatMoveEnum.SLIDE)
                                 .setViewStateCallback(new SimpleFloatWindowViewStateCallback() {
 
                                     @Override

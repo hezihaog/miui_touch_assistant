@@ -2,12 +2,12 @@ package com.zh.touchassistant.floating;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.graphics.PointF;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -33,10 +33,6 @@ public class FloatWindow {
     private final int mSlop;
     private ValueAnimator mAnimator;
     private TimeInterpolator mAnimatorInterpolator;
-    private float downX;
-    private float downY;
-    private float upX;
-    private float upY;
 
     public FloatWindow(Context context, String mTag, View view, FloatWindowOption option) {
         this.mContext = context;
@@ -92,12 +88,16 @@ public class FloatWindow {
                 break;
             default:
                 getView().setOnTouchListener(new View.OnTouchListener() {
-                    float lastX;
-                    float lastY;
-                    float changeX;
-                    float changeY;
-                    int newX;
-                    int newY;
+                    private float downX;
+                    private float downY;
+                    private float lastX;
+                    private float lastY;
+                    private float changeX;
+                    private float changeY;
+                    private int newX;
+                    private int newY;
+                    private long downTime;
+                    private boolean isCanDrag;
 
                     @SuppressLint("ClickableViewAccessibility")
                     @Override
@@ -109,6 +109,7 @@ public class FloatWindow {
                             }
                             return false;
                         } else if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            downTime = System.currentTimeMillis();
                             downX = event.getRawX();
                             downY = event.getRawY();
                             lastX = event.getRawX();
@@ -118,15 +119,17 @@ public class FloatWindow {
                         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                             //移动前，回调给外面，如果外面限制不能拖动，则不拖动
                             if (mWindowOption.getViewStateCallback() != null) {
-                                boolean isCanDrag = mWindowOption.getViewStateCallback().onPrepareDrag();
+                                isCanDrag = mWindowOption.getViewStateCallback().onPrepareDrag();
                                 if (!isCanDrag) {
                                     return true;
                                 }
                             }
                             int oldX = (int) lastX;
                             int oldY = (int) lastY;
-                            changeX = event.getRawX() - lastX;
-                            changeY = event.getRawY() - lastY;
+                            float moveX = event.getRawX();
+                            float moveY = event.getRawY();
+                            changeX = moveX - lastX;
+                            changeY = moveY - lastY;
                             newX = (int) (getX() + changeX);
                             newY = (int) (getY() + changeY);
                             updateXY(newX, newY);
@@ -137,15 +140,22 @@ public class FloatWindow {
                             lastY = event.getRawY();
                             return false;
                         } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                            upX = event.getRawX();
-                            upY = event.getRawY();
-                            //判断是点击还是移动
-                            boolean isClick = (Math.abs(upX - downX) < mSlop) || (Math.abs(upY - downY) < mSlop);
+                            long upTime = System.currentTimeMillis();
+                            //点击时间
+                            long touchDuration = upTime - downTime;
+                            float upX = event.getRawX();
+                            float upY = event.getRawY();
+                            //判断是点击还是移动，这里记录时间，避免移动过去又移动回来被当时点击的情况
+                            boolean isClick = touchDuration < 400 &&
+                                    getDistanceBetween2Points(new PointF(downX, downY), new PointF(upX, upY)) <= mSlop;
                             //是移动的情况
                             if (!isClick) {
+                                if (!isCanDrag) {
+                                    return true;
+                                }
                                 //如果是自动贴边模式
                                 if (moveType == FloatMoveEnum.SLIDE) {
-                                    final int startX = getX();
+                                    final int startX = (int) upX;
                                     int endX;
                                     boolean isLeft = ScreenUtil.isScreenLeft(getContext(), startX);
                                     if (isLeft) {
@@ -153,17 +163,34 @@ public class FloatWindow {
                                     } else {
                                         endX = ScreenUtil.getScreenWidth(getContext()) - getView().getWidth();
                                     }
-                                    mAnimator = ObjectAnimator.ofInt(startX, endX);
+                                    mAnimator = ValueAnimator.ofInt(startX, endX);
                                     mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                                         int preX = startX;
 
                                         @Override
                                         public void onAnimationUpdate(ValueAnimator animation) {
                                             int x = (int) animation.getAnimatedValue();
-                                            preX = getX();
                                             updateX(x);
                                             if (mWindowOption.getViewStateCallback() != null) {
-                                                mWindowOption.getViewStateCallback().onPositionUpdate(preX, (int) upY, x, (int) upY);
+                                                mWindowOption.getViewStateCallback().onPositionUpdate(preX, getY(), x, getY());
+                                            }
+                                            preX = x;
+                                        }
+                                    });
+                                    mAnimator.addListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationStart(Animator animation) {
+                                            super.onAnimationStart(animation);
+                                            if (mWindowOption.getViewStateCallback() != null) {
+                                                mWindowOption.getViewStateCallback().onMoveAnimStart();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            super.onAnimationEnd(animation);
+                                            if (mWindowOption.getViewStateCallback() != null) {
+                                                mWindowOption.getViewStateCallback().onMoveAnimEnd();
                                             }
                                         }
                                     });
@@ -184,6 +211,13 @@ public class FloatWindow {
                 });
                 break;
         }
+    }
+
+    /**
+     * 计算两点之间的距离
+     */
+    private static float getDistanceBetween2Points(PointF pointOne, PointF pointTwo) {
+        return (float) Math.sqrt(Math.pow(pointOne.y - pointTwo.y, 2) + Math.pow(pointOne.x - pointTwo.x, 2));
     }
 
     private void startAnimator() {

@@ -128,11 +128,6 @@ public class FloatPanelViewController extends BaseViewController {
         if (panelView.isAnimationRunning()) {
             return;
         }
-        //如果正在打开，先关闭
-        boolean isOpen = panelView.isOpen();
-        if (isOpen) {
-            panelView.toggleControlPanel();
-        }
         //判断在屏幕左边还是右边，切换位置
         boolean isLeft = ScreenUtil.isScreenLeft(getApplicationContext(), buttonX);
         panelView.setOrientation(isLeft);
