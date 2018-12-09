@@ -56,5 +56,5 @@ public interface FloatWindowViewStateCallback {
     /**
      * 当点击悬浮窗以外区域时回调
      */
-    void onClickFloatOutsideArea();
+    void onClickFloatOutsideArea(float x, float y);
 }

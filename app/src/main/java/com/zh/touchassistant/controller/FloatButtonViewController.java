@@ -88,17 +88,18 @@ public class FloatButtonViewController extends BaseViewController {
                                     }
 
                                     @Override
-                                    public void onClickFloatOutsideArea() {
-                                        super.onClickFloatOutsideArea();
+                                    public void onClickFloatOutsideArea(float x, float y) {
+                                        super.onClickFloatOutsideArea(x, y);
                                         //因为控制面板也是一个悬浮窗，点击面板的按钮时，也算点击悬浮按钮以外区域
-                                        // 所以当面板打开时，不算点击以外范围
-//                                        if (mPanelViewController.isOpen()) {
-//                                            return;
-//                                        }
-//                                        //当点击悬浮按钮区域外时，如果是打开状态，则关闭
-//                                        if (isOpen()) {
-//                                            toggle(true);
-//                                        }
+                                        // 所以当面板打开时，不算点击以外范围，并且如果点击的在面板区域内也不算
+                                        if (mPanelViewController.isOpen()
+                                                && mPanelViewController.isInPanelArea(x, y)) {
+                                            return;
+                                        }
+                                        //当点击悬浮按钮区域外时，如果是打开状态，则关闭
+                                        if (isOpen()) {
+                                            toggle(true);
+                                        }
                                     }
                                 })));
     }

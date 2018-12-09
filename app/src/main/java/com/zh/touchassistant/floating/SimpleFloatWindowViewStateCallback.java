@@ -50,7 +50,7 @@ public class SimpleFloatWindowViewStateCallback implements FloatWindowViewStateC
     }
 
     @Override
-    public void onClickFloatOutsideArea() {
+    public void onClickFloatOutsideArea(float x, float y) {
 
     }
 }

@@ -103,7 +103,8 @@ public class FloatWindow {
                             //触摸悬浮窗以外的区域时回调
                             case MotionEvent.ACTION_OUTSIDE:
                                 if (mWindowOption.getViewStateCallback() != null) {
-                                    mWindowOption.getViewStateCallback().onClickFloatOutsideArea();
+                                    mWindowOption.getViewStateCallback()
+                                            .onClickFloatOutsideArea(event.getRawX(), event.getRawY());
                                 }
                                 break;
                             case MotionEvent.ACTION_DOWN:

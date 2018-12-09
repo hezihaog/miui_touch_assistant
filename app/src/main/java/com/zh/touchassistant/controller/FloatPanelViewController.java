@@ -193,6 +193,24 @@ public class FloatPanelViewController extends BaseViewController {
                 .hide();
     }
 
+    /**
+     * 判断点是否在控制面板区域内
+     * @param x 点的x坐标
+     * @param y 点的y坐标
+     */
+    public boolean isInPanelArea(float x, float y) {
+        int[] areaPoint = new int[2];
+        View panelView = getView();
+        panelView.getLocationOnScreen(areaPoint);
+        int panelX = areaPoint[0];
+        int panelY = areaPoint[1];
+        int panelRightBound = panelView.getRight() + areaPoint[0];
+        int panelBottomBound = panelView.getBottom() + areaPoint[1];
+        //点的x大于等于面板的x，并且小于等于面板的右边界
+        //点的y大于等于面板的y，并且小于等于面板的底部边界
+        return (x >= panelX && x <= panelRightBound) && (y >= panelY && y <= panelBottomBound);
+    }
+
     public interface OnStatusChangeListener {
         /**
          * 状态改变时回调
