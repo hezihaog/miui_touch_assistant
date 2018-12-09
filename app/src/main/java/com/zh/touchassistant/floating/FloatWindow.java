@@ -50,6 +50,7 @@ public class FloatWindow {
                 // 一般来说都需要开启此标记，否则其他Window将无法收到单击事件
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                         //表示Window不需要获取焦点，也不需要接收各种输入事件，最终事件会直接传递给下层的具有焦点的Window
+                        //不加入该Flag能响应返回键回调，但是返回键一直被屏蔽，加入后又不能收到监听
                         | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                         //忽略周围的装饰，例如状态栏。解决切换全屏模式时，位置上移的问题
                         | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
