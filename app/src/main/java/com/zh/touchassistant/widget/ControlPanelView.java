@@ -13,9 +13,6 @@ import android.widget.FrameLayout;
 
 import com.zh.touchassistant.R;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 public class ControlPanelView extends FrameLayout {
     /**
      * 开关状态
@@ -152,11 +149,20 @@ public class ControlPanelView extends FrameLayout {
         int interval = (180 / count) / 4;
         for (int i = 0; i < count; i++) {
             //计算出每个子控件的位置
-            float[] point = getCoordinatePoint(mPanelRadius, mStartAngle + ((i * childAngle) + (i * interval)));
+            float[] point;
+            //因为在左边时，圆弧的开始角度是从-90度开始的，子View是顺时针从上到下排布
+            //右边时，开始角度是90度，顺时针从下往上排布，但是我们的效果是从-90度逆时针从上往下排布
+            //所以当右边时，将坐标位置和对应方向的位置调换，例如现在位置是0的子View，就要排布到4的位置，就是(count - 1) - i
+            if (!isLeft) {
+                int fixPosition = count - 1 - i;
+                point = getCoordinatePoint(mPanelRadius, mStartAngle + ((fixPosition * childAngle) + (fixPosition * interval)));
+            } else {
+                point = getCoordinatePoint(mPanelRadius, mStartAngle + ((i * childAngle) + (i * interval)));
+            }
             View childView = getChildAt(i);
             int childViewWidth = childView.getMeasuredWidth();
             int childViewHeight = childView.getMeasuredHeight();
-            int halfWidth = childViewWidth / 2;
+            //int halfWidth = childViewWidth / 2;
             int halfHeight = childViewHeight / 2;
             //布局子控件
             int pointX = (int) point[0];
@@ -307,21 +313,7 @@ public class ControlPanelView extends FrameLayout {
             this.isLeft = isLeft;
             setStartAngle();
             //右边屏幕展示时，元素是从逆时针的，将元素反转
-            //reverseChildView();
-        }
-    }
-
-    private void reverseChildView() {
-        int childCount = getChildCount();
-        ArrayList<View> childViews = new ArrayList<>();
-        for (int i = 0; i < childCount; i++) {
-            View childView = getChildAt(i);
-            childViews.add(childView);
-        }
-        Collections.reverse(childViews);
-        removeAllViews();
-        for (View childView : childViews) {
-            addView(childView);
+            requestLayout();
         }
     }
 
