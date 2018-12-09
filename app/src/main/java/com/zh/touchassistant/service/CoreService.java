@@ -58,7 +58,7 @@ public class CoreService extends AccessibilityService {
             FloatWindowManager floatWindowManager = new FloatWindowManager(this);
             //填充和浮动面板浮动按钮
             mFloatPanelVC = new FloatPanelViewController(this, floatWindowManager);
-            mFloatButtonVC = new FloatButtonViewController(this, floatWindowManager);
+            mFloatButtonVC = new FloatButtonViewController(this, floatWindowManager, mFloatPanelVC);
             mFloatButtonVC.setOnFloatButtonPositionUpdateListener(new FloatButtonViewController.OnFloatButtonPositionUpdateListener() {
                 @Override
                 public void onFloatButtonPositionUpdate(int newX, int newY) {

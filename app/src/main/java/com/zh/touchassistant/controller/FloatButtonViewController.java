@@ -32,10 +32,12 @@ public class FloatButtonViewController extends BaseViewController {
     private OnStatusChangeListener mStatusChangeListener;
     private OnFloatButtonPositionUpdateListener mButtonPositionUpdateListener;
     private FloatWindowManager mFloatWindowManager;
+    private FloatPanelViewController mPanelViewController;
 
-    public FloatButtonViewController(Context context, FloatWindowManager floatWindowManager) {
+    public FloatButtonViewController(Context context, FloatWindowManager floatWindowManager, FloatPanelViewController panelViewController) {
         super(context);
         this.mFloatWindowManager = floatWindowManager;
+        this.mPanelViewController = panelViewController;
         init();
     }
 
@@ -81,7 +83,22 @@ public class FloatButtonViewController extends BaseViewController {
 
                                     @Override
                                     public boolean onPrepareDrag() {
+                                        //准备拽托时，如果是打开状态，不能拽托
                                         return !isOpen();
+                                    }
+
+                                    @Override
+                                    public void onClickFloatOutsideArea() {
+                                        super.onClickFloatOutsideArea();
+                                        //因为控制面板也是一个悬浮窗，点击面板的按钮时，也算点击悬浮按钮以外区域
+                                        // 所以当面板打开时，不算点击以外范围
+                                        if (mPanelViewController.isOpen()) {
+                                            return;
+                                        }
+                                        //当点击悬浮按钮区域外时，如果是打开状态，则关闭
+                                        if (isOpen()) {
+                                            toggle(true);
+                                        }
                                     }
                                 })));
     }

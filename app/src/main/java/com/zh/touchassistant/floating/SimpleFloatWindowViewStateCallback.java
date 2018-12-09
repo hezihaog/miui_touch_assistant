@@ -48,4 +48,9 @@ public class SimpleFloatWindowViewStateCallback implements FloatWindowViewStateC
     public void onBackToDesktop() {
 
     }
+
+    @Override
+    public void onClickFloatOutsideArea() {
+
+    }
 }

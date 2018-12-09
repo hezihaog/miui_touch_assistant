@@ -52,4 +52,9 @@ public interface FloatWindowViewStateCallback {
      * 当返回桌面时回调
      */
     void onBackToDesktop();
+
+    /**
+     * 当点击悬浮窗以外区域时回调
+     */
+    void onClickFloatOutsideArea();
 }

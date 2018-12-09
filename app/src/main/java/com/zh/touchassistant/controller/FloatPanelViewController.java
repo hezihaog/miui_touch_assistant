@@ -172,6 +172,10 @@ public class FloatPanelViewController extends BaseViewController {
         return !mFloatControlPanelView.isAnimationRunning();
     }
 
+    public boolean isOpen() {
+        return isOpen;
+    }
+
     public void toggle() {
         mFloatControlPanelView.toggleControlPanel();
         this.isOpen = !isOpen;

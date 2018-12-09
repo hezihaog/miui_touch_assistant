@@ -55,7 +55,11 @@ public class FloatWindow {
                         //忽略周围的装饰，例如状态栏。解决切换全屏模式时，位置上移的问题
                         | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
                         //允许悬浮窗范围越界到屏幕外
-                        | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+                        | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+                        //设置该Flag，当触摸事件在悬浮窗以外区域时，发送一个MotionEvent.ACTION_OUTSIDE事件
+                        //不会接收到悬浮窗区域以外的move、up事件，只有一次ACTION_OUTSIDE事件
+                        //这里设置这个Flag，来关闭悬浮窗
+                        | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
         mLayoutParams.windowAnimations = 0;
         mLayoutParams.gravity = Gravity.LEFT | Gravity.TOP;
         mLayoutParams.x = option.getX();
@@ -96,6 +100,12 @@ public class FloatWindow {
                     public boolean onTouch(View v, MotionEvent event) {
 
                         switch (event.getAction()) {
+                            //触摸悬浮窗以外的区域时回调
+                            case MotionEvent.ACTION_OUTSIDE:
+                                if (mWindowOption.getViewStateCallback() != null) {
+                                    mWindowOption.getViewStateCallback().onClickFloatOutsideArea();
+                                }
+                                break;
                             case MotionEvent.ACTION_DOWN:
                                 downX = event.getRawX();
                                 downY = event.getRawY();
