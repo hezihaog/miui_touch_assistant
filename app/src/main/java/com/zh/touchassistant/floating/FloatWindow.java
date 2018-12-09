@@ -2,6 +2,7 @@ package com.zh.touchassistant.floating;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
+
+import com.zh.touchassistant.util.ScreenUtil;
 
 public class FloatWindow {
     private Context mContext;
@@ -34,7 +37,6 @@ public class FloatWindow {
     private float downY;
     private float upX;
     private float upY;
-    private boolean mClick = false;
 
     public FloatWindow(Context context, String mTag, View view, FloatWindowOption option) {
         this.mContext = context;
@@ -63,7 +65,9 @@ public class FloatWindow {
         mLayoutParams.windowAnimations = 0;
         mLayoutParams.gravity = Gravity.LEFT | Gravity.TOP;
         mLayoutParams.x = option.getX();
+        this.mX = option.getX();
         mLayoutParams.y = option.getY();
+        this.mY = option.getY();
         mLayoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
         mLayoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
         //8.0使用新的Type类型
@@ -98,52 +102,84 @@ public class FloatWindow {
                     @SuppressLint("ClickableViewAccessibility")
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-
-                        switch (event.getAction()) {
-                            //触摸悬浮窗以外的区域时回调
-                            case MotionEvent.ACTION_OUTSIDE:
-                                if (mWindowOption.getViewStateCallback() != null) {
-                                    mWindowOption.getViewStateCallback()
-                                            .onClickFloatOutsideArea(event.getRawX(), event.getRawY());
+                        if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                            if (mWindowOption.getViewStateCallback() != null) {
+                                mWindowOption.getViewStateCallback()
+                                        .onClickFloatOutsideArea(event.getRawX(), event.getRawY());
+                            }
+                            return false;
+                        } else if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            downX = event.getRawX();
+                            downY = event.getRawY();
+                            lastX = event.getRawX();
+                            lastY = event.getRawY();
+                            cancelAnimator();
+                            return false;
+                        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                            //移动前，回调给外面，如果外面限制不能拖动，则不拖动
+                            if (mWindowOption.getViewStateCallback() != null) {
+                                boolean isCanDrag = mWindowOption.getViewStateCallback().onPrepareDrag();
+                                if (!isCanDrag) {
+                                    return true;
                                 }
-                                break;
-                            case MotionEvent.ACTION_DOWN:
-                                downX = event.getRawX();
-                                downY = event.getRawY();
-                                lastX = event.getRawX();
-                                lastY = event.getRawY();
-                                cancelAnimator();
-                                break;
-                            case MotionEvent.ACTION_MOVE:
-                                //移动前，回调给外面，如果外面限制不能拖动，则不拖动
-                                if (mWindowOption.getViewStateCallback() != null) {
-                                    boolean isCanDrag = mWindowOption.getViewStateCallback().onPrepareDrag();
-                                    if (!isCanDrag) {
-                                        return mClick;
+                            }
+                            int oldX = (int) lastX;
+                            int oldY = (int) lastY;
+                            changeX = event.getRawX() - lastX;
+                            changeY = event.getRawY() - lastY;
+                            newX = (int) (getX() + changeX);
+                            newY = (int) (getY() + changeY);
+                            updateXY(newX, newY);
+                            if (mWindowOption.getViewStateCallback() != null) {
+                                mWindowOption.getViewStateCallback().onPositionUpdate(oldX, oldY, newX, newY);
+                            }
+                            lastX = event.getRawX();
+                            lastY = event.getRawY();
+                            return false;
+                        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                            upX = event.getRawX();
+                            upY = event.getRawY();
+                            //判断是点击还是移动
+                            boolean isClick = (Math.abs(upX - downX) < mSlop) || (Math.abs(upY - downY) < mSlop);
+                            //是移动的情况
+                            if (!isClick) {
+                                //如果是自动贴边模式
+                                if (moveType == FloatMoveEnum.SLIDE) {
+                                    final int startX = getX();
+                                    int endX;
+                                    boolean isLeft = ScreenUtil.isScreenLeft(getContext(), startX);
+                                    if (isLeft) {
+                                        endX = 0;
+                                    } else {
+                                        endX = ScreenUtil.getScreenWidth(getContext()) - getView().getWidth();
                                     }
+                                    mAnimator = ObjectAnimator.ofInt(startX, endX);
+                                    mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                        int preX = startX;
+
+                                        @Override
+                                        public void onAnimationUpdate(ValueAnimator animation) {
+                                            int x = (int) animation.getAnimatedValue();
+                                            preX = getX();
+                                            updateX(x);
+                                            if (mWindowOption.getViewStateCallback() != null) {
+                                                mWindowOption.getViewStateCallback().onPositionUpdate(preX, (int) upY, x, (int) upY);
+                                            }
+                                        }
+                                    });
+                                    startAnimator();
+                                    //如果是点击，返回false才能让OnClick执行，移动则返回true
+                                    return true;
+                                } else {
+                                    //其他模式
+                                    return true;
                                 }
-                                int oldX = (int) lastX;
-                                int oldY = (int) lastY;
-                                changeX = event.getRawX() - lastX;
-                                changeY = event.getRawY() - lastY;
-                                newX = (int) (getX() + changeX);
-                                newY = (int) (getY() + changeY);
-                                updateXY(newX, newY);
-                                if (mWindowOption.getViewStateCallback() != null) {
-                                    mWindowOption.getViewStateCallback().onPositionUpdate(oldX, oldY, newX, newY);
-                                }
-                                lastX = event.getRawX();
-                                lastY = event.getRawY();
-                                break;
-                            case MotionEvent.ACTION_UP:
-                                upX = event.getRawX();
-                                upY = event.getRawY();
-                                mClick = (Math.abs(upX - downX) > mSlop) || (Math.abs(upY - downY) > mSlop);
-                                break;
-                            default:
-                                break;
+                            } else {
+                                //点击的情况
+                                return false;
+                            }
                         }
-                        return mClick;
+                        return true;
                     }
                 });
                 break;

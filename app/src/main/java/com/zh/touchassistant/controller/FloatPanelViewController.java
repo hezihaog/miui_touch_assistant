@@ -134,24 +134,15 @@ public class FloatPanelViewController extends BaseViewController {
             panelView.toggleControlPanel();
         }
         //判断在屏幕左边还是右边，切换位置
-        int halfScreenWidth = ScreenUtil.getScreenWidth(getApplicationContext()) / 2;
-        boolean isLeft;
-        if (buttonX < halfScreenWidth) {
-            //左边
-            isLeft = true;
-        } else {
-            //右边
-            isLeft = false;
-        }
+        boolean isLeft = ScreenUtil.isScreenLeft(getApplicationContext(), buttonX);
         panelView.setOrientation(isLeft);
         Property.getDefault().setProperty(Const.Config.KEY_FLOAT_WINDOW_IS_LEFT, isLeft);
         //更新浮窗
-        FloatWindow floatWindow = mFloatWindowManager.getFloatWindow(TAG_PANEL);
-        int[] result = mFloatControlPanelView.followButtonPosition(buttonX, buttonY);
+        FloatWindow panelWindow = mFloatWindowManager.getFloatWindow(TAG_PANEL);
+        int[] result = panelView.followButtonPosition(buttonX, buttonY);
         int fixX = result[0];
         int fixY = result[1];
-        floatWindow.updateX(fixX);
-        floatWindow.updateY(fixY);
+        panelWindow.updateXY(fixX, fixY);
         //记录位置
         Property.getDefault().setProperty(Const.Config.KEY_FLOAT_PANEL_X, fixX);
         Property.getDefault().setProperty(Const.Config.KEY_FLOAT_PANEL_Y, fixY);

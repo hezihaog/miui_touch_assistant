@@ -324,11 +324,10 @@ public class ControlPanelView extends FrameLayout {
         int[] result = new int[2];
         if (isLeft) {
             result[0] = x;
-            result[1] = y - (mHeight / 2) + mChildRadius;
         } else {
             result[0] = x - mWidth + (mChildRadius * 2);
-            result[1] = y - (mHeight / 2) + mChildRadius;
         }
+        result[1] = y - (mHeight / 2) + mChildRadius;
         return result;
     }
 

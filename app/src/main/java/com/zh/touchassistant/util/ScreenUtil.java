@@ -42,6 +42,15 @@ public class ScreenUtil {
         return (int) (getScreenWidth(context) * ratio);
     }
 
+    /**
+     * 判断坐标点是否在屏幕左边
+     * @param x 点的x坐标
+     */
+    public static boolean isScreenLeft(Context context, int x) {
+        int halfScreenWidth = getScreenWidth(context) / 2;
+        return x <= halfScreenWidth;
+    }
+
     public static int getPointFromScreenHeightRatio(Context context, float ratio) {
         return (int) (getScreenHeight(context) * ratio);
     }
