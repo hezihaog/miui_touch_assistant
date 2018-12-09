@@ -2,8 +2,10 @@ package com.zh.touchassistant.floating.action;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.zh.touchassistant.ContextProvider;
+import com.zh.touchassistant.R;
 import com.zh.touchassistant.lock.OneScreenLockActivity;
 import com.zh.touchassistant.util.LockUtil;
 
@@ -14,7 +16,7 @@ import com.zh.touchassistant.util.LockUtil;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class LockAction extends AbsFloatWindowAction{
+public class LockAction extends AbsFloatWindowAction {
 
     @Override
     public void onAction() {
@@ -31,6 +33,7 @@ public class LockAction extends AbsFloatWindowAction{
             Intent intent = new Intent(context, OneScreenLockActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
+            Toast.makeText(context, "请开启" + context.getResources().getString(R.string.app_name) + "辅助管理器", Toast.LENGTH_SHORT).show();
         }
     }
 
