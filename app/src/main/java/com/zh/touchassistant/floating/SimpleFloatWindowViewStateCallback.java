@@ -10,7 +10,7 @@ package com.zh.touchassistant.floating;
 public class SimpleFloatWindowViewStateCallback implements FloatWindowViewStateCallback {
 
     @Override
-    public void onPositionUpdate(int x, int y) {
+    public void onPositionUpdate(int oldX, int oldY, int newX, int newY) {
 
     }
 

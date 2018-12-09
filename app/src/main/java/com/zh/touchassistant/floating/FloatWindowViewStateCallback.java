@@ -11,10 +11,12 @@ public interface FloatWindowViewStateCallback {
     /**
      * 当悬浮窗位置更新时回调
      *
-     * @param x x坐标
-     * @param y y坐标
+     * @param oldX 上一次的x坐标
+     * @param oldY 上一次的y坐标
+     * @param newX 新的x坐标
+     * @param newY 新的y坐标
      */
-    void onPositionUpdate(int x, int y);
+    void onPositionUpdate(int oldX, int oldY, int newX, int newY);
 
     /**
      * 当显示时回调

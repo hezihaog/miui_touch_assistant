@@ -122,13 +122,15 @@ public class FloatWindow {
                                         return mClick;
                                     }
                                 }
+                                int oldX = (int) lastX;
+                                int oldY = (int) lastY;
                                 changeX = event.getRawX() - lastX;
                                 changeY = event.getRawY() - lastY;
                                 newX = (int) (getX() + changeX);
                                 newY = (int) (getY() + changeY);
                                 updateXY(newX, newY);
                                 if (mWindowOption.getViewStateCallback() != null) {
-                                    mWindowOption.getViewStateCallback().onPositionUpdate(newX, newY);
+                                    mWindowOption.getViewStateCallback().onPositionUpdate(oldX, oldY, newX, newY);
                                 }
                                 lastX = event.getRawX();
                                 lastY = event.getRawY();

@@ -71,13 +71,13 @@ public class FloatButtonViewController extends BaseViewController {
                                 .setViewStateCallback(new SimpleFloatWindowViewStateCallback() {
 
                                     @Override
-                                    public void onPositionUpdate(int x, int y) {
-                                        super.onPositionUpdate(x, y);
-                                        Property.getDefault().setProperty(Const.Config.KEY_FLOAT_BUTTON_X, x);
-                                        Property.getDefault().setProperty(Const.Config.KEY_FLOAT_BUTTON_Y, y);
+                                    public void onPositionUpdate(int oldX, int oldY, int newX, int newY) {
+                                        super.onPositionUpdate(oldX, oldY, newX, newY);
+                                        Property.getDefault().setProperty(Const.Config.KEY_FLOAT_BUTTON_X, newX);
+                                        Property.getDefault().setProperty(Const.Config.KEY_FLOAT_BUTTON_Y, newY);
                                         //让面板跟随按钮
                                         if (mButtonPositionUpdateListener != null) {
-                                            mButtonPositionUpdateListener.onFloatButtonPositionUpdate(x, y);
+                                            mButtonPositionUpdateListener.onFloatButtonPositionUpdate(newX, newY);
                                         }
                                     }
 

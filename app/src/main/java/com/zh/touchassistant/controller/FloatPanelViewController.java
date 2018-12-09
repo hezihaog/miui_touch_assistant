@@ -11,7 +11,6 @@ import com.zh.touchassistant.floating.FloatMoveEnum;
 import com.zh.touchassistant.floating.FloatWindow;
 import com.zh.touchassistant.floating.FloatWindowManager;
 import com.zh.touchassistant.floating.FloatWindowOption;
-import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
 import com.zh.touchassistant.floating.action.IFloatWindowAction;
 import com.zh.touchassistant.model.FloatWindowActionModel;
 import com.zh.touchassistant.setting.FloatWindowSetting;
@@ -68,13 +67,7 @@ public class FloatPanelViewController extends BaseViewController {
                                         .setY(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_PANEL_Y, 0))
                                         .desktopShow(true)
                                         .setShow(false)
-                                        .setFloatMoveType(FloatMoveEnum.INACTIVE)
-                                        .setViewStateCallback(new SimpleFloatWindowViewStateCallback() {
-                                            @Override
-                                            public void onShow() {
-                                                super.onShow();
-                                            }
-                                        })));
+                                        .setFloatMoveType(FloatMoveEnum.INACTIVE)));
     }
 
     private void initListener() {
@@ -195,6 +188,7 @@ public class FloatPanelViewController extends BaseViewController {
 
     /**
      * 判断点是否在控制面板区域内
+     *
      * @param x 点的x坐标
      * @param y 点的y坐标
      */
