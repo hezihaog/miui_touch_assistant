@@ -69,8 +69,8 @@ public class Property {
         return instance;
     }
 
-    private void apply(SharedPreferences.Editor editor) {
-        editor.apply();
+    private void commit(SharedPreferences.Editor editor) {
+        editor.commit();
     }
 
     private Context context() {
@@ -84,31 +84,31 @@ public class Property {
     public void setProperty(String key, int value) {
         SharedPreferences.Editor editor = getPreferences().edit();
         editor.putInt(key, value);
-        apply(editor);
+        commit(editor);
     }
 
     public void setProperty(String key, boolean value) {
         SharedPreferences.Editor editor = getPreferences().edit();
         editor.putBoolean(key, value);
-        apply(editor);
+        commit(editor);
     }
 
     public void setProperty(String key, String value) {
         SharedPreferences.Editor editor = getPreferences().edit();
         editor.putString(key, value);
-        apply(editor);
+        commit(editor);
     }
 
     public void setProperty(String key, long value) {
         SharedPreferences.Editor editor = getPreferences().edit();
         editor.putLong(key, value);
-        apply(editor);
+        commit(editor);
     }
 
     public void setProperty(String key, float value) {
         SharedPreferences.Editor editor = getPreferences().edit();
         editor.putFloat(key, value);
-        apply(editor);
+        commit(editor);
     }
 
     public void setProperty(ArrayMap<String, Object> map) {
@@ -128,13 +128,13 @@ public class Property {
                 editor.putLong(key, ((Long) value).longValue());
             }
         }
-        apply(editor);
+        commit(editor);
     }
 
     public void removeProperty(String key) {
         SharedPreferences.Editor editor = getPreferences().edit();
         editor.remove(key);
-        apply(editor);
+        commit(editor);
     }
 
     public boolean getProperty(String key, boolean defValue) {

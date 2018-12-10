@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 
 import com.zh.touchassistant.Const;
 import com.zh.touchassistant.R;
+import com.zh.touchassistant.event.UpdatePanelActionEvent;
 import com.zh.touchassistant.floating.FloatMoveEnum;
 import com.zh.touchassistant.floating.FloatWindow;
 import com.zh.touchassistant.floating.FloatWindowManager;
@@ -18,6 +19,10 @@ import com.zh.touchassistant.util.Property;
 import com.zh.touchassistant.util.ScreenUtil;
 import com.zh.touchassistant.widget.ControlPanelView;
 import com.zh.touchassistant.widget.FloatActionButton;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,8 +52,19 @@ public class FloatPanelViewController extends BaseViewController {
 
     private void init() {
         mPanelContainerLayout = getLayoutInflater().inflate(R.layout.view_float_control_panel, null);
+        mPanelContainerLayout.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                EventBus.getDefault().register(FloatPanelViewController.this);
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                EventBus.getDefault().unregister(FloatPanelViewController.this);
+            }
+        });
         mFloatControlPanelView = mPanelContainerLayout.findViewById(R.id.control_panel_view);
-        //根据数据添加子View
+        //根据数据添加子View，并先隐藏
         addActionButton();
         //恢复上一次保存的位置
         mFloatControlPanelView.setOrientation(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_WINDOW_IS_LEFT, false));
@@ -112,6 +128,13 @@ public class FloatPanelViewController extends BaseViewController {
             actionView.setVisibility(View.GONE);
             mFloatControlPanelView.addView(actionView, params);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUpdatePanelActionEvent(UpdatePanelActionEvent event) {
+        //更新Action数据，先移除，再添加
+        mFloatControlPanelView.removeAllViews();
+        addActionButton();
     }
 
     @Override
