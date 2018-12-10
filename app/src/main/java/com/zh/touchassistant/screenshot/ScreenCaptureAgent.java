@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
-import android.graphics.Point;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.Image;
@@ -18,9 +17,6 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
-import android.util.DisplayMetrics;
-import android.view.Display;
-import android.view.WindowManager;
 
 import com.zh.touchassistant.util.FileUtil;
 import com.zh.touchassistant.util.ScreenUtil;
@@ -153,30 +149,20 @@ public class ScreenCaptureAgent {
 
         @Override
         protected Bitmap doInBackground(Image... params) {
-            Display display = ((WindowManager) mActivityWeakReference.get().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-            DisplayMetrics metrics = new DisplayMetrics();
-            display.getRealMetrics(metrics);
-            Point point = new Point();
-            display.getRealSize(point);
-            int width = point.x;
-            int height = point.y;
+            //Image转Bitmap
             Image image = params[0];
-            //Image转换成Bitmap
+            int width = image.getWidth();
+            int height = image.getHeight();
             final Image.Plane[] planes = image.getPlanes();
             final ByteBuffer buffer = planes[0].getBuffer();
-            //Image中的行宽，大于Bitmap所设的真实行宽
+            //每个像素的间距
+            int pixelStride = planes[0].getPixelStride();
+            //总的间距
             int rowStride = planes[0].getRowStride();
-            byte[] oldBuffer = new byte[rowStride * height];
-            buffer.get(oldBuffer);
-            byte[] newBuffer = new byte[width * 4 * height];
-            Bitmap bitmap = Bitmap.createBitmap(metrics, width, height, Bitmap.Config.ARGB_8888);
-            for (int i = 0; i < height; ++i) {
-                //跳过多余的行宽部分，关键代码
-                System.arraycopy(oldBuffer, i * rowStride, newBuffer, i * width * 4, width * 4);
-            }
-            //用byte数组填充bitmap，关键代码
-            bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(newBuffer));
-            image.close();
+            int rowPadding = rowStride - pixelStride * width;
+            Bitmap bitmap = Bitmap.createBitmap(width + rowPadding / pixelStride, height, Bitmap.Config.ARGB_8888);
+            bitmap.copyPixelsFromBuffer(buffer);
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height);
             File fileImage = null;
             if (bitmap != null) {
                 try {
