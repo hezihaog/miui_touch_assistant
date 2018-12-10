@@ -100,6 +100,11 @@ public class FloatWindowSetting {
     }
 
     public void saveNewActions(ArrayList<FloatWindowActionModel> newActions) {
+        //更新内存
+        ArrayList<FloatWindowActionModel> actionModels = getActionModels();
+        actionModels.clear();
+        actionModels.addAll(newActions);
+        //更新本地
         FloatWindowActionListModel listModel = new FloatWindowActionListModel();
         listModel.setModels(newActions);
         String json = GsonUtils.toJson(listModel);

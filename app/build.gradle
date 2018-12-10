@@ -11,6 +11,10 @@ android {
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+
+        ndk {
+            abiFilters 'armeabi'
+        }
     }
 
     buildTypes {
@@ -45,4 +49,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     //EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
+    //MMKV
+    implementation 'com.tencent:mmkv-static:1.0.14'
 }
