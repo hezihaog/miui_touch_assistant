@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.zh.touchassistant.AssistantApp;
+import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.controller.FloatButtonViewController;
 import com.zh.touchassistant.controller.FloatPanelViewController;
 import com.zh.touchassistant.floating.FloatWindowManager;
@@ -55,6 +56,7 @@ public class CoreService extends AccessibilityService {
 
     private void showFloatWindow() {
         if (isFirst) {
+            AssistantApp assistantApp = (AssistantApp) getApplication();
             FloatWindowManager floatWindowManager = new FloatWindowManager(this);
             //填充和浮动面板浮动按钮
             mFloatPanelVC = new FloatPanelViewController(this, floatWindowManager);
@@ -73,14 +75,20 @@ public class CoreService extends AccessibilityService {
 
                 @Override
                 public void onStatusChange(int newStatus) {
-                    mFloatPanelVC.toggle();
                 }
             });
-            mFloatPanelVC.setOnStatusChangeListener(new FloatPanelViewController.OnStatusChangeListener() {
+            FloatViewLiveData floatViewLiveData = assistantApp.getFloatViewLiveData();
+            floatViewLiveData.addOnDataChangeCallback(new FloatViewLiveData.OnDataChangeCallback() {
                 @Override
-                public void onStatusChange(boolean isOpen) {
-                    //点击子按钮，不需要让悬浮按钮再通知回调，不然又回调回来
-                    mFloatButtonVC.toggle(false);
+                public void onDataChange(boolean isOpen) {
+                    //这里统一做UI切换
+                    if (isOpen) {
+                        mFloatButtonVC.open();
+                        mFloatPanelVC.open();
+                    } else {
+                        mFloatButtonVC.off();
+                        mFloatPanelVC.off();
+                    }
                 }
             });
             isFirst = false;

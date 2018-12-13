@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.util.ArrayMap;
 
-import com.tencent.mmkv.MMKV;
 import com.zh.touchassistant.ContextProvider;
 
 import java.util.Map;
@@ -29,7 +28,6 @@ public class Property {
     private Property(PropertyBuilder builder) {
         this.fileName = builder.fileName;
         this.applicationContext = ContextProvider.get().getContext().getApplicationContext();
-        MMKV.initialize(applicationContext);
     }
 
     public static class PropertyBuilder {
@@ -80,7 +78,7 @@ public class Property {
     }
 
     public SharedPreferences getPreferences() {
-        return MMKV.defaultMMKV();
+        return context().getSharedPreferences(defaultInstance.fileName, Context.MODE_MULTI_PROCESS);
     }
 
     public void setProperty(String key, int value) {

@@ -16,6 +16,7 @@ import com.zh.touchassistant.util.Property;
  */
 public class AssistantApp extends Application {
     private AccessibilityHelper mAccessibilityHelper;
+    private FloatViewLiveData mFloatViewLiveData;
 
     @Override
     public void onCreate() {
@@ -24,6 +25,11 @@ public class AssistantApp extends Application {
         FloatWindowSetting
                 .getInstance()
                 .initFloatWindowActions();
+        mFloatViewLiveData = new FloatViewLiveData();
+    }
+
+    public FloatViewLiveData getFloatViewLiveData() {
+        return mFloatViewLiveData;
     }
 
     public void setAccessibility(AccessibilityService service) {

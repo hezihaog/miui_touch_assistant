@@ -191,16 +191,18 @@ public class ControlPanelView extends FrameLayout {
         return point;
     }
 
-    /**
-     * 切换控件开关状态
-     */
-    public void toggleControlPanel() {
+    public void offNow() {
         if (isOpen) {
-            off();
-        } else {
-            open();
+            startOffAnimation();
+            isOpen = !isOpen;
         }
-        isOpen = !isOpen;
+    }
+
+    public void openNow() {
+        if (!isOpen) {
+            startOpenAnimation();
+            isOpen = !isOpen;
+        }
     }
 
     public boolean isOpen() {
@@ -220,7 +222,7 @@ public class ControlPanelView extends FrameLayout {
     /**
      * 打开动画
      */
-    private void open() {
+    private void startOpenAnimation() {
         if (mOpenAnimator != null && mOpenAnimator.isRunning()) {
             return;
         }
@@ -267,7 +269,7 @@ public class ControlPanelView extends FrameLayout {
     /**
      * 关闭动画
      */
-    private void off() {
+    private void startOffAnimation() {
         if (mOffAnimator != null && mOffAnimator.isRunning()) {
             return;
         }

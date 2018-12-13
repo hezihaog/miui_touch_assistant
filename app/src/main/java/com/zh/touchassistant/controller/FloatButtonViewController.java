@@ -3,7 +3,9 @@ package com.zh.touchassistant.controller;
 import android.content.Context;
 import android.view.View;
 
+import com.zh.touchassistant.AssistantApp;
 import com.zh.touchassistant.Const;
+import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.floating.FloatMoveEnum;
 import com.zh.touchassistant.floating.FloatWindowManager;
@@ -51,7 +53,13 @@ public class FloatButtonViewController extends BaseViewController {
         mFloatButtonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggle(true);
+                AssistantApp assistantApp = (AssistantApp) getApplicationContext();
+                FloatViewLiveData floatViewLiveData = assistantApp.getFloatViewLiveData();
+                if (floatViewLiveData.isOpen()) {
+                    floatViewLiveData.setValue(false);
+                } else {
+                    floatViewLiveData.setValue(true);
+                }
             }
         });
     }
@@ -98,7 +106,7 @@ public class FloatButtonViewController extends BaseViewController {
                                         }
                                         //当点击悬浮按钮区域外时，如果是打开状态，则关闭
                                         if (isOpen()) {
-                                            toggle(true);
+                                            toggle();
                                         }
                                     }
                                 })));
@@ -117,11 +125,11 @@ public class FloatButtonViewController extends BaseViewController {
         return mFloatButtonView;
     }
 
-    public void toggle(boolean needCallListener) {
+    public void toggle() {
         if (mCurrentStatus == STATUS_OPEN) {
-            off(needCallListener);
+            off();
         } else {
-            open(needCallListener);
+            open();
         }
     }
 
@@ -141,15 +149,13 @@ public class FloatButtonViewController extends BaseViewController {
                 .hide();
     }
 
-    private void open(boolean needCallListener) {
+    public void open() {
         if (this.mCurrentStatus != STATUS_OPEN) {
-            if (needCallListener) {
-                if (mStatusChangeListener != null) {
-                    //不能改变则打断
-                    boolean isCanChange = mStatusChangeListener.onPrepareStatusChange(STATUS_OPEN);
-                    if (!isCanChange) {
-                        return;
-                    }
+            if (mStatusChangeListener != null) {
+                //不能改变则打断
+                boolean isCanChange = mStatusChangeListener.onPrepareStatusChange(STATUS_OPEN);
+                if (!isCanChange) {
+                    return;
                 }
             }
             mFloatButtonView.setSelected(true);
@@ -160,15 +166,13 @@ public class FloatButtonViewController extends BaseViewController {
                     .scaleY(0.8f)
                     .alpha(1.0f)
                     .start();
-            if (needCallListener) {
-                if (mStatusChangeListener != null) {
-                    mStatusChangeListener.onStatusChange(this.mCurrentStatus);
-                }
+            if (mStatusChangeListener != null) {
+                mStatusChangeListener.onStatusChange(this.mCurrentStatus);
             }
         }
     }
 
-    private void off(boolean needCallListener) {
+    public void off() {
         if (this.mCurrentStatus != STATUS_OFF) {
             mFloatButtonView.setSelected(false);
             this.mCurrentStatus = STATUS_OFF;
@@ -178,10 +182,8 @@ public class FloatButtonViewController extends BaseViewController {
                     .scaleY(1f)
                     .alpha(0.2f)
                     .start();
-            if (needCallListener) {
-                if (mStatusChangeListener != null) {
-                    mStatusChangeListener.onStatusChange(this.mCurrentStatus);
-                }
+            if (mStatusChangeListener != null) {
+                mStatusChangeListener.onStatusChange(this.mCurrentStatus);
             }
         }
     }

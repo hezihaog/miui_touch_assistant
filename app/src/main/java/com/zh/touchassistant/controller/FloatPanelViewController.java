@@ -1,13 +1,18 @@
 package com.zh.touchassistant.controller;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.zh.touchassistant.AssistantApp;
 import com.zh.touchassistant.Const;
+import com.zh.touchassistant.ContextProvider;
+import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.R;
-import com.zh.touchassistant.event.UpdatePanelActionEvent;
 import com.zh.touchassistant.floating.FloatMoveEnum;
 import com.zh.touchassistant.floating.FloatWindow;
 import com.zh.touchassistant.floating.FloatWindowManager;
@@ -19,10 +24,6 @@ import com.zh.touchassistant.util.Property;
 import com.zh.touchassistant.util.ScreenUtil;
 import com.zh.touchassistant.widget.ControlPanelView;
 import com.zh.touchassistant.widget.FloatActionButton;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +42,6 @@ public class FloatPanelViewController extends BaseViewController {
 
     private View mPanelContainerLayout;
     private ControlPanelView mFloatControlPanelView;
-    private OnStatusChangeListener mListener;
     private FloatWindowManager mFloatWindowManager;
 
     public FloatPanelViewController(Context context, FloatWindowManager floatWindowManager) {
@@ -50,17 +50,28 @@ public class FloatPanelViewController extends BaseViewController {
         init();
     }
 
+    private BroadcastReceiver mUpdatePanleActionReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //更新Action数据，先移除，再添加
+            mFloatControlPanelView.removeAllViews();
+            addActionButton();
+        }
+    };
+
     private void init() {
         mPanelContainerLayout = getLayoutInflater().inflate(R.layout.view_float_control_panel, null);
         mPanelContainerLayout.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View v) {
-                EventBus.getDefault().register(FloatPanelViewController.this);
+                IntentFilter filter = new IntentFilter();
+                filter.addAction(Const.Action.ACTION_UPDATE_PANEL_ACTIONS);
+                ContextProvider.get().getContext().registerReceiver(mUpdatePanleActionReceiver, filter);
             }
 
             @Override
             public void onViewDetachedFromWindow(View v) {
-                EventBus.getDefault().unregister(FloatPanelViewController.this);
+                ContextProvider.get().getContext().unregisterReceiver(mUpdatePanleActionReceiver);
             }
         });
         mFloatControlPanelView = mPanelContainerLayout.findViewById(R.id.control_panel_view);
@@ -118,9 +129,12 @@ public class FloatPanelViewController extends BaseViewController {
             actionView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mFloatControlPanelView.toggleControlPanel();
-                    if (mListener != null) {
-                        mListener.onStatusChange(isOpen);
+                    AssistantApp assistantApp = (AssistantApp) getApplicationContext();
+                    FloatViewLiveData floatViewLiveData = assistantApp.getFloatViewLiveData();
+                    if (floatViewLiveData.isOpen()) {
+                        floatViewLiveData.setValue(false);
+                    } else {
+                        floatViewLiveData.setValue(true);
                     }
                     entry.getValue().onAction();
                 }
@@ -128,13 +142,6 @@ public class FloatPanelViewController extends BaseViewController {
             actionView.setVisibility(View.GONE);
             mFloatControlPanelView.addView(actionView, params);
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUpdatePanelActionEvent(UpdatePanelActionEvent event) {
-        //更新Action数据，先移除，再添加
-        mFloatControlPanelView.removeAllViews();
-        addActionButton();
     }
 
     @Override
@@ -178,9 +185,18 @@ public class FloatPanelViewController extends BaseViewController {
         return isOpen;
     }
 
-    public void toggle() {
-        mFloatControlPanelView.toggleControlPanel();
-        this.isOpen = !isOpen;
+    public void open() {
+        if (!mFloatControlPanelView.isOpen()) {
+            mFloatControlPanelView.openNow();
+            this.isOpen = !isOpen;
+        }
+    }
+
+    public void off() {
+        if (mFloatControlPanelView.isOpen()) {
+            mFloatControlPanelView.offNow();
+            this.isOpen = !isOpen;
+        }
     }
 
     public void showFloatWindow() {
@@ -212,18 +228,5 @@ public class FloatPanelViewController extends BaseViewController {
         //点的x大于等于面板的x，并且小于等于面板的右边界
         //点的y大于等于面板的y，并且小于等于面板的底部边界
         return (x >= panelX && x <= panelRightBound) && (y >= panelY && y <= panelBottomBound);
-    }
-
-    public interface OnStatusChangeListener {
-        /**
-         * 状态改变时回调
-         *
-         * @param isOpen 是否打开
-         */
-        void onStatusChange(boolean isOpen);
-    }
-
-    public void setOnStatusChangeListener(OnStatusChangeListener listener) {
-        this.mListener = listener;
     }
 }

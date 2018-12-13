@@ -1,10 +1,11 @@
 package com.zh.touchassistant.setting;
 
+import android.content.Intent;
 import android.text.TextUtils;
 
 import com.zh.touchassistant.Const;
+import com.zh.touchassistant.ContextProvider;
 import com.zh.touchassistant.R;
-import com.zh.touchassistant.event.UpdatePanelActionEvent;
 import com.zh.touchassistant.floating.action.BackAction;
 import com.zh.touchassistant.floating.action.HomeAction;
 import com.zh.touchassistant.floating.action.IFloatWindowAction;
@@ -15,8 +16,6 @@ import com.zh.touchassistant.model.FloatWindowActionListModel;
 import com.zh.touchassistant.model.FloatWindowActionModel;
 import com.zh.touchassistant.util.GsonUtils;
 import com.zh.touchassistant.util.Property;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -110,7 +109,9 @@ public class FloatWindowSetting {
         String json = GsonUtils.toJson(listModel);
         Property.getDefault().setProperty(Const.Config.KEY_CUSTOM_MENU_DATA, json);
         //通知更新
-        EventBus.getDefault().post(new UpdatePanelActionEvent());
+        ContextProvider.get()
+                .getContext()
+                .sendBroadcast(new Intent(Const.Action.ACTION_UPDATE_PANEL_ACTIONS));
     }
 
     public LinkedHashMap<Integer, IFloatWindowAction> getActionMap() {
