@@ -35,7 +35,7 @@ public class SimpleFloatWindowViewStateCallback implements FloatWindowViewStateC
     }
 
     @Override
-    public void onDragging() {
+    public void onDragging(float moveX, float moveY) {
 
     }
 
@@ -45,7 +45,7 @@ public class SimpleFloatWindowViewStateCallback implements FloatWindowViewStateC
     }
 
     @Override
-    public boolean isCanDrag() {
+    public boolean isCanDrag(float moveX, float moveY) {
         return true;
     }
 

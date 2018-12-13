@@ -8,6 +8,7 @@ import com.zh.touchassistant.Const;
 import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.floating.FloatMoveEnum;
+import com.zh.touchassistant.floating.FloatWindow;
 import com.zh.touchassistant.floating.FloatWindowManager;
 import com.zh.touchassistant.floating.FloatWindowOption;
 import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
@@ -98,27 +99,26 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                                     }
 
                                     @Override
-                                    public void onDragging() {
-                                        super.onDragging();
+                                    public void onDragging(float moveX, float moveY) {
+                                        super.onDragging(moveX, moveY);
                                         //将Alpha调整比较容易可见的值
-                                        getView().setAlpha(0.8f);
+                                        getView().setAlpha(Const.Config.ALPHA_SHOW);
                                     }
 
                                     @Override
-                                    public void onDragFinish() {
-                                        super.onDragFinish();
-                                        //拽托结束后，设置回Alpha为0.2f
-                                        getView()
-                                                .animate()
-                                                .alpha(0.2f)
-                                                .setDuration(400)
-                                                .start();
-                                    }
-
-                                    @Override
-                                    public boolean isCanDrag() {
+                                    public boolean isCanDrag(float moveX, float moveY) {
                                         //准备拽托时，如果是打开状态，不能拽托
-                                        return !isOpen();
+                                        boolean isOpen = isOpen();
+                                        if (isOpen) {
+                                            return false;
+                                        }
+                                        //限制移动的位置，不能比面板高度还要小
+//                                        int screenHeight = ScreenUtil.getScreenHeight(getApplicationContext());
+//                                        int halfHeight = mPanelViewController.getView().getHeight() / 2;
+//                                        if (screenHeight - moveY < halfHeight) {
+//                                            return false;
+//                                        }
+                                        return true;
                                     }
 
                                     @Override
@@ -161,6 +161,11 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
 
     public boolean isOpen() {
         return mCurrentStatus == STATUS_OPEN;
+    }
+
+    public FloatWindow getFloatWindow() {
+        return this.mFloatWindowManager
+                .getFloatWindow(TAG_BUTTON);
     }
 
     public void showFloatWindow() {

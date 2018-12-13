@@ -50,7 +50,7 @@ public class FloatPanelWindowController extends BaseFloatWindowController {
         init();
     }
 
-    private BroadcastReceiver mUpdatePanleActionReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver mUpdatePanelActionReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             //更新Action数据，先移除，再添加
@@ -66,12 +66,12 @@ public class FloatPanelWindowController extends BaseFloatWindowController {
             public void onViewAttachedToWindow(View v) {
                 IntentFilter filter = new IntentFilter();
                 filter.addAction(Const.Action.ACTION_UPDATE_PANEL_ACTIONS);
-                ContextProvider.get().getContext().registerReceiver(mUpdatePanleActionReceiver, filter);
+                ContextProvider.get().getContext().registerReceiver(mUpdatePanelActionReceiver, filter);
             }
 
             @Override
             public void onViewDetachedFromWindow(View v) {
-                ContextProvider.get().getContext().unregisterReceiver(mUpdatePanleActionReceiver);
+                ContextProvider.get().getContext().unregisterReceiver(mUpdatePanelActionReceiver);
             }
         });
         mFloatControlPanelView = mPanelContainerLayout.findViewById(R.id.control_panel_view);

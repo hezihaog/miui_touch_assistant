@@ -40,8 +40,11 @@ public interface FloatWindowViewStateCallback {
 
     /**
      * 拽托中回调
+     *
+     * @param moveX 当前移动的X坐标
+     * @param moveY 当前移动的Y坐标
      */
-    void onDragging();
+    void onDragging(float moveX, float moveY);
 
     /**
      * 当拽托结束时回调
@@ -51,9 +54,11 @@ public interface FloatWindowViewStateCallback {
     /**
      * 是否允许拽托
      *
+     * @param moveX 当前移动的X坐标
+     * @param moveY 当前移动的Y坐标
      * @return 返回true标识允许拖动，false则不允许，默认允许
      */
-    boolean isCanDrag();
+    boolean isCanDrag(float moveX, float moveY);
 
     /**
      * 当移动动画开始时回调

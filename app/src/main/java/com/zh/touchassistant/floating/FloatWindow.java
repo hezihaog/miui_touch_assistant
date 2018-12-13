@@ -16,8 +16,6 @@ import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 
-import com.zh.touchassistant.Const;
-import com.zh.touchassistant.util.Property;
 import com.zh.touchassistant.util.ScreenUtil;
 
 public class FloatWindow {
@@ -35,6 +33,10 @@ public class FloatWindow {
     private final int mSlop;
     private ValueAnimator mAnimator;
     private TimeInterpolator mAnimatorInterpolator;
+    /**
+     * 是否正在拽托
+     */
+    private boolean isDragging = false;
 
     public FloatWindow(Context context, String mTag, View view, FloatWindowOption option) {
         this.mContext = context;
@@ -62,12 +64,7 @@ public class FloatWindow {
                         | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
         mLayoutParams.windowAnimations = 0;
         mLayoutParams.gravity = Gravity.LEFT | Gravity.TOP;
-        boolean isLeft = Property.getDefault().getProperty(Const.Config.KEY_FLOAT_WINDOW_IS_LEFT, false);
-        if (isLeft) {
-            mLayoutParams.x = option.getX() + mWindowOption.getBoundOffset();
-        } else {
-            mLayoutParams.x = option.getX() - mWindowOption.getBoundOffset();
-        }
+        mLayoutParams.x = option.getX();
         this.mX = mLayoutParams.x;
         mLayoutParams.y = option.getY();
         this.mY = mLayoutParams.y;
@@ -128,21 +125,22 @@ public class FloatWindow {
                             }
                             return false;
                         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                            float moveX = event.getRawX();
+                            float moveY = event.getRawY();
                             if (mWindowOption.getViewStateCallback() != null) {
                                 //移动前，回调给外面，如果外面限制不能拖动，则不拖动
-                                isCanDrag = mWindowOption.getViewStateCallback().isCanDrag();
+                                isCanDrag = mWindowOption.getViewStateCallback().isCanDrag(moveX, moveY);
                                 if (!isCanDrag) {
                                     return true;
                                 }
+                                isDragging = true;
                                 //拽托中回调
                                 if (mWindowOption.getViewStateCallback() != null) {
-                                    mWindowOption.getViewStateCallback().onDragging();
+                                    mWindowOption.getViewStateCallback().onDragging(moveX, moveY);
                                 }
                             }
                             int oldX = (int) lastX;
                             int oldY = (int) lastY;
-                            float moveX = event.getRawX();
-                            float moveY = event.getRawY();
                             changeX = moveX - lastX;
                             changeY = moveY - lastY;
                             newX = (int) (getX() + changeX);
@@ -206,6 +204,7 @@ public class FloatWindow {
                                         @Override
                                         public void onAnimationEnd(Animator animation) {
                                             super.onAnimationEnd(animation);
+                                            isDragging = false;
                                             if (mWindowOption.getViewStateCallback() != null) {
                                                 mWindowOption.getViewStateCallback().onDragFinish();
                                             }
@@ -219,6 +218,7 @@ public class FloatWindow {
                                     return true;
                                 } else {
                                     //其他模式
+                                    isDragging = false;
                                     if (mWindowOption.getViewStateCallback() != null) {
                                         mWindowOption.getViewStateCallback().onDragFinish();
                                     }
@@ -398,5 +398,12 @@ public class FloatWindow {
      */
     public String getTag() {
         return this.mTag;
+    }
+
+    /**
+     * 是否正在拽托
+     */
+    public boolean isDragging() {
+        return isDragging;
     }
 }

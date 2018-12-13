@@ -32,6 +32,14 @@ public class Const {
          * 是否开启悬浮窗
          */
         public static final String KEY_ENABLE = "enabled";
+        /**
+         * 显示的Alpha值
+         */
+        public static final float ALPHA_SHOW = 0.8f;
+        /**
+         * 隐藏的Alpha值
+         */
+        public static final float ALPHA_HIDDEN = 0.2f;
     }
 
     public static class Action {
