@@ -22,7 +22,7 @@ import com.zh.touchassistant.widget.FloatButton;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class FloatButtonViewController extends BaseViewController {
+public class FloatButtonWindowController extends BaseFloatWindowController {
     private static final String TAG_BUTTON = "button_tag";
 
     public static final int STATUS_OFF = 0;
@@ -34,9 +34,9 @@ public class FloatButtonViewController extends BaseViewController {
     private OnStatusChangeListener mStatusChangeListener;
     private OnFloatButtonPositionUpdateListener mButtonPositionUpdateListener;
     private FloatWindowManager mFloatWindowManager;
-    private FloatPanelViewController mPanelViewController;
+    private FloatPanelWindowController mPanelViewController;
 
-    public FloatButtonViewController(Context context, FloatWindowManager floatWindowManager, FloatPanelViewController panelViewController) {
+    public FloatButtonWindowController(Context context, FloatWindowManager floatWindowManager, FloatPanelWindowController panelViewController) {
         super(context);
         this.mFloatWindowManager = floatWindowManager;
         this.mPanelViewController = panelViewController;
@@ -76,6 +76,7 @@ public class FloatButtonViewController extends BaseViewController {
                                         ScreenUtil.getPointFromScreenHeightRatio(getApplicationContext(), 0.3f)))
                                 .desktopShow(true)
                                 .setFloatMoveType(FloatMoveEnum.SLIDE)
+                                .setBoundOffset(ScreenUtil.dip2px(getApplicationContext(), 5f))
                                 .setViewStateCallback(new SimpleFloatWindowViewStateCallback() {
 
                                     @Override

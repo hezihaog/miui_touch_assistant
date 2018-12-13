@@ -35,7 +35,7 @@ import java.util.Map;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class FloatPanelViewController extends BaseViewController {
+public class FloatPanelWindowController extends BaseFloatWindowController {
     private static final String TAG_PANEL = "panel_tag";
 
     private boolean isOpen = false;
@@ -44,7 +44,7 @@ public class FloatPanelViewController extends BaseViewController {
     private ControlPanelView mFloatControlPanelView;
     private FloatWindowManager mFloatWindowManager;
 
-    public FloatPanelViewController(Context context, FloatWindowManager floatWindowManager) {
+    public FloatPanelWindowController(Context context, FloatWindowManager floatWindowManager) {
         super(context);
         this.mFloatWindowManager = floatWindowManager;
         init();

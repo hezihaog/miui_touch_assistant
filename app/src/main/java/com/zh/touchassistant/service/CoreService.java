@@ -6,8 +6,8 @@ import android.view.accessibility.AccessibilityEvent;
 
 import com.zh.touchassistant.AssistantApp;
 import com.zh.touchassistant.FloatViewLiveData;
-import com.zh.touchassistant.controller.FloatButtonViewController;
-import com.zh.touchassistant.controller.FloatPanelViewController;
+import com.zh.touchassistant.controller.FloatButtonWindowController;
+import com.zh.touchassistant.controller.FloatPanelWindowController;
 import com.zh.touchassistant.floating.FloatWindowManager;
 
 /**
@@ -18,8 +18,8 @@ import com.zh.touchassistant.floating.FloatWindowManager;
  * <b>Description:</b>  <br>
  */
 public class CoreService extends AccessibilityService {
-    private FloatButtonViewController mFloatButtonVC;
-    private FloatPanelViewController mFloatPanelVC;
+    private FloatButtonWindowController mFloatButtonVC;
+    private FloatPanelWindowController mFloatPanelVC;
     private boolean isFirst = true;
 
     public static class Action {
@@ -59,15 +59,15 @@ public class CoreService extends AccessibilityService {
             AssistantApp assistantApp = (AssistantApp) getApplication();
             FloatWindowManager floatWindowManager = new FloatWindowManager(this);
             //填充和浮动面板浮动按钮
-            mFloatPanelVC = new FloatPanelViewController(this, floatWindowManager);
-            mFloatButtonVC = new FloatButtonViewController(this, floatWindowManager, mFloatPanelVC);
-            mFloatButtonVC.setOnFloatButtonPositionUpdateListener(new FloatButtonViewController.OnFloatButtonPositionUpdateListener() {
+            mFloatPanelVC = new FloatPanelWindowController(this, floatWindowManager);
+            mFloatButtonVC = new FloatButtonWindowController(this, floatWindowManager, mFloatPanelVC);
+            mFloatButtonVC.setOnFloatButtonPositionUpdateListener(new FloatButtonWindowController.OnFloatButtonPositionUpdateListener() {
                 @Override
                 public void onFloatButtonPositionUpdate(int newX, int newY) {
                     mFloatPanelVC.followButtonPosition(newX, newY);
                 }
             });
-            mFloatButtonVC.setOnStatusChangeListener(new FloatButtonViewController.OnStatusChangeListener() {
+            mFloatButtonVC.setOnStatusChangeListener(new FloatButtonWindowController.OnStatusChangeListener() {
                 @Override
                 public boolean onPrepareStatusChange(int prepareStatus) {
                     return mFloatPanelVC.isCanChangeStatus();

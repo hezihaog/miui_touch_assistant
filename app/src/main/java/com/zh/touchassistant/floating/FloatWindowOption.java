@@ -18,6 +18,7 @@ public class FloatWindowOption {
     private TimeInterpolator mInterpolator;
     private long mDuration;
     private Boolean isShow;
+    private int mBoundOffset;
 
     public static FloatWindowOption create(Builder builder) {
         return new FloatWindowOption(builder);
@@ -30,8 +31,9 @@ public class FloatWindowOption {
         this.mMoveType = builder.mMoveType != null ? builder.mMoveType : FloatMoveEnum.INACTIVE;
         this.mViewStateCallback = builder.mViewStateCallback;
         this.mInterpolator = builder.mInterpolator;
-        this.mDuration = builder.mDuration <= 0 ? 450 : builder.mDuration;
+        this.mDuration = builder.mDuration <= 0 ? 300 : builder.mDuration;
         this.isShow = builder.isShow == null ? true : builder.isShow;
+        this.mBoundOffset = builder.mBoundOffset;
     }
 
     public int getX() {
@@ -66,6 +68,10 @@ public class FloatWindowOption {
         return isShow;
     }
 
+    public int getBoundOffset() {
+        return mBoundOffset;
+    }
+
     public static class Builder {
         private int mX;
         private int mY;
@@ -75,6 +81,10 @@ public class FloatWindowOption {
         private TimeInterpolator mInterpolator;
         private long mDuration;
         private Boolean isShow;
+        /**
+         * 边界偏移量，只在自动贴边时生效，距离屏幕左或右的偏移量
+         */
+        private int mBoundOffset;
 
         public Builder setX(int x) {
             mX = x;
@@ -102,17 +112,22 @@ public class FloatWindowOption {
         }
 
         public Builder setInterpolator(TimeInterpolator interpolator) {
-            mInterpolator = interpolator;
+            this.mInterpolator = interpolator;
             return this;
         }
 
         public Builder setShow(boolean show) {
-            isShow = show;
+            this.isShow = show;
             return this;
         }
 
         public Builder setDuration(long duration) {
-            mDuration = duration;
+            this.mDuration = duration;
+            return this;
+        }
+
+        public Builder setBoundOffset(int boundOffset) {
+            this.mBoundOffset = boundOffset;
             return this;
         }
     }

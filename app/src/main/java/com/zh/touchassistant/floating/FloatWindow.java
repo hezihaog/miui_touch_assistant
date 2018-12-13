@@ -159,9 +159,11 @@ public class FloatWindow {
                                     int endX;
                                     boolean isLeft = ScreenUtil.isScreenLeft(getContext(), startX);
                                     if (isLeft) {
-                                        endX = 0;
+                                        endX = mWindowOption.getBoundOffset();
                                     } else {
-                                        endX = ScreenUtil.getScreenWidth(getContext()) - getView().getWidth();
+                                        endX = ScreenUtil.getScreenWidth(getContext())
+                                                - (getView().getWidth())
+                                                - mWindowOption.getBoundOffset();
                                     }
                                     mAnimator = ValueAnimator.ofInt(startX, endX);
                                     mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
