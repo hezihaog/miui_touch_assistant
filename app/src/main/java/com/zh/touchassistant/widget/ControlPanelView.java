@@ -240,7 +240,6 @@ public class ControlPanelView extends FrameLayout {
                     getChildAt(i).setAlpha(alpha);
                 }
                 mPanelRadius = cValue;
-                invalidate();
                 requestLayout();
             }
         });
@@ -289,7 +288,6 @@ public class ControlPanelView extends FrameLayout {
                     getChildAt(i).setAlpha(alpha);
                 }
                 mPanelRadius = cValue;
-                invalidate();
                 requestLayout();
             }
         });

@@ -5,6 +5,7 @@ import android.os.Looper;
 
 import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.controller.FloatButtonWindowController;
+import com.zh.touchassistant.widget.FloatButton;
 
 /**
  * <b>Package:</b> com.zh.touchassistant <br>
@@ -36,12 +37,15 @@ public class FloatTimeTaskHolder {
                 //不在拽托时并且不能在打开，才减少透明图
                 if (!mFloatButtonVC.getFloatWindow().isDragging()
                         && !mFloatButtonVC.isOpen()) {
-                    mFloatButtonVC
-                            .getView()
-                            .animate()
-                            .alpha(Const.Config.ALPHA_HIDDEN)
-                            .setDuration(400)
-                            .start();
+                    FloatButton view = mFloatButtonVC
+                            .getView();
+                    if (view.getAlpha() != Const.Config.ALPHA_HIDDEN) {
+                        view
+                                .animate()
+                                .alpha(Const.Config.ALPHA_HIDDEN)
+                                .setDuration(400)
+                                .start();
+                    }
                 }
             }
             loopCheck();

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.zh.touchassistant.AssistantApp;
+import com.zh.touchassistant.DelayOnClickListener;
 import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.constant.Const;
@@ -52,9 +53,10 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
     }
 
     private void initListener() {
-        mFloatButtonView.setOnClickListener(new View.OnClickListener() {
+        mFloatButtonView.setOnClickListener(new DelayOnClickListener() {
+
             @Override
-            public void onClick(View v) {
+            public void onDelayClick(View view) {
                 AssistantApp assistantApp = (AssistantApp) getApplicationContext();
                 FloatViewLiveData floatViewLiveData = assistantApp.getFloatViewLiveData();
                 if (floatViewLiveData.isOpen()) {
@@ -78,6 +80,7 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                                         ScreenUtil.getPointFromScreenHeightRatio(getApplicationContext(), 0.3f)))
                                 .desktopShow(true)
                                 .setFloatMoveType(FloatMoveEnum.SLIDE)
+                                .setDuration(450)
                                 .setBoundOffset(ScreenUtil.dip2px(getApplicationContext(), 5f))
                                 .setViewStateCallback(new SimpleFloatWindowViewStateCallback() {
 
@@ -102,7 +105,10 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                                     public void onDragging(float moveX, float moveY) {
                                         super.onDragging(moveX, moveY);
                                         //将Alpha调整比较容易可见的值
-                                        getView().setAlpha(Const.Config.ALPHA_SHOW);
+                                        if (getView().getAlpha() != Const.Config.ALPHA_SHOW) {
+                                            getView()
+                                                    .setAlpha(Const.Config.ALPHA_SHOW);
+                                        }
                                     }
 
                                     @Override

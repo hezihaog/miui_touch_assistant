@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.zh.touchassistant.AssistantApp;
+import com.zh.touchassistant.DelayOnClickListener;
 import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.constant.Const;
@@ -126,9 +127,9 @@ public class FloatPanelWindowController extends BaseFloatWindowController {
             actionView.setPadding(iconPadding, iconPadding, iconPadding, iconPadding);
             actionView.setImageResource(entry.getKey().getActionIcon());
             actionView.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.float_icon_bg));
-            actionView.setOnClickListener(new View.OnClickListener() {
+            actionView.setOnClickListener(new DelayOnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onDelayClick(View view) {
                     AssistantApp assistantApp = (AssistantApp) getApplicationContext();
                     FloatViewLiveData floatViewLiveData = assistantApp.getFloatViewLiveData();
                     if (floatViewLiveData.isOpen()) {
