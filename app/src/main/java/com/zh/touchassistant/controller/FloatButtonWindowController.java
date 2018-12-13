@@ -80,7 +80,7 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                                         ScreenUtil.getPointFromScreenHeightRatio(getApplicationContext(), 0.3f)))
                                 .desktopShow(true)
                                 .setFloatMoveType(FloatMoveEnum.SLIDE)
-                                .setDuration(450)
+                                .setDuration(250)
                                 .setBoundOffset(ScreenUtil.dip2px(getApplicationContext(), 5f))
                                 .setViewStateCallback(new SimpleFloatWindowViewStateCallback() {
 
@@ -201,7 +201,7 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                     .animate()
                     .scaleX(0.8f)
                     .scaleY(0.8f)
-                    .alpha(1.0f)
+                    .alpha(Const.Config.ALPHA_SHOW)
                     .start();
             if (mStatusChangeListener != null) {
                 mStatusChangeListener.onStatusChange(this.mCurrentStatus);
@@ -217,7 +217,6 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                     .animate()
                     .scaleX(1f)
                     .scaleY(1f)
-                    .alpha(0.2f)
                     .start();
             if (mStatusChangeListener != null) {
                 mStatusChangeListener.onStatusChange(this.mCurrentStatus);

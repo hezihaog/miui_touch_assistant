@@ -35,7 +35,7 @@ public class Const {
         /**
          * 显示的Alpha值
          */
-        public static final float ALPHA_SHOW = 0.8f;
+        public static final float ALPHA_SHOW = 1.0f;
         /**
          * 隐藏的Alpha值
          */
