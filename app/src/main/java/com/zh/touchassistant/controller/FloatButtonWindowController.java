@@ -13,6 +13,7 @@ import com.zh.touchassistant.floating.FloatWindowOption;
 import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
 import com.zh.touchassistant.util.Property;
 import com.zh.touchassistant.util.ScreenUtil;
+import com.zh.touchassistant.util.VibratorHelper;
 import com.zh.touchassistant.widget.FloatButton;
 
 /**
@@ -91,7 +92,31 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                                     }
 
                                     @Override
-                                    public boolean onPrepareDrag() {
+                                    public void onPrepareDrag() {
+                                        //拽托时，震动一下
+                                        VibratorHelper.startVibrator();
+                                    }
+
+                                    @Override
+                                    public void onDragging() {
+                                        super.onDragging();
+                                        //将Alpha调整到1.0f
+                                        getView().setAlpha(1.0f);
+                                    }
+
+                                    @Override
+                                    public void onDragFinish() {
+                                        super.onDragFinish();
+                                        //拽托结束后，设置回Alpha为0.2f
+                                        getView()
+                                                .animate()
+                                                .alpha(0.2f)
+                                                .setDuration(300)
+                                                .start();
+                                    }
+
+                                    @Override
+                                    public boolean isCanDrag() {
                                         //准备拽托时，如果是打开状态，不能拽托
                                         return !isOpen();
                                     }

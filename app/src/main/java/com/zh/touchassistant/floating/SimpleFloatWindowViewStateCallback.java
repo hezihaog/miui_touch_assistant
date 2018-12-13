@@ -30,8 +30,23 @@ public class SimpleFloatWindowViewStateCallback implements FloatWindowViewStateC
     }
 
     @Override
-    public boolean onPrepareDrag() {
-        return false;
+    public void onPrepareDrag() {
+
+    }
+
+    @Override
+    public void onDragging() {
+
+    }
+
+    @Override
+    public void onDragFinish() {
+
+    }
+
+    @Override
+    public boolean isCanDrag() {
+        return true;
     }
 
     @Override

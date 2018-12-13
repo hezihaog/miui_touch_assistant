@@ -35,10 +35,25 @@ public interface FloatWindowViewStateCallback {
 
     /**
      * 当准备拖动时回调
-     *
-     * @return 返回true标识允许拖动，false则不允许
      */
-    boolean onPrepareDrag();
+    void onPrepareDrag();
+
+    /**
+     * 拽托中回调
+     */
+    void onDragging();
+
+    /**
+     * 当拽托结束时回调
+     */
+    void onDragFinish();
+
+    /**
+     * 是否允许拽托
+     *
+     * @return 返回true标识允许拖动，false则不允许，默认允许
+     */
+    boolean isCanDrag();
 
     /**
      * 当移动动画开始时回调

@@ -115,13 +115,21 @@ public class FloatWindow {
                             lastX = event.getRawX();
                             lastY = event.getRawY();
                             cancelAnimator();
+                            //准备拽托前，回调给外面
+                            if (mWindowOption.getViewStateCallback() != null) {
+                                mWindowOption.getViewStateCallback().onPrepareDrag();
+                            }
                             return false;
                         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                            //移动前，回调给外面，如果外面限制不能拖动，则不拖动
                             if (mWindowOption.getViewStateCallback() != null) {
-                                isCanDrag = mWindowOption.getViewStateCallback().onPrepareDrag();
+                                //移动前，回调给外面，如果外面限制不能拖动，则不拖动
+                                isCanDrag = mWindowOption.getViewStateCallback().isCanDrag();
                                 if (!isCanDrag) {
                                     return true;
+                                }
+                                //拽托中回调
+                                if (mWindowOption.getViewStateCallback() != null) {
+                                    mWindowOption.getViewStateCallback().onDragging();
                                 }
                             }
                             int oldX = (int) lastX;
@@ -192,6 +200,9 @@ public class FloatWindow {
                                         public void onAnimationEnd(Animator animation) {
                                             super.onAnimationEnd(animation);
                                             if (mWindowOption.getViewStateCallback() != null) {
+                                                mWindowOption.getViewStateCallback().onDragFinish();
+                                            }
+                                            if (mWindowOption.getViewStateCallback() != null) {
                                                 mWindowOption.getViewStateCallback().onMoveAnimEnd();
                                             }
                                         }
@@ -201,6 +212,9 @@ public class FloatWindow {
                                     return true;
                                 } else {
                                     //其他模式
+                                    if (mWindowOption.getViewStateCallback() != null) {
+                                        mWindowOption.getViewStateCallback().onDragFinish();
+                                    }
                                     return true;
                                 }
                             } else {
