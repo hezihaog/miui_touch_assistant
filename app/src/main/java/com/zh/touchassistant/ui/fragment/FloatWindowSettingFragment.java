@@ -15,8 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zh.touchassistant.Const;
 import com.zh.touchassistant.R;
+import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.floating.FloatWindowPermissionCallback;
 import com.zh.touchassistant.floating.WindowPermissionAgent;
 import com.zh.touchassistant.floating.WindowPermissionUtil;

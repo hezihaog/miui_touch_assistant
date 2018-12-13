@@ -4,9 +4,9 @@ import android.content.Context;
 import android.view.View;
 
 import com.zh.touchassistant.AssistantApp;
-import com.zh.touchassistant.Const;
 import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.R;
+import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.floating.FloatMoveEnum;
 import com.zh.touchassistant.floating.FloatWindow;
 import com.zh.touchassistant.floating.FloatWindowManager;

@@ -3,6 +3,7 @@ package com.zh.touchassistant;
 import android.accessibilityservice.AccessibilityService;
 import android.app.Application;
 
+import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.setting.FloatWindowSetting;
 import com.zh.touchassistant.util.AccessibilityHelper;
 import com.zh.touchassistant.util.Property;

@@ -1,4 +1,4 @@
-package com.zh.touchassistant;
+package com.zh.touchassistant.constant;
 
 /**
  * <b>Package:</b> com.zh.touchassistant <br>

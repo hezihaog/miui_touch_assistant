@@ -1,11 +1,10 @@
 package com.zh.touchassistant.setting;
 
-import android.content.Intent;
 import android.text.TextUtils;
 
-import com.zh.touchassistant.Const;
 import com.zh.touchassistant.ContextProvider;
 import com.zh.touchassistant.R;
+import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.floating.action.BackAction;
 import com.zh.touchassistant.floating.action.HomeAction;
 import com.zh.touchassistant.floating.action.IFloatWindowAction;
@@ -14,6 +13,7 @@ import com.zh.touchassistant.floating.action.MenuAction;
 import com.zh.touchassistant.floating.action.ScreenshotAction;
 import com.zh.touchassistant.model.FloatWindowActionListModel;
 import com.zh.touchassistant.model.FloatWindowActionModel;
+import com.zh.touchassistant.util.AppBroadcastManager;
 import com.zh.touchassistant.util.GsonUtils;
 import com.zh.touchassistant.util.Property;
 
@@ -109,9 +109,8 @@ public class FloatWindowSetting {
         String json = GsonUtils.toJson(listModel);
         Property.getDefault().setProperty(Const.Config.KEY_CUSTOM_MENU_DATA, json);
         //通知更新
-        ContextProvider.get()
-                .getContext()
-                .sendBroadcast(new Intent(Const.Action.ACTION_UPDATE_PANEL_ACTIONS));
+        AppBroadcastManager.sendBroadcast(
+                ContextProvider.get().getContext(), Const.Action.ACTION_UPDATE_PANEL_ACTIONS);
     }
 
     public LinkedHashMap<Integer, IFloatWindowAction> getActionMap() {
