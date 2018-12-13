@@ -100,8 +100,8 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                                     @Override
                                     public void onDragging() {
                                         super.onDragging();
-                                        //将Alpha调整到1.0f
-                                        getView().setAlpha(1.0f);
+                                        //将Alpha调整比较容易可见的值
+                                        getView().setAlpha(0.8f);
                                     }
 
                                     @Override
@@ -111,7 +111,7 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                                         getView()
                                                 .animate()
                                                 .alpha(0.2f)
-                                                .setDuration(300)
+                                                .setDuration(400)
                                                 .start();
                                     }
 

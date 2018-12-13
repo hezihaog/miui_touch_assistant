@@ -16,6 +16,8 @@ import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 
+import com.zh.touchassistant.Const;
+import com.zh.touchassistant.util.Property;
 import com.zh.touchassistant.util.ScreenUtil;
 
 public class FloatWindow {
@@ -60,10 +62,15 @@ public class FloatWindow {
                         | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
         mLayoutParams.windowAnimations = 0;
         mLayoutParams.gravity = Gravity.LEFT | Gravity.TOP;
-        mLayoutParams.x = option.getX();
-        this.mX = option.getX();
+        boolean isLeft = Property.getDefault().getProperty(Const.Config.KEY_FLOAT_WINDOW_IS_LEFT, false);
+        if (isLeft) {
+            mLayoutParams.x = option.getX() + mWindowOption.getBoundOffset();
+        } else {
+            mLayoutParams.x = option.getX() - mWindowOption.getBoundOffset();
+        }
+        this.mX = mLayoutParams.x;
         mLayoutParams.y = option.getY();
-        this.mY = option.getY();
+        this.mY = mLayoutParams.y;
         mLayoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
         mLayoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
         //8.0使用新的Type类型
