@@ -12,9 +12,13 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
+        //只保留armeabi的so
         ndk {
             abiFilters 'armeabi'
         }
+
+        //只保留中文
+        resConfigs "zh-rCN"
     }
 
     signingConfigs {
@@ -42,6 +46,7 @@ android {
         release {
             debuggable false
             minifyEnabled true
+            shrinkResources true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
