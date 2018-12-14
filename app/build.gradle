@@ -28,6 +28,7 @@ android {
             keyAlias SUANMING_KEY_ALIAS
             keyPassword SUANMING_KEY_PASSWORD
         }
+
         release {
             storeFile file(SUANMING_STOREFILE)
             storePassword SUANMING_STOREPASSWORD
@@ -45,7 +46,11 @@ android {
 
         release {
             debuggable false
+            //zip对齐
+            zipAlignEnabled true
+            //混淆
             minifyEnabled true
+            //移除无用资源
             shrinkResources true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
