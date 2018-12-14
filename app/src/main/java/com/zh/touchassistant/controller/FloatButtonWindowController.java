@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 
 import com.zh.touchassistant.AssistantApp;
-import com.zh.touchassistant.DelayOnClickListener;
 import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.constant.Const;
@@ -13,6 +12,7 @@ import com.zh.touchassistant.floating.FloatWindow;
 import com.zh.touchassistant.floating.FloatWindowManager;
 import com.zh.touchassistant.floating.FloatWindowOption;
 import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
+import com.zh.touchassistant.listener.DelayOnClickListener;
 import com.zh.touchassistant.util.Property;
 import com.zh.touchassistant.util.ScreenUtil;
 import com.zh.touchassistant.util.VibratorHelper;

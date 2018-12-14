@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.zh.touchassistant.AssistantApp;
-import com.zh.touchassistant.DelayOnClickListener;
 import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.constant.Const;
@@ -18,6 +17,7 @@ import com.zh.touchassistant.floating.FloatWindow;
 import com.zh.touchassistant.floating.FloatWindowManager;
 import com.zh.touchassistant.floating.FloatWindowOption;
 import com.zh.touchassistant.floating.action.IFloatWindowAction;
+import com.zh.touchassistant.listener.DelayOnClickListener;
 import com.zh.touchassistant.model.FloatWindowActionModel;
 import com.zh.touchassistant.setting.FloatWindowSetting;
 import com.zh.touchassistant.util.AppBroadcastManager;
