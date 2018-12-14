@@ -1,4 +1,4 @@
-package com.zh.touchassistant;
+package com.zh.touchassistant.provider;
 
 import android.app.Application;
 import android.content.Context;
@@ -12,24 +12,24 @@ import android.content.Context;
  * Email: hezihao@linghit.com
  */
 public class ContextProvider {
-    private static volatile ContextProvider instance;
+    private static volatile ContextProvider mInstance;
     private Context mContext;
 
     /**
      * 获取实例
      */
     public static ContextProvider get() {
-        if (instance == null) {
+        if (mInstance == null) {
             synchronized (ContextProvider.class) {
-                if (instance == null) {
+                if (mInstance == null) {
                     if (ApplicationContextProvider.mContext == null) {
                         throw new IllegalStateException("context == null");
                     }
-                    instance = new ContextProvider();
+                    mInstance = new ContextProvider();
                 }
             }
         }
-        return instance;
+        return mInstance;
     }
 
     public void attachContext(Context context) {

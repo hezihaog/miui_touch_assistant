@@ -33,7 +33,7 @@
 
         <!-- 全局Context提供者 -->
         <provider
-            android:name="com.zh.touchassistant.ApplicationContextProvider"
+            android:name="com.zh.touchassistant.provider.ApplicationContextProvider"
             android:authorities="${applicationId}.contextprovider"
             android:exported="false" />
 

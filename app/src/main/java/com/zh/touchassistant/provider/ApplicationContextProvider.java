@@ -1,4 +1,4 @@
-package com.zh.touchassistant;
+package com.zh.touchassistant.provider;
 
 import android.annotation.SuppressLint;
 import android.content.ContentProvider;

@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.support.v4.util.ArrayMap;
 
 import com.tencent.mmkv.MMKV;
-import com.zh.touchassistant.ContextProvider;
+import com.zh.touchassistant.provider.ContextProvider;
 
 import java.util.Map;
 

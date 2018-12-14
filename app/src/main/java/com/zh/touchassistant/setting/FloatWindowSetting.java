@@ -2,7 +2,6 @@ package com.zh.touchassistant.setting;
 
 import android.text.TextUtils;
 
-import com.zh.touchassistant.ContextProvider;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.floating.action.BackAction;
@@ -13,6 +12,7 @@ import com.zh.touchassistant.floating.action.MenuAction;
 import com.zh.touchassistant.floating.action.ScreenshotAction;
 import com.zh.touchassistant.model.FloatWindowActionListModel;
 import com.zh.touchassistant.model.FloatWindowActionModel;
+import com.zh.touchassistant.provider.ContextProvider;
 import com.zh.touchassistant.util.AppBroadcastManager;
 import com.zh.touchassistant.util.GsonUtils;
 import com.zh.touchassistant.util.Property;

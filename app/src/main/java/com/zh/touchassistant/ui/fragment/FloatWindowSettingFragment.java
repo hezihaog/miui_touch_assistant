@@ -20,8 +20,8 @@ import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.floating.FloatWindowPermissionCallback;
 import com.zh.touchassistant.floating.WindowPermissionAgent;
 import com.zh.touchassistant.floating.WindowPermissionUtil;
-import com.zh.touchassistant.service.CoreService;
 import com.zh.touchassistant.ui.activity.CustomMenuActivity;
+import com.zh.touchassistant.util.FloatServiceUtil;
 import com.zh.touchassistant.util.Property;
 
 /**
@@ -57,7 +57,7 @@ public class FloatWindowSettingFragment extends Fragment {
             @Override
             public void run() {
                 boolean isEnable = Property.getDefault().getProperty(Const.Config.KEY_ENABLE, false);
-                setEnableFloatWindow(isEnable);
+                FloatServiceUtil.setEnableFloatWindow(getActivity(), isEnable);
                 enableSwitch.setChecked(isEnable);
             }
         });
@@ -68,7 +68,7 @@ public class FloatWindowSettingFragment extends Fragment {
                 executeWindowAction(new Runnable() {
                     @Override
                     public void run() {
-                        setEnableFloatWindow(isChecked);
+                        FloatServiceUtil.setEnableFloatWindow(getActivity(), isChecked);
                         Property.getDefault().setProperty(Const.Config.KEY_ENABLE, isChecked);
                     }
                 });
@@ -132,18 +132,5 @@ public class FloatWindowSettingFragment extends Fragment {
                     "请允许" + mActivity.getResources().getString(R.string.app_name) + "出现在顶部",
                     Toast.LENGTH_SHORT).show();
         }
-    }
-
-    /**
-     * 开关悬浮窗
-     */
-    private void setEnableFloatWindow(boolean isEnable) {
-        Intent intent = new Intent(getActivity(), CoreService.class);
-        if (isEnable) {
-            intent.setAction(CoreService.Action.ACTION_SHOW_FLOATING_WINDOW);
-        } else {
-            intent.setAction(CoreService.Action.ACTION_HIDE_FLOATING_WINDOW);
-        }
-        getActivity().startService(intent);
     }
 }

@@ -4,7 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.zh.touchassistant.service.CoreService;
+import com.zh.touchassistant.constant.Const;
+import com.zh.touchassistant.util.FloatServiceUtil;
+import com.zh.touchassistant.util.Property;
 
 /**
  * <b>Package:</b> com.zh.touchassistant <br>
@@ -16,8 +18,7 @@ import com.zh.touchassistant.service.CoreService;
 public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-//        Intent serviceIntent = new Intent(context, CoreService.class);
-//        serviceIntent.setAction(CoreService.Action.ACTION_SHOW_FLOATING_WINDOW);
-//        context.startService(serviceIntent);
+        boolean isEnable = Property.getDefault().getProperty(Const.Config.KEY_ENABLE, false);
+        FloatServiceUtil.setEnableFloatWindow(context, isEnable);
     }
 }

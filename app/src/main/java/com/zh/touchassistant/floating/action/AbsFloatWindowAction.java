@@ -6,7 +6,7 @@ import android.provider.Settings;
 import android.widget.Toast;
 
 import com.zh.touchassistant.AssistantApp;
-import com.zh.touchassistant.ContextProvider;
+import com.zh.touchassistant.provider.ContextProvider;
 import com.zh.touchassistant.util.AccessibilityHelper;
 
 /**

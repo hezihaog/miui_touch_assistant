@@ -23,7 +23,6 @@ import com.zh.touchassistant.util.NotifyUtil;
 import com.zh.touchassistant.util.ScreenUtil;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -190,9 +189,6 @@ public class ScreenCaptureAgent {
                                 bitmap,
                                 fileImage);
                     }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    fileImage = null;
                 } catch (IOException e) {
                     e.printStackTrace();
                     fileImage = null;

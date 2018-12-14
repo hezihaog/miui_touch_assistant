@@ -20,13 +20,13 @@ public class FloatTimeTaskHolder {
 
     private FloatTimeTaskHolder(FloatButtonWindowController floatButtonVC) {
         this.mFloatButtonVC = floatButtonVC;
-        mMainHandler = new Handler(Looper.getMainLooper());
+        this.mMainHandler = new Handler(Looper.getMainLooper());
         //开始循环，2秒检查一次
         loopCheck();
     }
 
     private void loopCheck() {
-        mMainHandler
+        this.mMainHandler
                 .postDelayed(mTask, 1200);
     }
 

@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.zh.touchassistant.ContextProvider;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.lock.OneScreenLockActivity;
+import com.zh.touchassistant.provider.ContextProvider;
 import com.zh.touchassistant.util.LockUtil;
 
 /**

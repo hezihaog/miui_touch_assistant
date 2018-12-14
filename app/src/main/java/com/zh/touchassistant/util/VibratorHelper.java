@@ -3,7 +3,7 @@ package com.zh.touchassistant.util;
 import android.content.Context;
 import android.os.Vibrator;
 
-import com.zh.touchassistant.ContextProvider;
+import com.zh.touchassistant.provider.ContextProvider;
 
 /**
  * <b>Package:</b> com.zh.touchassistant <br>
