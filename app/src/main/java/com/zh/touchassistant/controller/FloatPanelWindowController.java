@@ -21,6 +21,7 @@ import com.zh.touchassistant.listener.DelayOnClickListener;
 import com.zh.touchassistant.model.FloatWindowActionModel;
 import com.zh.touchassistant.setting.FloatWindowSetting;
 import com.zh.touchassistant.util.AppBroadcastManager;
+import com.zh.touchassistant.util.FloatServiceUtil;
 import com.zh.touchassistant.util.Property;
 import com.zh.touchassistant.util.ScreenUtil;
 import com.zh.touchassistant.widget.ControlPanelView;
@@ -91,8 +92,8 @@ public class FloatPanelWindowController extends BaseFloatWindowController {
                         TAG_PANEL,
                         FloatWindowOption
                                 .create(new FloatWindowOption.Builder()
-                                        .setX(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_PANEL_X, 0))
-                                        .setY(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_PANEL_Y, 0))
+                                        .setX(FloatServiceUtil.getFloatPanelX())
+                                        .setY(FloatServiceUtil.getFloatPanelY())
                                         .desktopShow(true)
                                         .setShow(false)
                                         .setFloatMoveType(FloatMoveEnum.INACTIVE)));

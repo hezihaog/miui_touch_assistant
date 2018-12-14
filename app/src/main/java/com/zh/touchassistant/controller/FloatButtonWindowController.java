@@ -13,6 +13,7 @@ import com.zh.touchassistant.floating.FloatWindowManager;
 import com.zh.touchassistant.floating.FloatWindowOption;
 import com.zh.touchassistant.floating.SimpleFloatWindowViewStateCallback;
 import com.zh.touchassistant.listener.DelayOnClickListener;
+import com.zh.touchassistant.util.FloatServiceUtil;
 import com.zh.touchassistant.util.Property;
 import com.zh.touchassistant.util.ScreenUtil;
 import com.zh.touchassistant.util.VibratorHelper;
@@ -74,10 +75,8 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                         mFloatButtonView,
                         TAG_BUTTON,
                         FloatWindowOption.create(new FloatWindowOption.Builder()
-                                .setX(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_BUTTON_X,
-                                        ScreenUtil.getPointFromScreenWidthRatio(getApplicationContext(), 0.8f)))
-                                .setY(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_BUTTON_Y,
-                                        ScreenUtil.getPointFromScreenHeightRatio(getApplicationContext(), 0.3f)))
+                                .setX(FloatServiceUtil.getFloatButtonX(getApplicationContext()))
+                                .setY(FloatServiceUtil.getFloatButtonY(getApplicationContext()))
                                 .desktopShow(true)
                                 .setFloatMoveType(FloatMoveEnum.SLIDE)
                                 .setDuration(250)
