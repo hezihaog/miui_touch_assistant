@@ -12,13 +12,14 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 
+import com.zh.touchassistant.R;
 import com.zh.touchassistant.util.FileUtil;
+import com.zh.touchassistant.util.NotifyUtil;
 import com.zh.touchassistant.util.ScreenUtil;
 
 import java.io.File;
@@ -178,10 +179,16 @@ public class ScreenCaptureAgent {
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
                         out.flush();
                         out.close();
-                        Intent media = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                        Uri contentUri = Uri.fromFile(fileImage);
-                        media.setData(contentUri);
-                        mActivityWeakReference.get().sendBroadcast(media);
+                        //刷新图库
+                        Context context = mActivityWeakReference.get().getApplicationContext();
+                        NotifyUtil.notifyImageGalleryUpdate(context, fileImage.getName());
+                        //发送截图成功的通知
+                        NotifyUtil.sendScreenshotNotification(context
+                                , R.drawable.ic_launcher,
+                                "截图成功",
+                                "截屏已产生",
+                                bitmap,
+                                fileImage);
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();

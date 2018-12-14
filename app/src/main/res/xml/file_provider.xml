@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!--<root-path/> 代表设备的根目录new File("/");-->
+    <!--<files-path/> 代表context.getFilesDir()-->
+    <!--<cache-path/> 代表context.getCacheDir()-->
+    <!--<external-path/> 代表Environment.getExternalStorageDirectory()-->
+    <!--<external-files-path>代表context.getExternalFilesDirs()-->
+    <!--<external-cache-path>代表getExternalCacheDirs()-->
+    <!--<root-path name="root" path=""/>-->
+    <!--<files-path name="files" path=""/>-->
+    <!--<cache-path name="cache" path=""/>-->
+    <external-path name="external" path="."/>
+    <external-files-path name="name" path="."/>
+    <external-cache-path name="name" path="."/>
+</paths>
