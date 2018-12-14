@@ -213,10 +213,7 @@ public class ControlPanelView extends FrameLayout {
         if (mOpenAnimator != null && mOpenAnimator.isRunning()) {
             return true;
         }
-        if (mOffAnimator != null && mOffAnimator.isRunning()) {
-            return true;
-        }
-        return false;
+        return mOffAnimator != null && mOffAnimator.isRunning();
     }
 
     /**
