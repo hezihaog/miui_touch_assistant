@@ -183,7 +183,7 @@ public class ScreenCaptureAgent {
                         NotifyUtil.notifyImageGalleryUpdate(context, fileImage.getName());
                         //发送截图成功的通知
                         NotifyUtil.sendScreenshotNotification(context
-                                , R.drawable.ic_launcher,
+                                , R.mipmap.ic_launcher,
                                 "截图成功",
                                 "截屏已产生",
                                 bitmap,

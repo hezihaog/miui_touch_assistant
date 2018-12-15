@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.zh.touchassistant.AssistantApp;
-import com.zh.touchassistant.FloatTimeTaskHolder;
 import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.controller.FloatButtonWindowController;
 import com.zh.touchassistant.controller.FloatPanelWindowController;
@@ -28,7 +27,6 @@ public class CoreService extends AccessibilityService {
 
     private FloatButtonWindowController mFloatButtonVC;
     private FloatPanelWindowController mFloatPanelVC;
-    private FloatTimeTaskHolder mFloatTimeTaskHolder;
     private boolean isFirst = true;
 
     public static class Action {
@@ -48,14 +46,6 @@ public class CoreService extends AccessibilityService {
     public void onCreate() {
         super.onCreate();
         ((AssistantApp) getApplication()).setAccessibility(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mFloatTimeTaskHolder != null) {
-            mFloatTimeTaskHolder.dispatchDestroy();
-        }
     }
 
     @Override
@@ -134,9 +124,6 @@ public class CoreService extends AccessibilityService {
                     }
                 }
             });
-            //循环任务
-            mFloatTimeTaskHolder = FloatTimeTaskHolder
-                    .create(mFloatButtonVC);
             isFirst = false;
         } else {
             mFloatButtonVC.showFloatWindow();

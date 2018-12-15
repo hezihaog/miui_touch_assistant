@@ -1,5 +1,7 @@
 package com.zh.touchassistant.controller;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.view.View;
 
@@ -37,6 +39,8 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
     private OnFloatButtonPositionUpdateListener mButtonPositionUpdateListener;
     private FloatWindowManager mFloatWindowManager;
     private FloatPanelWindowController mPanelViewController;
+    private AnimatorSet mOpenAnimatorSet;
+    private AnimatorSet mOffAnimatorSet;
 
     public FloatButtonWindowController(Context context, FloatWindowManager floatWindowManager, FloatPanelWindowController panelViewController) {
         super(context);
@@ -99,6 +103,20 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                                         if (getView().getAlpha() != Const.Config.ALPHA_SHOW) {
                                             getView()
                                                     .setAlpha(Const.Config.ALPHA_SHOW);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onDragFinish() {
+                                        super.onDragFinish();
+                                        //拖动结束后，透明度慢慢变淡
+                                        if (getView().getAlpha() != Const.Config.ALPHA_HIDDEN) {
+                                            getView()
+                                                    .animate()
+                                                    .setStartDelay(1200)
+                                                    .setDuration(300)
+                                                    .alpha(Const.Config.ALPHA_HIDDEN)
+                                                    .start();
                                         }
                                     }
 
@@ -188,12 +206,18 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
             }
             mFloatButtonView.setSelected(true);
             this.mCurrentStatus = STATUS_OPEN;
-            mFloatButtonView
-                    .animate()
-                    .scaleX(0.8f)
-                    .scaleY(0.8f)
-                    .alpha(Const.Config.ALPHA_SHOW)
-                    .start();
+            if (mOpenAnimatorSet != null && mOpenAnimatorSet.isRunning()) {
+                mOpenAnimatorSet.end();
+            }
+            mOpenAnimatorSet = new AnimatorSet();
+            ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.SCALE_X, 0.8f);
+            ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.SCALE_Y, 0.8f);
+            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.ALPHA, Const.Config.ALPHA_SHOW);
+            mOpenAnimatorSet
+                    .play(scaleXAnimator)
+                    .with(scaleYAnimator)
+                    .with(alphaAnimator);
+            mOpenAnimatorSet.start();
             if (mStatusChangeListener != null) {
                 mStatusChangeListener.onStatusChange(this.mCurrentStatus);
             }
@@ -204,11 +228,23 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
         if (this.mCurrentStatus != STATUS_OFF) {
             mFloatButtonView.setSelected(false);
             this.mCurrentStatus = STATUS_OFF;
-            mFloatButtonView
-                    .animate()
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .start();
+            if (mOffAnimatorSet != null && mOffAnimatorSet.isRunning()) {
+                mOffAnimatorSet.end();
+            }
+            mOffAnimatorSet = new AnimatorSet();
+            ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.SCALE_X, 1f);
+            ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.SCALE_Y, 1f);
+            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.ALPHA, Const.Config.ALPHA_HIDDEN);
+            //透明度动画要缩放完后晚一点再进行
+            alphaAnimator.setStartDelay(1200);
+            alphaAnimator.setDuration(300);
+            mOffAnimatorSet
+                    .play(scaleXAnimator)
+                    //2个渐变动画要一起执行
+                    .with(scaleYAnimator)
+                    //设定透明度动画要比缩放动画晚执行
+                    .before(alphaAnimator);
+            mOffAnimatorSet.start();
             if (mStatusChangeListener != null) {
                 mStatusChangeListener.onStatusChange(this.mCurrentStatus);
             }
