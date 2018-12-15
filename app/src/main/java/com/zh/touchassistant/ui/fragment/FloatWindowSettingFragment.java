@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +32,6 @@ import com.zh.touchassistant.util.Property;
  * <b>Description:</b>  <br>
  */
 public class FloatWindowSettingFragment extends Fragment {
-
     private WindowPermissionAgent mPermissionAgent;
 
     @Nullable
@@ -45,7 +44,7 @@ public class FloatWindowSettingFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //开关悬浮球
-        final SwitchCompat enableSwitch = view.findViewById(R.id.enable_switch);
+        final Switch enableSwitch = view.findViewById(R.id.enable_switch);
         //自定义菜单
         TextView customMenuTv = view.findViewById(R.id.custom_menu_tv);
         //指定页面隐藏悬浮球

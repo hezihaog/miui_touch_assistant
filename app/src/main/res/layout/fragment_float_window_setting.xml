@@ -8,8 +8,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/layout_tool_bar" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +21,7 @@
                 android:textColor="#202020"
                 android:textSize="15sp" />
 
-            <android.support.v7.widget.SwitchCompat
+            <Switch
                 android:id="@+id/enable_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
