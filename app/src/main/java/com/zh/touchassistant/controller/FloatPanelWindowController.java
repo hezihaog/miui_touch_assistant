@@ -8,8 +8,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.zh.touchassistant.AssistantApp;
-import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.floating.FloatMoveEnum;
@@ -131,13 +129,7 @@ public class FloatPanelWindowController extends BaseFloatWindowController {
             actionView.setOnClickListener(new DelayOnClickListener() {
                 @Override
                 public void onDelayClick(View view) {
-                    AssistantApp assistantApp = (AssistantApp) getApplicationContext();
-                    FloatViewLiveData floatViewLiveData = assistantApp.getFloatViewLiveData();
-                    if (floatViewLiveData.isOpen()) {
-                        floatViewLiveData.setValue(false);
-                    } else {
-                        floatViewLiveData.setValue(true);
-                    }
+                    FloatServiceUtil.toggleFloatButton();
                     entry.getValue().onAction();
                 }
             });

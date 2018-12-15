@@ -7,7 +7,7 @@ package com.zh.touchassistant.floating.action;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class MenuAction extends AbsFloatWindowAction {
+public class MenuAction extends BaseFloatWindowAction {
     @Override
     public void onAction() {
         if (checkAccessibilityIsOpen()) {

@@ -16,7 +16,7 @@ import com.zh.touchassistant.util.AccessibilityHelper;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public abstract class AbsFloatWindowAction implements IFloatWindowAction {
+public abstract class BaseFloatWindowAction implements IFloatWindowAction {
     /**
      * 检查辅助服务是否开启
      */
@@ -29,7 +29,7 @@ public abstract class AbsFloatWindowAction implements IFloatWindowAction {
                 Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 application.startActivity(intent);
-                Toast.makeText(application, "请先开启悬浮球辅助功能", Toast.LENGTH_SHORT).show();
+                Toast.makeText(application, "请先开启MIUI悬浮球辅助功能", Toast.LENGTH_SHORT).show();
             }
             return isOpen;
         } else {

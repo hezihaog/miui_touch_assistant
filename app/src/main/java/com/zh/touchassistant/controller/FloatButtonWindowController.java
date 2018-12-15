@@ -3,8 +3,6 @@ package com.zh.touchassistant.controller;
 import android.content.Context;
 import android.view.View;
 
-import com.zh.touchassistant.AssistantApp;
-import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.floating.FloatMoveEnum;
@@ -58,13 +56,7 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
 
             @Override
             public void onDelayClick(View view) {
-                AssistantApp assistantApp = (AssistantApp) getApplicationContext();
-                FloatViewLiveData floatViewLiveData = assistantApp.getFloatViewLiveData();
-                if (floatViewLiveData.isOpen()) {
-                    floatViewLiveData.setValue(false);
-                } else {
-                    floatViewLiveData.setValue(true);
-                }
+                FloatServiceUtil.toggleFloatButton();
             }
         });
     }
@@ -137,7 +129,7 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                                         }
                                         //当点击悬浮按钮区域外时，如果是打开状态，则关闭
                                         if (isOpen()) {
-                                            toggle();
+                                            FloatServiceUtil.closeFloatButton();
                                         }
                                     }
                                 })));

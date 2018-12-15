@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">悬浮球</string>
+    <string name="app_name">MIUI悬浮球</string>
     <string name="app_not_installed">应用未安装</string>
     <string name="applications">应用程序</string>
     <string name="category_others">其他</string>

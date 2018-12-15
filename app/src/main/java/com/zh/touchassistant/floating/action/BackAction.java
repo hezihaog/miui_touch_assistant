@@ -7,7 +7,7 @@ package com.zh.touchassistant.floating.action;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class BackAction extends AbsFloatWindowAction {
+public class BackAction extends BaseFloatWindowAction {
 
     @Override
     public void onAction() {

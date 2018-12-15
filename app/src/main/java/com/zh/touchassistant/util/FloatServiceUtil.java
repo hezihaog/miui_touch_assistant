@@ -3,7 +3,10 @@ package com.zh.touchassistant.util;
 import android.content.Context;
 import android.content.Intent;
 
+import com.zh.touchassistant.AssistantApp;
+import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.constant.Const;
+import com.zh.touchassistant.provider.ContextProvider;
 import com.zh.touchassistant.service.CoreService;
 
 /**
@@ -33,6 +36,30 @@ public class FloatServiceUtil {
 
     public static int getFloatPanelY() {
         return Property.getDefault().getProperty(Const.Config.KEY_FLOAT_PANEL_Y, 0);
+    }
+
+    public static void openFloatButton() {
+        AssistantApp assistantApp = (AssistantApp) ContextProvider.get().getApplication();
+        assistantApp.getFloatViewLiveData().setValue(true);
+    }
+
+    public static void closeFloatButton() {
+        AssistantApp assistantApp = (AssistantApp) ContextProvider.get().getApplication();
+        assistantApp.getFloatViewLiveData().setValue(false);
+    }
+
+    public static boolean isFloatButtonOpen() {
+        AssistantApp assistantApp = (AssistantApp) ContextProvider.get().getApplication();
+        FloatViewLiveData floatViewLiveData = assistantApp.getFloatViewLiveData();
+        return floatViewLiveData.isOpen();
+    }
+
+    public static void toggleFloatButton() {
+        if (isFloatButtonOpen()) {
+            closeFloatButton();
+        } else {
+            openFloatButton();
+        }
     }
 
     /**

@@ -16,7 +16,7 @@ import com.zh.touchassistant.util.LockUtil;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class LockAction extends AbsFloatWindowAction {
+public class LockAction extends BaseFloatWindowAction {
 
     @Override
     public void onAction() {
