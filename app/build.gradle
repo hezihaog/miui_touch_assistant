@@ -78,4 +78,5 @@ dependencies {
     implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$brvah_version"
     //Gson
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.zhy.base:fileprovider:1.0.0'
 }

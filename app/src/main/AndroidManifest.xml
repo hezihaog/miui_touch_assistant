@@ -72,17 +72,6 @@
             </intent-filter>
         </receiver>
 
-        <!--7.0之后文件需要的FileProvider-->
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_provider" />
-        </provider>
-
         <!-- 辅助服务 -->
         <service
             android:name=".service.CoreService"

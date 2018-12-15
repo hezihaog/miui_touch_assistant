@@ -7,10 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.FileProvider;
+
+import com.zhy.base.fileprovider.FileProvider7;
 
 import java.io.File;
 
@@ -64,13 +64,7 @@ public class NotifyUtil {
         bigPictureStyle.bigPicture(bitmap);
         builder.setStyle(bigPictureStyle);
         Intent openAlbumIntent = new Intent(Intent.ACTION_VIEW);
-        Uri imgUri;
-        //兼容7.0，使用FileProvider
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            imgUri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", imageFile);
-        } else {
-            imgUri = Uri.fromFile(imageFile);
-        }
+        Uri imgUri = FileProvider7.getUriForFile(context, imageFile);
         openAlbumIntent.setDataAndType(imgUri, "image/jpg");
         openAlbumIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,
