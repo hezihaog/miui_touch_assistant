@@ -9,9 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +21,7 @@ import com.zh.touchassistant.floating.WindowPermissionUtil;
 import com.zh.touchassistant.ui.activity.CustomMenuActivity;
 import com.zh.touchassistant.util.FloatServiceUtil;
 import com.zh.touchassistant.util.Property;
+import com.zh.touchassistant.widget.SwitchButton;
 
 /**
  * <b>Package:</b> com.zh.touchassistant.ui.fragment <br>
@@ -44,7 +43,7 @@ public class FloatWindowSettingFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //开关悬浮球
-        final Switch enableSwitch = view.findViewById(R.id.enable_switch);
+        final SwitchButton enableSwitch = view.findViewById(R.id.enable_switch);
         //自定义菜单
         TextView customMenuTv = view.findViewById(R.id.custom_menu_tv);
         //指定页面隐藏悬浮球
@@ -61,9 +60,9 @@ public class FloatWindowSettingFragment extends Fragment {
             }
         });
         //设置监听
-        enableSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        enableSwitch.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
+            public void onCheckedChanged(SwitchButton button, final boolean isChecked) {
                 executeWindowAction(new Runnable() {
                     @Override
                     public void run() {

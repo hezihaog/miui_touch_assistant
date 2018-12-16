@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SwitchButton">
+        <attr name="sb_unchecked_bg" format="color" />
+        <attr name="sb_checked_bg" format="color" />
+        <attr name="sb_circle_bg_margin" format="dimension" />
+        <attr name="sb_checked" format="boolean" />
+    </declare-styleable>
+</resources>
