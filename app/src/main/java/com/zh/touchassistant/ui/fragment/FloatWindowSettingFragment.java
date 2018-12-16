@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,7 @@ public class FloatWindowSettingFragment extends Fragment {
         enableSwitch.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(SwitchButton button, final boolean isChecked) {
+                Log.d("onCheckedChanged:", "isChecked -> " + isChecked);
                 executeWindowAction(new Runnable() {
                     @Override
                     public void run() {

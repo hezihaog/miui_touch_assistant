@@ -1,5 +1,8 @@
 package com.zh.touchassistant.widget;
 
+import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -11,6 +14,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 
 import com.zh.touchassistant.R;
 
@@ -24,13 +28,21 @@ public class SwitchButton extends View {
      */
     private int mUncheckedBg;
     /**
-     * 圆圈与背景的间距
+     * 当前边界背景
      */
-    private int mCircleMargin;
+    private int mCurrentBoundBg;
     /**
-     * 画笔
+     * 小圆与背景的间距
      */
-    private Paint mPaint;
+    private int mSmallCircleMargin;
+    /**
+     * 内容画笔
+     */
+    private Paint mContentPaint;
+    /**
+     * 描边画笔
+     */
+    private Paint mOutlinePaint;
     /**
      * 默认的宽度
      */
@@ -42,7 +54,7 @@ public class SwitchButton extends View {
     /**
      * 小圆半径
      */
-    private int mSmallRadius;
+    private int mSmallCircleRadius;
     /**
      * View的宽
      */
@@ -56,6 +68,18 @@ public class SwitchButton extends View {
      */
     private float mBoundRadius;
     /**
+     * 边界区域
+     */
+    private RectF mBoundRect;
+    /**
+     * 小圆中心位置的X坐标，开和关会改变该值来移动小圆
+     */
+    private int mSmallCircleCenterX;
+    /**
+     * 小圆中心位置的Y坐标，一直在高度的一半
+     */
+    private int mSmallCircleCenterY;
+    /**
      * 是否打开
      */
     private boolean isChecked = false;
@@ -63,6 +87,17 @@ public class SwitchButton extends View {
      * 状态监听
      */
     private OnCheckedChangeListener mCheckedChangeListener;
+    /**
+     * 小圆的起点X和终点x坐标
+     */
+    private int mSmallCircleStartX;
+    private int mSmallCircleEndX;
+    /**
+     * 背景颜色估值器
+     */
+    final ArgbEvaluator mArgbEvaluator = new ArgbEvaluator();
+    private AnimatorSet mOffAnimatorSet;
+    private AnimatorSet mOpenAnimatorSet;
 
     public SwitchButton(Context context) {
         this(context, null);
@@ -74,24 +109,48 @@ public class SwitchButton extends View {
         this.mCheckedBg = typedArray.getColor(R.styleable.SwitchButton_sb_checked_bg, Color.BLUE);
         this.mUncheckedBg = typedArray.getColor(R.styleable.SwitchButton_sb_unchecked_bg, Color.GRAY);
         this.isChecked = typedArray.getBoolean(R.styleable.SwitchButton_sb_checked, false);
-        this.mCircleMargin = (int) typedArray.getDimension(R.styleable.SwitchButton_sb_circle_bg_margin, dip2px(getContext(), 3f));
+        this.mSmallCircleMargin = (int) typedArray.getDimension(R.styleable.SwitchButton_sb_circle_bg_margin, dip2px(getContext(), 3f));
         typedArray.recycle();
+        if (isChecked) {
+            this.mCurrentBoundBg = mCheckedBg;
+        } else {
+            this.mCurrentBoundBg = mUncheckedBg;
+        }
         this.mDefaultWidth = dip2px(getContext(), 50f);
         this.mDefaultHeight = dip2px(getContext(), 30f);
         init();
     }
 
     private void init() {
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
+        //内容画笔
+        mContentPaint = new Paint();
+        mContentPaint.setAntiAlias(true);
+        mContentPaint.setStyle(Paint.Style.FILL);
+        //描边画笔
+        mOutlinePaint = new Paint();
+        mOutlinePaint.setAntiAlias(true);
+        mOutlinePaint.setStyle(Paint.Style.STROKE);
+        mOutlinePaint.setColor(getResources().getColor(android.R.color.darker_gray));
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isChecked) {
+                    //已打开，则关闭
+                    if (mOffAnimatorSet != null && mOffAnimatorSet.isRunning()) {
+                        return;
+                    }
+                    off();
+                } else {
+                    //已关闭，则打开
+                    if (mOpenAnimatorSet != null && mOpenAnimatorSet.isRunning()) {
+                        return;
+                    }
+                    open();
+                }
                 isChecked = !isChecked;
                 if (mCheckedChangeListener != null) {
                     mCheckedChangeListener.onCheckedChanged(SwitchButton.this, isChecked);
                 }
-                invalidate();
             }
         });
     }
@@ -99,10 +158,22 @@ public class SwitchButton extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mWidth = w;
-        mHeight = h;
-        mSmallRadius = (mHeight - (mCircleMargin * 2)) / 2;
-        mBoundRadius = mHeight / 2;
+        this.mWidth = w;
+        this.mHeight = h;
+        this.mSmallCircleRadius = (mHeight - (mSmallCircleMargin * 2)) / 2;
+        this.mBoundRadius = mHeight / 2;
+        this.mSmallCircleCenterY = mHeight / 2;
+        //小圆的起点X和终点x坐标
+        mSmallCircleStartX = mWidth / 4;
+        mSmallCircleEndX = (mWidth / 4) * 3;
+        //因为一开始外部调用setChecked()会比onSizeChanged方法快，所以回显状态时，马上就得改变当前状态的相关配置
+        if (isChecked) {
+            this.mSmallCircleCenterX = mSmallCircleEndX;
+            this.mCurrentBoundBg = mCheckedBg;
+        } else {
+            this.mSmallCircleCenterX = mSmallCircleStartX;
+            this.mCurrentBoundBg = mUncheckedBg;
+        }
     }
 
     @Override
@@ -127,43 +198,108 @@ public class SwitchButton extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (isChecked) {
-            drawOpen(canvas);
-        } else {
-            drawClose(canvas);
+        //关闭状态下，要描边
+//        if (!isChecked) {
+//            //更新当前背景颜色
+//            drawBg(canvas, mOutlinePaint);
+//            drawCircle(canvas, mOutlinePaint);
+//        }
+        //画内容
+        mContentPaint.setColor(mCurrentBoundBg);
+        drawBg(canvas, mContentPaint);
+        //小圆为白色
+        mContentPaint.setColor(Color.WHITE);
+        drawCircle(canvas, mContentPaint);
+    }
+
+    /**
+     * 画背景
+     */
+    private void drawBg(Canvas canvas, Paint paint) {
+        //画边界背景
+        if (mBoundRect == null) {
+            mBoundRect = new RectF(0, 0, mWidth, mHeight);
         }
+        canvas.drawRoundRect(mBoundRect, mBoundRadius, mBoundRadius, paint);
     }
 
     /**
-     * 画打开状态
+     * 画小圆
      */
-    private void drawOpen(Canvas canvas) {
-        mPaint.setColor(mCheckedBg);
-        //画背景
-        RectF rectF = new RectF(0, 0, mWidth, mHeight);
-        canvas.drawRoundRect(rectF, mBoundRadius, mBoundRadius, mPaint);
-        //画圆
-        mPaint.setColor(Color.WHITE);
-        //移动小圆在宽度的3分之一位置
-        canvas.drawCircle((mWidth / 4) * 3, mHeight / 2, mSmallRadius, mPaint);
+    private void drawCircle(Canvas canvas, Paint paint) {
+        //画小圆
+        canvas.drawCircle(mSmallCircleCenterX, mSmallCircleCenterY, mSmallCircleRadius, paint);
     }
 
-    /**
-     * 画关闭状态
-     */
-    private void drawClose(Canvas canvas) {
-        mPaint.setColor(mUncheckedBg);
-        //画背景
-        RectF rectF = new RectF(0, 0, mWidth, mHeight);
-        canvas.drawRoundRect(rectF, mBoundRadius, mBoundRadius, mPaint);
-        //画圆
-        mPaint.setColor(Color.WHITE);
-        canvas.drawCircle(mWidth / 4, mHeight / 2, mSmallRadius, mPaint);
+    private void open() {
+        //从左到右
+        final int startX = mSmallCircleStartX;
+        final int endX = mSmallCircleEndX;
+        mOpenAnimatorSet = new AnimatorSet();
+        ValueAnimator openAnimator = ValueAnimator.ofInt(startX, endX);
+        openAnimator.setDuration(300);
+        openAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mSmallCircleCenterX = (Integer) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
+        ValueAnimator bgAnimator = ValueAnimator.ofFloat(0, 1f);
+        //开关切换完后，再切换背景
+        bgAnimator.setStartDelay(200);
+        bgAnimator.setDuration(500);
+        bgAnimator.setInterpolator(new AccelerateInterpolator());
+        bgAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                Float fraction = (Float) animation.getAnimatedValue();
+                mCurrentBoundBg = (int) mArgbEvaluator.evaluate(fraction, mUncheckedBg, mCheckedBg);
+                invalidate();
+            }
+        });
+        mOpenAnimatorSet
+                .play(openAnimator)
+                .before(bgAnimator);
+        mOpenAnimatorSet.start();
     }
 
-    public void setChecked(boolean checked) {
+    private void off() {
+        //从右到左
+        final int startX = mSmallCircleEndX;
+        final int endX = mSmallCircleStartX;
+        mOffAnimatorSet = new AnimatorSet();
+        ValueAnimator offAnimator = ValueAnimator.ofInt(startX, endX);
+        offAnimator.setDuration(300);
+        offAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                //小圆位置
+                mSmallCircleCenterX = (Integer) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
+        ValueAnimator bgAnimator = ValueAnimator.ofFloat(0, 1f);
+        bgAnimator.setStartDelay(200);
+        bgAnimator.setDuration(500);
+        bgAnimator.setInterpolator(new AccelerateInterpolator());
+        bgAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                Float fraction = (Float) animation.getAnimatedValue();
+                mCurrentBoundBg = (int) mArgbEvaluator.evaluate(fraction, mCheckedBg, mUncheckedBg);
+                invalidate();
+            }
+        });
+        mOffAnimatorSet
+                .play(offAnimator)
+                .before(bgAnimator);
+        mOffAnimatorSet.start();
+    }
+
+    public void setChecked(final boolean checked) {
         this.isChecked = checked;
-        invalidate();
+        postInvalidate();
     }
 
     public boolean isChecked() {
