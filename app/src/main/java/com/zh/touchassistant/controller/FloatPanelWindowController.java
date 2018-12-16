@@ -124,7 +124,7 @@ public class FloatPanelWindowController extends BaseFloatWindowController {
             FrameLayout.LayoutParams params = new ControlPanelView.LayoutParams(iconSize, iconSize);
             params.gravity = Gravity.CENTER;
             actionView.setPadding(iconPadding, iconPadding, iconPadding, iconPadding);
-            actionView.setImageResource(entry.getKey().getActionIcon());
+            actionView.setImageDrawable(entry.getValue().getActionIconDrawable());
             actionView.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.float_icon_bg));
             actionView.setOnClickListener(new DelayOnClickListener() {
                 @Override

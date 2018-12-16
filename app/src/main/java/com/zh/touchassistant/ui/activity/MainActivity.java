@@ -26,6 +26,8 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //隐藏小图标
+        getActionBar().setDisplayShowHomeEnabled(false);
         PermissionHelper.request(this, new PermissionCallback() {
             @Override
             public void onGranted() {

@@ -1,5 +1,9 @@
 package com.zh.touchassistant.floating.action;
 
+import android.graphics.drawable.Drawable;
+
+import com.zh.touchassistant.R;
+
 /**
  * <b>Package:</b> com.zh.touchassistant.floating.action <br>
  * <b>FileName:</b> MenuFloatWindowAction <br>
@@ -18,5 +22,15 @@ public class MenuAction extends BaseFloatWindowAction {
     @Override
     public int getActionId() {
         return 3;
+    }
+
+    @Override
+    public String getActionName() {
+        return "Menu";
+    }
+
+    @Override
+    public Drawable getActionIconDrawable() {
+        return getResDrawable(R.drawable.ic_key_menu);
     }
 }

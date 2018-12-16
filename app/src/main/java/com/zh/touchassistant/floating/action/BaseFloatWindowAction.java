@@ -2,6 +2,7 @@ package com.zh.touchassistant.floating.action;
 
 import android.app.Application;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.provider.Settings;
 import android.widget.Toast;
 
@@ -50,5 +51,9 @@ public abstract class BaseFloatWindowAction implements IFloatWindowAction {
         } else {
             throw new NullPointerException("Application must be not null");
         }
+    }
+
+    protected Drawable getResDrawable(int resId) {
+        return getApplication().getResources().getDrawable(resId);
     }
 }

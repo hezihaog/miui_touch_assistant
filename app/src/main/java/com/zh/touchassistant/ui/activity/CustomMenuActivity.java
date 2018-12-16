@@ -21,10 +21,12 @@ public class CustomMenuActivity extends FragmentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_menu);
-        ActionBar actionBar=getActionBar();
+        ActionBar actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("自定义菜单");
+        //隐藏小图标
+        actionBar.setDisplayShowHomeEnabled(false);
         if (getSupportFragmentManager().findFragmentByTag(CustomMenuFragment.class.getName()) == null) {
             getSupportFragmentManager()
                     .beginTransaction()

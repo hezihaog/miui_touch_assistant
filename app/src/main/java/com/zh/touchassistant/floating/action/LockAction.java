@@ -2,6 +2,7 @@ package com.zh.touchassistant.floating.action;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.widget.Toast;
 
 import com.zh.touchassistant.R;
@@ -40,5 +41,15 @@ public class LockAction extends BaseFloatWindowAction {
     @Override
     public int getActionId() {
         return 2;
+    }
+
+    @Override
+    public String getActionName() {
+        return "Lock";
+    }
+
+    @Override
+    public Drawable getActionIconDrawable() {
+        return getResDrawable(R.drawable.ic_toggle_lock);
     }
 }

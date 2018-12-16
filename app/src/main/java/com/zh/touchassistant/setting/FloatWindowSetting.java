@@ -2,7 +2,6 @@ package com.zh.touchassistant.setting;
 
 import android.text.TextUtils;
 
-import com.zh.touchassistant.R;
 import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.floating.action.BackAction;
 import com.zh.touchassistant.floating.action.HomeAction;
@@ -80,11 +79,11 @@ public class FloatWindowSetting {
 
     private void initActionFromDefault() {
         ArrayList<FloatWindowActionModel> actions = getActionModels();
-        actions.add(new FloatWindowActionModel("Home", R.drawable.ic_key_home, new HomeAction().getActionId()));
-        actions.add(new FloatWindowActionModel("Menu", R.drawable.ic_key_menu, new MenuAction().getActionId()));
-        actions.add(new FloatWindowActionModel("Lock", R.drawable.ic_toggle_lock, new LockAction().getActionId()));
-        actions.add(new FloatWindowActionModel("Screenshot", R.drawable.ic_toggle_screenshot, new ScreenshotAction().getActionId()));
-        actions.add(new FloatWindowActionModel("Back", R.drawable.ic_key_back, new BackAction().getActionId()));
+        actions.add(new FloatWindowActionModel(new HomeAction().getActionId()));
+        actions.add(new FloatWindowActionModel(new MenuAction().getActionId()));
+        actions.add(new FloatWindowActionModel(new LockAction().getActionId()));
+        actions.add(new FloatWindowActionModel(new ScreenshotAction().getActionId()));
+        actions.add(new FloatWindowActionModel(new BackAction().getActionId()));
         //第一次初始化完后，保存到Sp
         FloatWindowActionListModel listModel = new FloatWindowActionListModel();
         listModel.setModels(actions);

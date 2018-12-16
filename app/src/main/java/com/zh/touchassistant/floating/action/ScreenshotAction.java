@@ -1,8 +1,10 @@
 package com.zh.touchassistant.floating.action;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 
 import com.zh.touchassistant.AssistantApp;
+import com.zh.touchassistant.R;
 import com.zh.touchassistant.screenshot.ScreenshotActivity;
 
 /**
@@ -26,5 +28,15 @@ public class ScreenshotAction extends BaseFloatWindowAction {
     @Override
     public int getActionId() {
         return 1;
+    }
+
+    @Override
+    public String getActionName() {
+        return "Screenshot";
+    }
+
+    @Override
+    public Drawable getActionIconDrawable() {
+        return getResDrawable(R.drawable.ic_toggle_screenshot);
     }
 }

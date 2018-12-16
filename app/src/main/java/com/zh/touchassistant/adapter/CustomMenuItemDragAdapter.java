@@ -3,8 +3,10 @@ package com.zh.touchassistant.adapter;
 import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.zh.touchassistant.R;
+import com.zh.touchassistant.floating.action.IFloatWindowAction;
 import com.zh.touchassistant.model.FloatWindowActionModel;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -15,13 +17,18 @@ import java.util.List;
  * <b>Description:</b>  <br>
  */
 public class CustomMenuItemDragAdapter extends BaseItemDraggableAdapter<FloatWindowActionModel, BaseViewHolder> {
-    public CustomMenuItemDragAdapter(List<FloatWindowActionModel> data) {
+    private final LinkedHashMap<Integer, IFloatWindowAction> mActionMap;
+
+    public CustomMenuItemDragAdapter(List<FloatWindowActionModel> data, LinkedHashMap<Integer, IFloatWindowAction> actionMap) {
         super(R.layout.item_custom_menu, data);
+        this.mActionMap = actionMap;
     }
 
     @Override
     protected void convert(BaseViewHolder helper, FloatWindowActionModel item) {
-        helper.setImageResource(R.id.action_icon_iv, item.getActionIcon());
-        helper.setText(R.id.action_name_tv, item.getActionName());
+        int actionId = item.getActionId();
+        IFloatWindowAction action = mActionMap.get(actionId);
+        helper.setImageDrawable(R.id.action_icon_iv, action.getActionIconDrawable());
+        helper.setText(R.id.action_name_tv, action.getActionName());
     }
 }

@@ -59,7 +59,7 @@ public class CustomMenuFragment extends Fragment {
         for (Map.Entry<FloatWindowActionModel, IFloatWindowAction> entry : currentActions.entrySet()) {
             mDatas.add(entry.getKey());
         }
-        CustomMenuItemDragAdapter adapter = new CustomMenuItemDragAdapter(mDatas);
+        CustomMenuItemDragAdapter adapter = new CustomMenuItemDragAdapter(mDatas, FloatWindowSetting.getInstance().getActionMap());
         ItemDragAndSwipeCallback itemDragCallback = new ItemDragAndSwipeCallback(adapter);
         //限制只能上下移动
         itemDragCallback.setDragMoveFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN);

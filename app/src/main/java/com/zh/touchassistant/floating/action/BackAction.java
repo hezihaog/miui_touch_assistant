@@ -1,5 +1,9 @@
 package com.zh.touchassistant.floating.action;
 
+import android.graphics.drawable.Drawable;
+
+import com.zh.touchassistant.R;
+
 /**
  * <b>Package:</b> com.zh.touchassistant.floating.action <br>
  * <b>FileName:</b> BackFloatWindowAction <br>
@@ -19,5 +23,15 @@ public class BackAction extends BaseFloatWindowAction {
     @Override
     public int getActionId() {
         return 0;
+    }
+
+    @Override
+    public String getActionName() {
+        return "Back";
+    }
+
+    @Override
+    public Drawable getActionIconDrawable() {
+        return getResDrawable(R.drawable.ic_key_back);
     }
 }

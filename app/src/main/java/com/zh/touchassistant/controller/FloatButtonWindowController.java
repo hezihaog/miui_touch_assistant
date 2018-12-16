@@ -1,7 +1,5 @@
 package com.zh.touchassistant.controller;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -118,16 +116,6 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                                                     .setStartDelay(1200)
                                                     .setDuration(300)
                                                     .alpha(Const.Config.ALPHA_HIDDEN)
-                                                    .setListener(new AnimatorListenerAdapter() {
-                                                        @Override
-                                                        public void onAnimationStart(Animator animation) {
-                                                            super.onAnimationStart(animation);
-                                                            //如果开始时，悬浮球又被打开了，就打断这次动画
-                                                            if (isOpen()) {
-                                                                animation.end();
-                                                            }
-                                                        }
-                                                    })
                                                     .start();
                                         }
                                     }
