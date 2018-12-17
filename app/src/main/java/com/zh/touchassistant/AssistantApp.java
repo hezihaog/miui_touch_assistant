@@ -1,16 +1,25 @@
 package com.zh.touchassistant;
 
 import android.accessibilityservice.AccessibilityService;
-import android.app.Application;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 
 import com.zh.touchassistant.constant.Const;
+import com.zh.touchassistant.database.biz.IAutoHideFloatBiz;
+import com.zh.touchassistant.database.biz.impl.AutoHideFloatBiz;
+import com.zh.touchassistant.model.ForegroundAppInfoModel;
 import com.zh.touchassistant.setting.FloatWindowSetting;
 import com.zh.touchassistant.util.AccessibilityHelper;
+import com.zh.touchassistant.util.AppBroadcastManager;
+import com.zh.touchassistant.util.FloatServiceUtil;
 import com.zh.touchassistant.util.Property;
 import com.zh.touchassistant.util.json.GsonParserImpl;
 import com.zh.touchassistant.util.json.JsonParser;
 import com.zh.touchassistant.util.logger.FSLogger;
 import com.zh.touchassistant.util.logger.LoggerImpl;
+import com.zh.touchassistant.util.singleton.SingletonStorageApplication;
 
 /**
  * <b>Package:</b> com.zh.touchassistant <br>
@@ -19,7 +28,7 @@ import com.zh.touchassistant.util.logger.LoggerImpl;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class AssistantApp extends Application {
+public class AssistantApp extends SingletonStorageApplication {
     private AccessibilityHelper mAccessibilityHelper;
     private FloatViewLiveData mFloatViewLiveData;
 
@@ -37,6 +46,23 @@ public class AssistantApp extends Application {
                 .getInstance()
                 .initFloatWindowActions(jsonParser);
         mFloatViewLiveData = new FloatViewLiveData();
+        //监听前台App
+        AppBroadcastManager.registerReceiver(this, new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //前台Activity发生改变
+                ForegroundAppInfoModel foregroundAppInfoModel = (ForegroundAppInfoModel) intent.getSerializableExtra(Const.Extras.EXTRAS_FOREGROUND_APP_DATA);
+                AutoHideFloatBiz biz = getInstance(IAutoHideFloatBiz.class, AutoHideFloatBiz.class);
+                //查数据库，是否添加过该包名
+                if (biz != null) {
+                    if (biz.isAutoHideApp(foregroundAppInfoModel.getForegroundAppPackageName())) {
+                        FloatServiceUtil.hideFloatWindow(getApplicationContext());
+                    } else {
+                        FloatServiceUtil.showFloatWindow(getApplicationContext());
+                    }
+                }
+            }
+        }, new IntentFilter(Const.Action.ACTION_FOREGROUND_APP_CHANGE));
     }
 
     public FloatViewLiveData getFloatViewLiveData() {

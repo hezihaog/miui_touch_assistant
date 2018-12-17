@@ -2,7 +2,9 @@ package com.zh.touchassistant.util;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
+import android.content.Intent;
 import android.provider.Settings;
+import android.widget.Toast;
 
 /**
  * Created by wangxiandeng on 2016/11/25.
@@ -61,5 +63,31 @@ public class AccessibilityHelper {
             }
         }
         return false;
+    }
+
+    /**
+     * 跳转到辅助服务设置
+     */
+    public void goToAccessibilitySetting(Context context) {
+        Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+    /**
+     * 引导跳转开启辅助服务
+     */
+    public boolean guideAccessibilityIsOpen(Context context) {
+        if (context != null) {
+            boolean isOpen = isAccessibilitySettingsOn(context);
+            if (!isOpen) {
+                // 引导至辅助功能设置页面
+                goToAccessibilitySetting(context);
+                Toast.makeText(context, "请先开启MIUI悬浮球辅助功能", Toast.LENGTH_SHORT).show();
+            }
+            return isOpen;
+        } else {
+            throw new NullPointerException("Application must be not null");
+        }
     }
 }

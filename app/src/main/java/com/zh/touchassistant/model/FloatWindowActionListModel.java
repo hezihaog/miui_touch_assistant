@@ -9,7 +9,7 @@ import java.util.List;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class FloatWindowActionListModel {
+public class FloatWindowActionListModel extends BaseDataModel {
     private List<FloatWindowActionModel> models;
 
     public List<FloatWindowActionModel> getModels() {

@@ -9,7 +9,7 @@ import java.util.Objects;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class FloatWindowActionModel {
+public class FloatWindowActionModel extends BaseDataModel {
     private int actionId;
 
     public FloatWindowActionModel() {

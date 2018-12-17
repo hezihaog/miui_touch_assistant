@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="15dp">
+
+    <ImageView
+        android:id="@+id/app_icon_iv"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        tools:background="#909090" />
+
+    <TextView
+        android:id="@+id/app_name_tv"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textColor="#202020"
+        tools:text="app name" />
+
+    <com.zh.touchassistant.widget.SwitchButton
+        android:id="@+id/auto_hide_switch"
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:layout_gravity="center_vertical"
+        app:sb_checked="false"
+        app:sb_checked_bg="#0F83E1"
+        app:sb_circle_bg_margin="2.5dp"
+        app:sb_unchecked_bg="#EAEAEA" />
+</LinearLayout>

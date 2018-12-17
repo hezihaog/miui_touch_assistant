@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 
 /**
@@ -17,13 +18,21 @@ public class AppBroadcastManager {
     private AppBroadcastManager() {
     }
 
+    public static void sendBroadcast(Context context, String action) {
+        sendBroadcast(context, action, null);
+    }
+
     /**
      * 发送广播
      */
-    public static void sendBroadcast(Context context, String action) {
+    public static void sendBroadcast(Context context, String action, Bundle args) {
+        Intent intent = new Intent(action);
+        if (args != null) {
+            intent.putExtras(args);
+        }
         LocalBroadcastManager
                 .getInstance(context)
-                .sendBroadcast(new Intent(action));
+                .sendBroadcast(intent);
     }
 
     /**

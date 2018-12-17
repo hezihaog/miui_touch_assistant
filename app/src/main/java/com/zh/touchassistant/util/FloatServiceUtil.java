@@ -7,7 +7,7 @@ import com.zh.touchassistant.AssistantApp;
 import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.provider.ContextProvider;
-import com.zh.touchassistant.service.CoreService;
+import com.zh.touchassistant.service.CoreAccessibilityService;
 
 /**
  * <b>Package:</b> com.zh.touchassistant.util <br>
@@ -63,14 +63,28 @@ public class FloatServiceUtil {
     }
 
     /**
+     * 显示悬浮球
+     */
+    public static void showFloatWindow(Context context) {
+        setEnableFloatWindow(context, true);
+    }
+
+    /**
+     * 隐藏悬浮球
+     */
+    public static void hideFloatWindow(Context context) {
+        setEnableFloatWindow(context, false);
+    }
+
+    /**
      * 开关悬浮窗
      */
     public static void setEnableFloatWindow(Context context, boolean isEnable) {
-        Intent intent = new Intent(context, CoreService.class);
+        Intent intent = new Intent(context, CoreAccessibilityService.class);
         if (isEnable) {
-            intent.setAction(CoreService.Action.ACTION_SHOW_FLOATING_WINDOW);
+            intent.setAction(CoreAccessibilityService.Action.ACTION_SHOW_FLOATING_WINDOW);
         } else {
-            intent.setAction(CoreService.Action.ACTION_HIDE_FLOATING_WINDOW);
+            intent.setAction(CoreAccessibilityService.Action.ACTION_HIDE_FLOATING_WINDOW);
         }
         context.startService(intent);
     }

@@ -51,7 +51,11 @@
         </activity>
 
         <activity
-            android:name=".ui.activity.CustomMenuActivity"
+            android:name=".ui.activity.CustomMenuSettingActivity"
+            android:launchMode="singleTop" />
+
+        <activity
+            android:name=".ui.activity.AutoHideSettingActivity"
             android:launchMode="singleTop" />
 
         <!-- 透明的一键锁屏 -->
@@ -73,9 +77,9 @@
             </intent-filter>
         </receiver>
 
-        <!-- 辅助服务 -->
+        <!-- 当前Activity、返回键、Home键辅助服务 -->
         <service
-            android:name=".service.CoreService"
+            android:name=".service.CoreAccessibilityService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />

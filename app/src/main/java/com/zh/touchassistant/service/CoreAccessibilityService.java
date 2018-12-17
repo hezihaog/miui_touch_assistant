@@ -5,24 +5,29 @@ import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.zh.touchassistant.AssistantApp;
 import com.zh.touchassistant.FloatViewLiveData;
+import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.controller.FloatButtonWindowController;
 import com.zh.touchassistant.controller.FloatPanelWindowController;
 import com.zh.touchassistant.floating.FloatWindowManager;
+import com.zh.touchassistant.model.ForegroundAppInfoModel;
+import com.zh.touchassistant.util.AppBroadcastManager;
+import com.zh.touchassistant.util.logger.FSLogger;
 
 /**
  * <b>Package:</b> com.zh.touchassistant <br>
  * <b>FileName:</b> CoreService <br>
  * <b>Create Date:</b> 2018/12/6  上午12:39 <br>
  * <b>Author:</b> zihe <br>
- * <b>Description:</b>  <br>
+ * <b>Description:</b> 核心辅助服务 <br>
  */
-public class CoreService extends AccessibilityService {
+public class CoreAccessibilityService extends AccessibilityService {
     private static final int NOTIFICATION_ID = 1234;
 
     private FloatButtonWindowController mFloatButtonVC;
@@ -36,6 +41,22 @@ public class CoreService extends AccessibilityService {
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
+        //窗口改变，即当前Activity切换了
+        if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            //前台App的完整包名
+            CharSequence foregroundAppPackageName = event.getPackageName();
+            //前台App的Activity类名
+            CharSequence foregroundActivityClassName = event.getClassName();
+            FSLogger.d("onAccessibilityEvent: 前台App的完整包名： -- <" + foregroundAppPackageName + ">");
+            FSLogger.d("onAccessibilityEvent: 前台App的Activity类名： -- <" + foregroundActivityClassName + ">");
+            ForegroundAppInfoModel foregroundAppInfoModel = new ForegroundAppInfoModel(
+                    foregroundAppPackageName.toString(), foregroundActivityClassName.toString());
+            Bundle args = new Bundle();
+            args.putSerializable(Const.Extras.EXTRAS_FOREGROUND_APP_DATA, foregroundAppInfoModel);
+            AppBroadcastManager
+                    .sendBroadcast(this.getApplicationContext(),
+                            Const.Action.ACTION_FOREGROUND_APP_CHANGE, args);
+        }
     }
 
     @Override

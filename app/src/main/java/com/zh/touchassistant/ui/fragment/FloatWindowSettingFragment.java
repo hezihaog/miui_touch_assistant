@@ -18,7 +18,8 @@ import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.floating.FloatWindowPermissionCallback;
 import com.zh.touchassistant.floating.WindowPermissionAgent;
 import com.zh.touchassistant.floating.WindowPermissionUtil;
-import com.zh.touchassistant.ui.activity.CustomMenuActivity;
+import com.zh.touchassistant.ui.activity.AutoHideSettingActivity;
+import com.zh.touchassistant.ui.activity.CustomMenuSettingActivity;
 import com.zh.touchassistant.util.FloatServiceUtil;
 import com.zh.touchassistant.util.Property;
 import com.zh.touchassistant.util.logger.FSLogger;
@@ -77,13 +78,13 @@ public class FloatWindowSettingFragment extends Fragment {
         customMenuTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CustomMenuActivity.class));
+                startActivity(new Intent(getActivity(), CustomMenuSettingActivity.class));
             }
         });
         hideTouchAssistantLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(getActivity(), AutoHideSettingActivity.class));
             }
         });
         restoreDefaultTv.setOnClickListener(new View.OnClickListener() {

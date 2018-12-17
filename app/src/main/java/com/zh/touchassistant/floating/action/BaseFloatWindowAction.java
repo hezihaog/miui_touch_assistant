@@ -1,10 +1,7 @@
 package com.zh.touchassistant.floating.action;
 
 import android.app.Application;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.provider.Settings;
-import android.widget.Toast;
 
 import com.zh.touchassistant.AssistantApp;
 import com.zh.touchassistant.provider.ContextProvider;
@@ -23,19 +20,7 @@ public abstract class BaseFloatWindowAction implements IFloatWindowAction {
      */
     protected boolean checkAccessibilityIsOpen() {
         AssistantApp application = getApplication();
-        if (application != null) {
-            boolean isOpen = application.getAccessibilityHelper().isAccessibilitySettingsOn(application);
-            if (!isOpen) {
-                // 引导至辅助功能设置页面
-                Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                application.startActivity(intent);
-                Toast.makeText(application, "请先开启MIUI悬浮球辅助功能", Toast.LENGTH_SHORT).show();
-            }
-            return isOpen;
-        } else {
-            throw new NullPointerException("Application must be not null");
-        }
+        return getApplication().getAccessibilityHelper().guideAccessibilityIsOpen(application);
     }
 
     protected AccessibilityHelper getAccessibilityHelper() {

@@ -43,6 +43,23 @@ public class Const {
     }
 
     public static class Action {
+        /**
+         * Action操作图标位置改变
+         */
         public static final String ACTION_UPDATE_PANEL_ACTIONS = "action_update_panel_actions";
+        /**
+         * 前台Activity改变
+         */
+        public static final String ACTION_FOREGROUND_APP_CHANGE = "action_foreground_app_change";
+    }
+
+    /**
+     * Bundle数据Key
+     */
+    public static class Extras {
+        /**
+         * 前台App信息
+         */
+        public static final String EXTRAS_FOREGROUND_APP_DATA = "extras_foreground_app_data";
     }
 }

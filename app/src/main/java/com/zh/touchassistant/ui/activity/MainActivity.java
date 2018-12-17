@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
+import com.zh.touchassistant.AssistantApp;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.permission.PermissionCallback;
 import com.zh.touchassistant.permission.PermissionHelper;
@@ -38,6 +39,10 @@ public class MainActivity extends FragmentActivity {
                                     new FloatWindowSettingFragment(),
                                     FloatWindowSettingFragment.class.getName())
                             .commit();
+                    //检查辅助服务
+                    ((AssistantApp) getApplication())
+                            .getAccessibilityHelper()
+                            .guideAccessibilityIsOpen(getApplicationContext());
                 }
             }
 
