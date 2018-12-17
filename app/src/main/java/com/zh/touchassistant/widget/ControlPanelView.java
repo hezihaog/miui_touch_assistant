@@ -145,8 +145,8 @@ public class ControlPanelView extends FrameLayout {
         int count = getChildCount();
         //每份子控件应该占用的角度
         int childAngle = 180 / count;
-        //每个子View之间的间隔
-        int interval = (180 / count) / 4;
+        //每个子View之间的间隔，角度分成4份后，间隔的数量是份数-1
+        int interval = (180 / count) / (count - 1);
         for (int i = 0; i < count; i++) {
             //计算出每个子控件的位置
             float[] point;
