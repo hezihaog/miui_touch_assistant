@@ -3,10 +3,10 @@ package com.zh.touchassistant.lock;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.zh.touchassistant.R;
+import com.zh.touchassistant.util.logger.FSLogger;
 
 /**
  * <b>Package:</b> com.zh.touchassistant.lockNow <br>
@@ -16,7 +16,6 @@ import com.zh.touchassistant.R;
  * <b>Description:</b>  <br>
  */
 public class OneScreenLockActivity extends Activity {
-    private static final String TAG = OneScreenLockActivity.class.getSimpleName();
     private LockAgent mAgent;
 
     @Override
@@ -33,14 +32,14 @@ public class OneScreenLockActivity extends Activity {
             @Override
             public void onLockFail(Throwable error) {
                 super.onLockFail(error);
-                Log.d(TAG, "Lock Fail： " + error.getMessage());
+                FSLogger.d("Lock Fail： " + error.getMessage());
                 finish();
             }
 
             @Override
             public void onLockPermissionCancel() {
                 super.onLockPermissionCancel();
-                Log.d(TAG, "Lock Permission Cancel");
+                FSLogger.d("Lock Permission Cancel");
                 toast(getString(R.string.request_lock_permission_fail));
                 finish();
             }

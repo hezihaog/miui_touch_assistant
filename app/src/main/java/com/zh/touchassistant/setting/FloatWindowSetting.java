@@ -15,6 +15,7 @@ import com.zh.touchassistant.provider.ContextProvider;
 import com.zh.touchassistant.util.AppBroadcastManager;
 import com.zh.touchassistant.util.GsonUtils;
 import com.zh.touchassistant.util.Property;
+import com.zh.touchassistant.util.json.JsonParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,12 +69,12 @@ public class FloatWindowSetting {
         return SingleHolder.INSTANCE;
     }
 
-    public void initFloatWindowActions() {
+    public void initFloatWindowActions(JsonParser jsonParser) {
         String actionDatas = Property.getDefault().getProperty(Const.Config.KEY_CUSTOM_MENU_DATA, "");
         if (TextUtils.isEmpty(actionDatas)) {
             initActionFromDefault();
         } else {
-            initActionFromCustom(GsonUtils.fromJson(actionDatas, FloatWindowActionListModel.class));
+            initActionFromCustom(jsonParser.parse(actionDatas, FloatWindowActionListModel.class));
         }
     }
 

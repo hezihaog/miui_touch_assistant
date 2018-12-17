@@ -6,7 +6,8 @@ import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.ArrayMap;
-import android.util.Log;
+
+import com.zh.touchassistant.util.logger.FSLogger;
 
 import java.lang.reflect.Constructor;
 
@@ -21,7 +22,6 @@ import java.lang.reflect.Constructor;
  */
 
 public class DelegateFragmentFinder implements Handler.Callback {
-    private static final String TAG = DelegateFragmentFinder.class.getSimpleName();
     private static final String DELEGATE_FRAGMENT_TAG_PREFIX = "DelegateFragmentTag：";
     private static final int ID_REMOVE_FRAGMENT_MANAGER = 1;
 
@@ -33,11 +33,11 @@ public class DelegateFragmentFinder implements Handler.Callback {
     }
 
     private static class Singleton {
-        private static final DelegateFragmentFinder instance = new DelegateFragmentFinder();
+        private static final DelegateFragmentFinder INSTANCE = new DelegateFragmentFinder();
     }
 
     public static DelegateFragmentFinder getInstance() {
-        return Singleton.instance;
+        return Singleton.INSTANCE;
     }
 
     private String buildFragmentTag(Class fragmentClazz) {
@@ -101,7 +101,7 @@ public class DelegateFragmentFinder implements Handler.Callback {
                 handled = false;
         }
         if (handled && removed == null) {
-            Log.d(TAG, "移除permission delegate fragment 失败 ::: " + key);
+            FSLogger.d("移除permission delegate fragment 失败 ::: " + key);
         }
         return false;
     }
