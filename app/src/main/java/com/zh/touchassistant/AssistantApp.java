@@ -4,7 +4,6 @@ import android.accessibilityservice.AccessibilityService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 
 import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.database.biz.IAutoHideFloatBiz;
@@ -63,7 +62,7 @@ public class AssistantApp extends SingletonStorageApplication {
                     }
                 }
             }
-        }, new IntentFilter(Const.Action.ACTION_FOREGROUND_APP_CHANGE));
+        }, Const.Action.ACTION_FOREGROUND_APP_CHANGE);
     }
 
     public FloatViewLiveData getFloatViewLiveData() {

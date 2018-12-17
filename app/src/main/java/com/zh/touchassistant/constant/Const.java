@@ -51,6 +51,14 @@ public class Const {
          * 前台Activity改变
          */
         public static final String ACTION_FOREGROUND_APP_CHANGE = "action_foreground_app_change";
+        /**
+         * 当悬浮球打开时
+         */
+        public static final String ACTION_FLOAT_BUTTON_OPEN = "action_float_button_open";
+        /**
+         * 当悬浮球关闭
+         */
+        public static final String ACTION_FLOAT_BUTTON_CLOSE = "action_float_button_close";
     }
 
     /**

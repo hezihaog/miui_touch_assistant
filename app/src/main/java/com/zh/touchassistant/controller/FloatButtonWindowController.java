@@ -2,7 +2,6 @@ package com.zh.touchassistant.controller;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.view.View;
 
@@ -104,20 +103,6 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                                         if (getView().getAlpha() != Const.Config.ALPHA_SHOW) {
                                             getView()
                                                     .setAlpha(Const.Config.ALPHA_SHOW);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onDragFinish() {
-                                        super.onDragFinish();
-                                        //拖动结束后，透明度慢慢变淡
-                                        if (getView().getAlpha() != Const.Config.ALPHA_HIDDEN) {
-                                            getView()
-                                                    .animate()
-                                                    .setStartDelay(1200)
-                                                    .setDuration(300)
-                                                    .alpha(Const.Config.ALPHA_HIDDEN)
-                                                    .start();
                                         }
                                     }
 
@@ -238,25 +223,10 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
             mOffAnimatorSet = new AnimatorSet();
             ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.SCALE_X, 1f);
             ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.SCALE_Y, 1f);
-            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.ALPHA, Const.Config.ALPHA_HIDDEN);
-            alphaAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    //如果在渐变过程中，又重新打开，则打断这次渐变动画
-                    if (isOpen()) {
-                        animation.cancel();
-                    }
-                }
-            });
-            //透明度动画要缩放完后晚一点再进行
-            alphaAnimator.setStartDelay(1200);
-            alphaAnimator.setDuration(300);
             mOffAnimatorSet
                     .play(scaleXAnimator)
                     //2个渐变动画要一起执行
-                    .with(scaleYAnimator)
-                    //设定透明度动画要比缩放动画晚执行
-                    .before(alphaAnimator);
+                    .with(scaleYAnimator);
             mOffAnimatorSet.start();
             if (mStatusChangeListener != null) {
                 mStatusChangeListener.onStatusChange(this.mCurrentStatus);

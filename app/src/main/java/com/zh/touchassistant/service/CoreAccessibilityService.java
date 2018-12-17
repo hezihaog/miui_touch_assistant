@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.zh.touchassistant.AssistantApp;
+import com.zh.touchassistant.FloatTimeTaskHolder;
 import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.controller.FloatButtonWindowController;
@@ -33,6 +34,7 @@ public class CoreAccessibilityService extends AccessibilityService {
     private FloatButtonWindowController mFloatButtonVC;
     private FloatPanelWindowController mFloatPanelVC;
     private boolean isFirst = true;
+    private FloatTimeTaskHolder mFloatTimeTaskHolder;
 
     public static class Action {
         public static final String ACTION_SHOW_FLOATING_WINDOW = "com.zh.touchassistant.SHOW_FLOATING_WINDOW";
@@ -67,6 +69,14 @@ public class CoreAccessibilityService extends AccessibilityService {
     public void onCreate() {
         super.onCreate();
         ((AssistantApp) getApplication()).setAccessibility(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mFloatTimeTaskHolder != null) {
+            mFloatTimeTaskHolder.dispatchDestroy();
+        }
     }
 
     @Override
@@ -131,6 +141,7 @@ public class CoreAccessibilityService extends AccessibilityService {
                 public void onStatusChange(int newStatus) {
                 }
             });
+            mFloatTimeTaskHolder = FloatTimeTaskHolder.create(CoreAccessibilityService.this.getApplicationContext(), mFloatButtonVC);
             FloatViewLiveData floatViewLiveData = assistantApp.getFloatViewLiveData();
             floatViewLiveData.addOnDataChangeCallback(new FloatViewLiveData.OnDataChangeCallback() {
                 @Override
@@ -139,9 +150,15 @@ public class CoreAccessibilityService extends AccessibilityService {
                     if (isOpen) {
                         mFloatButtonVC.open();
                         mFloatPanelVC.open();
+                        AppBroadcastManager
+                                .sendBroadcast(CoreAccessibilityService.this,
+                                        Const.Action.ACTION_FLOAT_BUTTON_OPEN);
                     } else {
                         mFloatButtonVC.off();
                         mFloatPanelVC.off();
+                        AppBroadcastManager
+                                .sendBroadcast(CoreAccessibilityService.this,
+                                        Const.Action.ACTION_FLOAT_BUTTON_CLOSE);
                     }
                 }
             });

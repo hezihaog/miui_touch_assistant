@@ -3,7 +3,6 @@ package com.zh.touchassistant.controller;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -64,9 +63,7 @@ public class FloatPanelWindowController extends BaseFloatWindowController {
         mPanelContainerLayout.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View v) {
-                IntentFilter filter = new IntentFilter();
-                filter.addAction(Const.Action.ACTION_UPDATE_PANEL_ACTIONS);
-                AppBroadcastManager.registerReceiver(getApplicationContext(), mUpdatePanelActionReceiver, filter);
+                AppBroadcastManager.registerReceiver(getApplicationContext(), mUpdatePanelActionReceiver, Const.Action.ACTION_UPDATE_PANEL_ACTIONS);
             }
 
             @Override
