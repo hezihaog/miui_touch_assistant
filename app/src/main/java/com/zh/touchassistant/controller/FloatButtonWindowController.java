@@ -2,6 +2,7 @@ package com.zh.touchassistant.controller;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.view.View;
 
@@ -238,6 +239,15 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
             ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.SCALE_X, 1f);
             ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.SCALE_Y, 1f);
             ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.ALPHA, Const.Config.ALPHA_HIDDEN);
+            alphaAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    //如果在渐变过程中，又重新打开，则打断这次渐变动画
+                    if (isOpen()) {
+                        animation.cancel();
+                    }
+                }
+            });
             //透明度动画要缩放完后晚一点再进行
             alphaAnimator.setStartDelay(1200);
             alphaAnimator.setDuration(300);

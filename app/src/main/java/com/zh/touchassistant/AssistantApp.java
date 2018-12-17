@@ -48,6 +48,7 @@ public class AssistantApp extends SingletonStorageApplication {
         mFloatViewLiveData = new FloatViewLiveData();
         //监听前台App
         AppBroadcastManager.registerReceiver(this, new BroadcastReceiver() {
+
             @Override
             public void onReceive(Context context, Intent intent) {
                 //前台Activity发生改变
