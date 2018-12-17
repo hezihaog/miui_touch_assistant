@@ -1,5 +1,7 @@
 package com.zh.touchassistant.constant;
 
+import com.zh.touchassistant.BuildConfig;
+
 /**
  * <b>Package:</b> com.zh.touchassistant <br>
  * <b>FileName:</b> Const <br>
@@ -8,6 +10,8 @@ package com.zh.touchassistant.constant;
  * <b>Description:</b>  <br>
  */
 public class Const {
+    public static boolean isDebug = BuildConfig.DEBUG;
+
     public static final class Config {
         /**
          * SP文件名

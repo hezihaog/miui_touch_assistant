@@ -62,14 +62,18 @@ public class FloatWindow {
                         //不会接收到悬浮窗区域以外的move、up事件，只有一次ACTION_OUTSIDE事件
                         //这里设置这个Flag，来关闭悬浮窗
                         | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+        if (option.isNotTouchable()) {
+            //表示这个Window不会收到点击事件，否则点击事件无法穿透
+            mLayoutParams.flags = mLayoutParams.flags | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+        }
         mLayoutParams.windowAnimations = 0;
         mLayoutParams.gravity = Gravity.LEFT | Gravity.TOP;
         mLayoutParams.x = option.getX();
         this.mX = mLayoutParams.x;
         mLayoutParams.y = option.getY();
         this.mY = mLayoutParams.y;
-        mLayoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        mLayoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        mLayoutParams.width = option.getWidth();
+        mLayoutParams.height = option.getHeight();
         //8.0使用新的Type类型
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mLayoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;

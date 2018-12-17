@@ -1,6 +1,7 @@
 package com.zh.touchassistant.floating;
 
 import android.animation.TimeInterpolator;
+import android.view.ViewGroup;
 
 /**
  * <b>Package:</b> com.zh.touchassistant.floating <br>
@@ -19,6 +20,9 @@ public class FloatWindowOption {
     private long mDuration;
     private Boolean isShow;
     private int mBoundOffset;
+    private int mWidth;
+    private int mHeight;
+    private boolean mNotTouchable;
 
     public static FloatWindowOption create(Builder builder) {
         return new FloatWindowOption(builder);
@@ -34,6 +38,9 @@ public class FloatWindowOption {
         this.mDuration = builder.mDuration <= 0 ? 450 : builder.mDuration;
         this.isShow = builder.isShow == null ? true : builder.isShow;
         this.mBoundOffset = builder.mBoundOffset;
+        this.mWidth = builder.mWidth == 0 ? ViewGroup.LayoutParams.WRAP_CONTENT : builder.mWidth;
+        this.mHeight = builder.mHeight == 0 ? ViewGroup.LayoutParams.WRAP_CONTENT : builder.mHeight;
+        this.mNotTouchable = builder.mNotTouchable;
     }
 
     public int getX() {
@@ -72,6 +79,18 @@ public class FloatWindowOption {
         return mBoundOffset;
     }
 
+    public int getWidth() {
+        return mWidth;
+    }
+
+    public int getHeight() {
+        return mHeight;
+    }
+
+    public boolean isNotTouchable() {
+        return mNotTouchable;
+    }
+
     public static class Builder {
         private int mX;
         private int mY;
@@ -85,6 +104,9 @@ public class FloatWindowOption {
          * 边界偏移量，只在自动贴边时生效，距离屏幕左或右的偏移量
          */
         private int mBoundOffset;
+        private int mWidth;
+        private int mHeight;
+        private boolean mNotTouchable;
 
         public Builder setX(int x) {
             mX = x;
@@ -128,6 +150,21 @@ public class FloatWindowOption {
 
         public Builder setBoundOffset(int boundOffset) {
             this.mBoundOffset = boundOffset;
+            return this;
+        }
+
+        public Builder setWidth(int width) {
+            this.mWidth = width;
+            return this;
+        }
+
+        public Builder setHeight(int height) {
+            this.mHeight = height;
+            return this;
+        }
+
+        public Builder setNotTouchable(boolean notTouchable) {
+            this.mNotTouchable = notTouchable;
             return this;
         }
     }

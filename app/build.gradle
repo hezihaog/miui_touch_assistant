@@ -95,4 +95,5 @@ dependencies {
     implementation 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v2.0.1'
     //电脑查看数据库
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
+    implementation "com.github.yjfnypeu:EasyThread:0.6.0"
 }

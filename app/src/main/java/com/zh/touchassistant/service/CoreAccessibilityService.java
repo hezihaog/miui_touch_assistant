@@ -15,6 +15,7 @@ import com.zh.touchassistant.FloatTimeTaskHolder;
 import com.zh.touchassistant.FloatViewLiveData;
 import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.controller.FloatButtonWindowController;
+import com.zh.touchassistant.controller.FloatForegroundWindowController;
 import com.zh.touchassistant.controller.FloatPanelWindowController;
 import com.zh.touchassistant.floating.FloatWindowManager;
 import com.zh.touchassistant.model.ForegroundAppInfoModel;
@@ -33,6 +34,7 @@ public class CoreAccessibilityService extends AccessibilityService {
 
     private FloatButtonWindowController mFloatButtonVC;
     private FloatPanelWindowController mFloatPanelVC;
+    private FloatForegroundWindowController mFloatForegroundVC;
     private boolean isFirst = true;
     private FloatTimeTaskHolder mFloatTimeTaskHolder;
 
@@ -63,6 +65,12 @@ public class CoreAccessibilityService extends AccessibilityService {
 
     @Override
     public void onInterrupt() {
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        //在系统将要关闭Service时被调用。在这个方法主要做释放资源的工作。
+        return super.onUnbind(intent);
     }
 
     @Override
@@ -125,6 +133,7 @@ public class CoreAccessibilityService extends AccessibilityService {
             //填充和浮动面板浮动按钮
             mFloatPanelVC = new FloatPanelWindowController(this, floatWindowManager);
             mFloatButtonVC = new FloatButtonWindowController(this, floatWindowManager, mFloatPanelVC);
+            mFloatForegroundVC = new FloatForegroundWindowController(this, floatWindowManager);
             mFloatButtonVC.setOnFloatButtonPositionUpdateListener(new FloatButtonWindowController.OnFloatButtonPositionUpdateListener() {
                 @Override
                 public void onFloatButtonPositionUpdate(int newX, int newY) {

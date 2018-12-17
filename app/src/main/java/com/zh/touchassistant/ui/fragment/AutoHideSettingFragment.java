@@ -4,15 +4,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.lzh.easythread.EasyThread;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.database.biz.IAutoHideFloatBiz;
 import com.zh.touchassistant.database.biz.impl.AutoHideFloatBiz;
@@ -38,6 +41,7 @@ import java.util.List;
 public class AutoHideSettingFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private List<AutoHideModel> mDatas;
+    private ProgressBar mWaitProgressBar;
 
     public static AutoHideSettingFragment newInstance() {
         return new AutoHideSettingFragment();
@@ -55,9 +59,10 @@ public class AutoHideSettingFragment extends Fragment {
         ISingletonStorage storage = (ISingletonStorage) ContextProvider.get().getApplication();
         final AutoHideFloatBiz biz = storage.getInstance(IAutoHideFloatBiz.class, AutoHideFloatBiz.class);
         mRecyclerView = view.findViewById(R.id.recycler_view);
+        mWaitProgressBar = view.findViewById(R.id.wait_progress_bar);
         mDatas = new ArrayList<>();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        BaseQuickAdapter adapter = new BaseQuickAdapter<AutoHideModel, BaseViewHolder>(R.layout.item_local_install_app, mDatas) {
+        final BaseQuickAdapter adapter = new BaseQuickAdapter<AutoHideModel, BaseViewHolder>(R.layout.item_local_install_app, mDatas) {
             @Override
             protected void convert(BaseViewHolder helper, final AutoHideModel item) {
                 helper.setImageDrawable(R.id.app_icon_iv, item.getAppIcon());
@@ -83,26 +88,41 @@ public class AutoHideSettingFragment extends Fragment {
         };
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL));
-        //本机App列表
-        List<InstallAppInfoModel> installAppInfoList = AppInfoUtil
-                .getInstallAppInfoList(getContext(), true);
-        List<String> autoHideAppPackageNameList = getAutoHideAppPackageNameList();
-        //过滤掉本应用
-        autoHideAppPackageNameList.remove(getContext().getPackageName());
-        for (InstallAppInfoModel installAppInfoModel : installAppInfoList) {
-            AutoHideModel autoHideModel = new AutoHideModel();
-            //是自动隐藏
-            if (autoHideAppPackageNameList.contains(installAppInfoModel.getPackageName())) {
-                autoHideModel.setAutoHide(true);
-            } else {
-                autoHideModel.setAutoHide(false);
+        mWaitProgressBar.setVisibility(View.VISIBLE);
+        EasyThread.Builder.createCacheable().build().execute(new Runnable() {
+            @Override
+            public void run() {
+                //本机App列表
+                List<InstallAppInfoModel> installAppInfoList = AppInfoUtil
+                        .getInstallAppInfoList(getContext(), true);
+                List<String> autoHideAppPackageNameList = getAutoHideAppPackageNameList();
+                //过滤掉本应用
+                autoHideAppPackageNameList.remove(getContext().getPackageName());
+                for (InstallAppInfoModel installAppInfoModel : installAppInfoList) {
+                    AutoHideModel autoHideModel = new AutoHideModel();
+                    //是自动隐藏
+                    if (autoHideAppPackageNameList.contains(installAppInfoModel.getPackageName())) {
+                        autoHideModel.setAutoHide(true);
+                    } else {
+                        autoHideModel.setAutoHide(false);
+                    }
+                    autoHideModel.setAppIcon(installAppInfoModel.getAppIcon());
+                    autoHideModel.setAppName(installAppInfoModel.getAppName());
+                    autoHideModel.setPackageName(installAppInfoModel.getPackageName());
+                    mDatas.add(autoHideModel);
+                }
+                adapter.notifyDataSetChanged();
+                FragmentActivity activity = getActivity();
+                if (activity != null && !activity.isFinishing()) {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mWaitProgressBar.setVisibility(View.GONE);
+                        }
+                    });
+                }
             }
-            autoHideModel.setAppIcon(installAppInfoModel.getAppIcon());
-            autoHideModel.setAppName(installAppInfoModel.getAppName());
-            autoHideModel.setPackageName(installAppInfoModel.getPackageName());
-            mDatas.add(autoHideModel);
-        }
-        adapter.notifyDataSetChanged();
+        });
     }
 
     private List<String> getAutoHideAppPackageNameList() {

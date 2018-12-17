@@ -1,6 +1,7 @@
 package com.zh.touchassistant.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.WindowManager;
 
 /**
@@ -24,5 +25,10 @@ public class StatusBarUtil {
             attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
             activity.getWindow().setAttributes(attrs);
         }
+    }
+
+    public static int getStatusBarHeight(Context context) {
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        return context.getResources().getDimensionPixelSize(resourceId);
     }
 }

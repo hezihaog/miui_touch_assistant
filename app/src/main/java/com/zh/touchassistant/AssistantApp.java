@@ -35,7 +35,7 @@ public class AssistantApp extends SingletonStorageApplication {
     public void onCreate() {
         super.onCreate();
         //Logger
-        FSLogger.setDelegate(new LoggerImpl(BuildConfig.DEBUG));
+        FSLogger.setDelegate(new LoggerImpl(Const.isDebug));
         //SP工具
         new Property.PropertyBuilder().fileName(Const.Config.APP_SP_FILE_NAME).installDefaultProperty();
         //Json解析器
