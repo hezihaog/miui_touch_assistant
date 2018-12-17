@@ -69,16 +69,19 @@ public class FloatTimeTaskHolder {
         public void run() {
             if (mFloatButtonVC != null) {
                 //不在拽托时并且不能在打开，才减少透明图
-                if (!mFloatButtonVC.getFloatWindow().isDragging()
-                        && !mFloatButtonVC.isOpen()) {
+                if (!mFloatButtonVC.getFloatWindow().isDragging()) {
                     FloatButton view = mFloatButtonVC
                             .getView();
-                    if (view.getAlpha() != Const.Config.ALPHA_HIDDEN) {
-                        view
-                                .animate()
-                                .alpha(Const.Config.ALPHA_HIDDEN)
-                                .setDuration(400)
-                                .start();
+                    if (mFloatButtonVC.isOpen()) {
+                        view.clearAnimation();
+                    } else {
+                        if (view.getAlpha() != Const.Config.ALPHA_HIDDEN) {
+                            view
+                                    .animate()
+                                    .alpha(Const.Config.ALPHA_HIDDEN)
+                                    .setDuration(400)
+                                    .start();
+                        }
                     }
                 }
             }
