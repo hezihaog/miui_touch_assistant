@@ -71,6 +71,8 @@ public class AssistantApp extends SingletonStorageApplication {
 
     public void setAccessibility(AccessibilityService service) {
         this.mAccessibilityHelper = new AccessibilityHelper(service);
+        //检查辅助服务
+        this.mAccessibilityHelper.guideAccessibilityIsOpen(this);
     }
 
     public AccessibilityHelper getAccessibilityHelper() {

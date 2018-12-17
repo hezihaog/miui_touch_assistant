@@ -84,10 +84,11 @@ public class AutoHideSettingFragment extends Fragment {
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL));
         //本机App列表
-        List<InstallAppInfoModel> installAppInfoList = AppInfoUtil.getInstallAppInfoList(getContext());
-        //过滤掉本应用
-        installAppInfoList.remove(getContext().getPackageName());
+        List<InstallAppInfoModel> installAppInfoList = AppInfoUtil
+                .getInstallAppInfoList(getContext(), true);
         List<String> autoHideAppPackageNameList = getAutoHideAppPackageNameList();
+        //过滤掉本应用
+        autoHideAppPackageNameList.remove(getContext().getPackageName());
         for (InstallAppInfoModel installAppInfoModel : installAppInfoList) {
             AutoHideModel autoHideModel = new AutoHideModel();
             //是自动隐藏

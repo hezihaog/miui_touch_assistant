@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
-
 import java.lang.reflect.Method;
 
 public class WindowPermissionUtil {
@@ -64,7 +63,9 @@ public class WindowPermissionUtil {
     private static boolean hasPermissionForO(Context context) {
         try {
             WindowManager mgr = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-            if (mgr == null) return false;
+            if (mgr == null) {
+                return false;
+            }
             View viewToAdd = new View(context);
             WindowManager.LayoutParams params = new WindowManager.LayoutParams(0, 0,
                     android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O ?

@@ -23,16 +23,19 @@ public class AppInfoUtil {
 
     /**
      * 获取所有已安装的App信息，不包含系统应用
+     * @param isFilterSystem 是否过滤系统应用
      */
-    public static List<InstallAppInfoModel> getInstallAppInfoList(Context context) {
+    public static List<InstallAppInfoModel> getInstallAppInfoList(Context context, boolean isFilterSystem) {
         List<InstallAppInfoModel> appList = new ArrayList<>();
         PackageManager packageManager = context.getApplicationContext().getPackageManager();
         List<PackageInfo> packages = packageManager.getInstalledPackages(0);
         for (int i = 0; i < packages.size(); i++) {
             PackageInfo packageInfo = packages.get(i);
-            //过滤掉系统应用
-            if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
-                continue;
+            if (isFilterSystem) {
+                //过滤掉系统应用
+                if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
+                    continue;
+                }
             }
             InstallAppInfoModel infoModel = new InstallAppInfoModel();
             infoModel.setAppName(packageInfo.applicationInfo.loadLabel(packageManager).toString());

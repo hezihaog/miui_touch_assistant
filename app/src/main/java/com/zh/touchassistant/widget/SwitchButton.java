@@ -169,13 +169,7 @@ public class SwitchButton extends View {
         mSmallCircleStartX = mWidth / 4;
         mSmallCircleEndX = (mWidth / 4) * 3;
         //因为一开始外部调用setChecked()会比onSizeChanged方法快，所以回显状态时，马上就得改变当前状态的相关配置
-        if (isChecked) {
-            this.mSmallCircleCenterX = mSmallCircleEndX;
-            this.mCurrentBoundBg = mCheckedBg;
-        } else {
-            this.mSmallCircleCenterX = mSmallCircleStartX;
-            this.mCurrentBoundBg = mUncheckedBg;
-        }
+        updateCheckStatus();
     }
 
     @Override
@@ -301,7 +295,21 @@ public class SwitchButton extends View {
 
     public void setChecked(final boolean checked) {
         this.isChecked = checked;
+        updateCheckStatus();
         postInvalidate();
+    }
+
+    /**
+     * 更新开关状态
+     */
+    private void updateCheckStatus() {
+        if (isChecked) {
+            this.mSmallCircleCenterX = mSmallCircleEndX;
+            this.mCurrentBoundBg = mCheckedBg;
+        } else {
+            this.mSmallCircleCenterX = mSmallCircleStartX;
+            this.mCurrentBoundBg = mUncheckedBg;
+        }
     }
 
     public boolean isChecked() {

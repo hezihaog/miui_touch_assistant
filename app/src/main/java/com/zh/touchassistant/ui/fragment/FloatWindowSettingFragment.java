@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.floating.FloatWindowPermissionCallback;
 import com.zh.touchassistant.floating.WindowPermissionAgent;
 import com.zh.touchassistant.floating.WindowPermissionUtil;
+import com.zh.touchassistant.lifecycle.BaseDelegateFragment;
 import com.zh.touchassistant.ui.activity.AutoHideSettingActivity;
 import com.zh.touchassistant.ui.activity.CustomMenuSettingActivity;
 import com.zh.touchassistant.util.FloatServiceUtil;
@@ -32,7 +32,7 @@ import com.zh.touchassistant.widget.SwitchButton;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class FloatWindowSettingFragment extends Fragment {
+public class FloatWindowSettingFragment extends BaseDelegateFragment {
     private WindowPermissionAgent mPermissionAgent;
 
     @Nullable
