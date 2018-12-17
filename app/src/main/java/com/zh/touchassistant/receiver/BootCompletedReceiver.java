@@ -13,9 +13,10 @@ import com.zh.touchassistant.util.Property;
  * <b>FileName:</b> BootReceiver <br>
  * <b>Create Date:</b> 2018/12/6  上午12:51 <br>
  * <b>Author:</b> zihe <br>
- * <b>Description:</b>  <br>
+ * <b>Description:</b> 开机启动监听 <br>
  */
-public class BootReceiver extends BroadcastReceiver {
+public class BootCompletedReceiver extends BroadcastReceiver {
+
     @Override
     public void onReceive(Context context, Intent intent) {
         boolean isEnable = Property.getDefault().getProperty(Const.Config.KEY_ENABLE, false);
