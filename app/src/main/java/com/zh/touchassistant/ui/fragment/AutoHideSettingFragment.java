@@ -111,12 +111,12 @@ public class AutoHideSettingFragment extends Fragment {
                     autoHideModel.setPackageName(installAppInfoModel.getPackageName());
                     mDatas.add(autoHideModel);
                 }
-                adapter.notifyDataSetChanged();
                 FragmentActivity activity = getActivity();
                 if (activity != null && !activity.isFinishing()) {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            adapter.notifyDataSetChanged();
                             mWaitProgressBar.setVisibility(View.GONE);
                         }
                     });
