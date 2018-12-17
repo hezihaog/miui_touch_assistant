@@ -19,6 +19,8 @@ import android.view.animation.AccelerateInterpolator;
 import com.zh.touchassistant.R;
 
 public class SwitchButton extends View {
+    private static final int BG_ANIMATOR_DURATION = 200;
+
     /**
      * 选中的背景颜色
      */
@@ -248,7 +250,7 @@ public class SwitchButton extends View {
         ValueAnimator bgAnimator = ValueAnimator.ofFloat(0, 1f);
         //开关切换完后，再切换背景
         bgAnimator.setStartDelay(200);
-        bgAnimator.setDuration(500);
+        bgAnimator.setDuration(BG_ANIMATOR_DURATION);
         bgAnimator.setInterpolator(new AccelerateInterpolator());
         bgAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -270,7 +272,7 @@ public class SwitchButton extends View {
         final int endX = mSmallCircleStartX;
         mOffAnimatorSet = new AnimatorSet();
         ValueAnimator offAnimator = ValueAnimator.ofInt(startX, endX);
-        offAnimator.setDuration(300);
+        offAnimator.setDuration(200);
         offAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -281,7 +283,7 @@ public class SwitchButton extends View {
         });
         ValueAnimator bgAnimator = ValueAnimator.ofFloat(0, 1f);
         bgAnimator.setStartDelay(200);
-        bgAnimator.setDuration(500);
+        bgAnimator.setDuration(BG_ANIMATOR_DURATION);
         bgAnimator.setInterpolator(new AccelerateInterpolator());
         bgAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
