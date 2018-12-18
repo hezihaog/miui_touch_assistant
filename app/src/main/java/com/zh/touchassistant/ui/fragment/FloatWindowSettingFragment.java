@@ -2,22 +2,17 @@ package com.zh.touchassistant.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zh.touchassistant.R;
+import com.zh.touchassistant.base.BaseTouchAssistantFragment;
 import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.floating.FloatWindowPermissionCallback;
 import com.zh.touchassistant.floating.WindowPermissionAgent;
 import com.zh.touchassistant.floating.WindowPermissionUtil;
-import com.zh.touchassistant.lifecycle.BaseDelegateFragment;
 import com.zh.touchassistant.ui.activity.AutoHideSettingActivity;
 import com.zh.touchassistant.ui.activity.CustomMenuSettingActivity;
 import com.zh.touchassistant.util.FloatServiceUtil;
@@ -32,18 +27,18 @@ import com.zh.touchassistant.widget.SwitchButton;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class FloatWindowSettingFragment extends BaseDelegateFragment {
+public class FloatWindowSettingFragment extends BaseTouchAssistantFragment {
     private WindowPermissionAgent mPermissionAgent;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_float_window_setting, container, false);
+    public int onLayoutId() {
+        return R.layout.fragment_float_window_setting;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onLayoutAfter() {
+        super.onLayoutAfter();
+        View view = getView();
         //开关悬浮球
         final SwitchButton enableSwitch = view.findViewById(R.id.enable_switch);
         //自定义菜单

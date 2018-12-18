@@ -1,23 +1,18 @@
 package com.zh.touchassistant.ui.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemDragListener;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.adapter.CustomMenuItemDragAdapter;
+import com.zh.touchassistant.base.BaseTouchAssistantFragment;
 import com.zh.touchassistant.floating.action.IFloatWindowAction;
 import com.zh.touchassistant.model.FloatWindowActionModel;
 import com.zh.touchassistant.setting.FloatWindowSetting;
@@ -35,7 +30,7 @@ import java.util.Map;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class CustomMenuFragment extends Fragment {
+public class CustomMenuFragment extends BaseTouchAssistantFragment {
     private RecyclerView mRecyclerView;
     private ArrayList<FloatWindowActionModel> mDatas;
 
@@ -43,15 +38,15 @@ public class CustomMenuFragment extends Fragment {
         return new CustomMenuFragment();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_custom_menu, container, false);
+    public int onLayoutId() {
+        return R.layout.fragment_custom_menu;
     }
 
     @Override
-    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onLayoutAfter() {
+        super.onLayoutAfter();
+        View view = getView();
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         HashMap<FloatWindowActionModel, IFloatWindowAction> currentActions = FloatWindowSetting.getInstance().getCurrentActions();

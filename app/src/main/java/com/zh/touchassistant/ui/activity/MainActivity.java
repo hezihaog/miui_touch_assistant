@@ -1,12 +1,10 @@
 package com.zh.touchassistant.ui.activity;
 
 import android.Manifest;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
 import com.zh.touchassistant.R;
+import com.zh.touchassistant.base.BaseTouchAssistantActivity;
 import com.zh.touchassistant.permission.PermissionCallback;
 import com.zh.touchassistant.permission.PermissionHelper;
 import com.zh.touchassistant.ui.fragment.FloatWindowSettingFragment;
@@ -20,12 +18,16 @@ import java.util.List;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends BaseTouchAssistantActivity {
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public int onLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public void onLayoutAfter() {
+        super.onLayoutAfter();
         //隐藏小图标
         getActionBar().setDisplayShowHomeEnabled(false);
         PermissionHelper.request(this, new PermissionCallback() {

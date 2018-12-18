@@ -1,22 +1,17 @@
 package com.zh.touchassistant.ui.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.lzh.easythread.EasyThread;
 import com.zh.touchassistant.R;
+import com.zh.touchassistant.base.BaseTouchAssistantFragment;
 import com.zh.touchassistant.database.biz.IAutoHideFloatBiz;
 import com.zh.touchassistant.database.biz.impl.AutoHideFloatBiz;
 import com.zh.touchassistant.database.model.dto.AutoHideFloatDTO;
@@ -38,7 +33,7 @@ import java.util.List;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class AutoHideSettingFragment extends Fragment {
+public class AutoHideSettingFragment extends BaseTouchAssistantFragment {
     private RecyclerView mRecyclerView;
     private List<AutoHideModel> mDatas;
     private ProgressBar mWaitProgressBar;
@@ -47,15 +42,15 @@ public class AutoHideSettingFragment extends Fragment {
         return new AutoHideSettingFragment();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_auto_hide, container, false);
+    public int onLayoutId() {
+        return R.layout.fragment_auto_hide;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onLayoutAfter() {
+        View view = getView();
+        super.onLayoutAfter();
         ISingletonStorage storage = (ISingletonStorage) ContextProvider.get().getApplication();
         final AutoHideFloatBiz biz = storage.getInstance(IAutoHideFloatBiz.class, AutoHideFloatBiz.class);
         mRecyclerView = view.findViewById(R.id.recycler_view);
