@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
+        android:text="请授权辅助服务"
         tools:text="appPackageName：" />
 
     <TextView
@@ -22,5 +23,6 @@
         android:layout_marginTop="5dp"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
+        android:text="请授权辅助服务"
         tools:text="appActivityName：" />
 </LinearLayout>
