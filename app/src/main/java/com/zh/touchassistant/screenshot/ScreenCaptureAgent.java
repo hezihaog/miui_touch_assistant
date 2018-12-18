@@ -185,7 +185,7 @@ public class ScreenCaptureAgent {
                         NotifyUtil.sendScreenshotNotification(context
                                 , R.mipmap.ic_launcher,
                                 "截图成功",
-                                "截屏已产生",
+                                "点击打开截图",
                                 bitmap,
                                 fileImage);
                     }

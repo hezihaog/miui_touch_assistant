@@ -12,13 +12,9 @@ android {
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        //只保留armeabi的so
         ndk {
-            abiFilters 'armeabi'
+            abiFilters 'armeabi', 'x86'
         }
-
-        //只保留中文
-        resConfigs "zh-rCN"
     }
 
     signingConfigs {

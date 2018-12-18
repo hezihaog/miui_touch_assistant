@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.zh.touchassistant.AssistantApp;
@@ -51,15 +52,18 @@ public class CoreAccessibilityService extends AccessibilityService {
             CharSequence foregroundAppPackageName = event.getPackageName();
             //前台App的Activity类名
             CharSequence foregroundActivityClassName = event.getClassName();
-            FSLogger.d("onAccessibilityEvent: 前台App的完整包名： -- <" + foregroundAppPackageName + ">");
-            FSLogger.d("onAccessibilityEvent: 前台App的Activity类名： -- <" + foregroundActivityClassName + ">");
-            ForegroundAppInfoModel foregroundAppInfoModel = new ForegroundAppInfoModel(
-                    foregroundAppPackageName.toString(), foregroundActivityClassName.toString());
-            Bundle args = new Bundle();
-            args.putSerializable(Const.Extras.EXTRAS_FOREGROUND_APP_DATA, foregroundAppInfoModel);
-            AppBroadcastManager
-                    .sendBroadcast(this.getApplicationContext(),
-                            Const.Action.ACTION_FOREGROUND_APP_CHANGE, args);
+            if (!TextUtils.isEmpty(foregroundAppPackageName)
+                    && !TextUtils.isEmpty(foregroundActivityClassName)) {
+                FSLogger.d("onAccessibilityEvent: 前台App的完整包名： -- <" + foregroundAppPackageName + ">");
+                FSLogger.d("onAccessibilityEvent: 前台App的Activity类名： -- <" + foregroundActivityClassName + ">");
+                ForegroundAppInfoModel foregroundAppInfoModel = new ForegroundAppInfoModel(
+                        foregroundAppPackageName.toString(), foregroundActivityClassName.toString());
+                Bundle args = new Bundle();
+                args.putSerializable(Const.Extras.EXTRAS_FOREGROUND_APP_DATA, foregroundAppInfoModel);
+                AppBroadcastManager
+                        .sendBroadcast(this.getApplicationContext(),
+                                Const.Action.ACTION_FOREGROUND_APP_CHANGE, args);
+            }
         }
     }
 
@@ -97,14 +101,17 @@ public class CoreAccessibilityService extends AccessibilityService {
         } else if (Action.ACTION_HIDE_FLOATING_WINDOW.equals(intent.getAction())) {
             hideFloatWindow();
         }
-        //保活使用
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            //18以前空通知栏即可
-            startForeground(NOTIFICATION_ID, new Notification());
-        } else {
-            Intent innerIntent = new Intent(this, KeepAliveInnerService.class);
-            startService(innerIntent);
-            startForeground(NOTIFICATION_ID, new Notification());
+        //大于9.0不保活
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            //保活使用
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                //18以前空通知栏即可
+                startForeground(NOTIFICATION_ID, new Notification());
+            } else {
+                Intent innerIntent = new Intent(this, KeepAliveInnerService.class);
+                startService(innerIntent);
+                startForeground(NOTIFICATION_ID, new Notification());
+            }
         }
         return super.onStartCommand(intent, flags, startId);
     }
