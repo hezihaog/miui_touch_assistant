@@ -13,7 +13,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         ndk {
-            abiFilters 'armeabi', 'x86'
+            abiFilters 'armeabi'
         }
     }
 
@@ -78,8 +78,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    //RecyclerViewAdapter库
-    implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$brvah_version"
     //Gson
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.zhy.base:fileprovider:1.0.0'
@@ -95,4 +93,6 @@ dependencies {
     //电脑查看数据库
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
     implementation "com.github.yjfnypeu:EasyThread:0.6.0"
+    //RecyclerView多Type
+    implementation 'me.drakeet.multitype:multitype:3.4.4'
 }

@@ -7,26 +7,25 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.lzh.easythread.EasyThread;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.base.BaseTouchAssistantFragment;
 import com.zh.touchassistant.database.biz.IAutoHideFloatBiz;
 import com.zh.touchassistant.database.biz.impl.AutoHideFloatBiz;
-import com.zh.touchassistant.database.model.dto.AutoHideFloatDTO;
 import com.zh.touchassistant.database.model.vo.AutoHideFloatVO;
+import com.zh.touchassistant.itembinder.AutoHideViewBinder;
 import com.zh.touchassistant.listener.DelayOnClickListener;
 import com.zh.touchassistant.model.AutoHideModel;
 import com.zh.touchassistant.model.InstallAppInfoModel;
 import com.zh.touchassistant.provider.ContextProvider;
 import com.zh.touchassistant.util.AppInfoUtil;
 import com.zh.touchassistant.util.singleton.ISingletonStorage;
-import com.zh.touchassistant.widget.SwitchButton;
 import com.zh.touchassistant.widget.TopBar;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
  * <b>Package:</b> com.zh.touchassistant.ui.fragment <br>
@@ -61,36 +60,12 @@ public class AutoHideSettingFragment extends BaseTouchAssistantFragment {
                 getActivity().finish();
             }
         });
-        ISingletonStorage storage = (ISingletonStorage) ContextProvider.get().getApplication();
-        final AutoHideFloatBiz biz = storage.getInstance(IAutoHideFloatBiz.class, AutoHideFloatBiz.class);
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mWaitProgressBar = view.findViewById(R.id.wait_progress_bar);
         mDatas = new ArrayList<>();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        final BaseQuickAdapter adapter = new BaseQuickAdapter<AutoHideModel, BaseViewHolder>(R.layout.item_local_install_app, mDatas) {
-            @Override
-            protected void convert(BaseViewHolder helper, final AutoHideModel item) {
-                helper.setImageDrawable(R.id.app_icon_iv, item.getAppIcon());
-                helper.setText(R.id.app_name_tv, item.getAppName());
-                SwitchButton switchButton = helper.getView(R.id.auto_hide_switch);
-                switchButton.setChecked(item.isAutoHide());
-                if (switchButton.getCheckedChangeListener() == null) {
-                    switchButton.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(SwitchButton button, boolean isChecked) {
-                            //取消自动隐藏
-                            AutoHideFloatDTO dto = new AutoHideFloatDTO();
-                            dto.setAppPackageName(item.getPackageName());
-                            if (isChecked) {
-                                biz.addAutoHide(dto);
-                            } else {
-                                biz.removeAutoHide(dto);
-                            }
-                        }
-                    });
-                }
-            }
-        };
+        final MultiTypeAdapter adapter = new MultiTypeAdapter(mDatas);
+        adapter.register(AutoHideModel.class, new AutoHideViewBinder());
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL));
         mWaitProgressBar.setVisibility(View.VISIBLE);
