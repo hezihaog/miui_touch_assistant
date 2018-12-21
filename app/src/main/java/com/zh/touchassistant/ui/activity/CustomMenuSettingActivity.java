@@ -28,10 +28,4 @@ public class CustomMenuSettingActivity extends BaseTouchAssistantActivity {
                     .commit();
         }
     }
-
-    @Override
-    public boolean onNavigateUp() {
-        finish();
-        return super.onNavigateUp();
-    }
 }
