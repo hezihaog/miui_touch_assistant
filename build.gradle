@@ -2,13 +2,18 @@
 apply from: "config.gradle"
 
 buildscript {
+    ext.kotlin_version = '1.2.60'
+
     repositories {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
+        //Kotlin
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         //GreenDao3
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
     }
@@ -19,6 +24,7 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
 }
 
