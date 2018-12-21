@@ -14,9 +14,11 @@ import com.zh.touchassistant.R;
 import com.zh.touchassistant.adapter.CustomMenuItemDragAdapter;
 import com.zh.touchassistant.base.BaseTouchAssistantFragment;
 import com.zh.touchassistant.floating.action.IFloatWindowAction;
+import com.zh.touchassistant.listener.DelayOnClickListener;
 import com.zh.touchassistant.model.FloatWindowActionModel;
 import com.zh.touchassistant.setting.FloatWindowSetting;
 import com.zh.touchassistant.util.ScreenUtil;
+import com.zh.touchassistant.widget.TopBar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +49,14 @@ public class CustomMenuFragment extends BaseTouchAssistantFragment {
     public void onLayoutAfter() {
         super.onLayoutAfter();
         View view = getView();
+        TopBar topBar = view.findViewById(R.id.top_bar);
+        topBar.setTitle("自定义菜单");
+        topBar.addLeftBackImageButton().setOnClickListener(new DelayOnClickListener() {
+            @Override
+            public void onDelayClick(View view) {
+                getActivity().finish();
+            }
+        });
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         HashMap<FloatWindowActionModel, IFloatWindowAction> currentActions = FloatWindowSetting.getInstance().getCurrentActions();

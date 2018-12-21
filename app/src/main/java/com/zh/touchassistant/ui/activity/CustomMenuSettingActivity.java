@@ -1,7 +1,5 @@
 package com.zh.touchassistant.ui.activity;
 
-import android.app.ActionBar;
-
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.base.BaseTouchAssistantActivity;
 import com.zh.touchassistant.ui.fragment.CustomMenuFragment;
@@ -23,12 +21,6 @@ public class CustomMenuSettingActivity extends BaseTouchAssistantActivity {
     @Override
     public void onLayoutAfter() {
         super.onLayoutAfter();
-        ActionBar actionBar = getActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("自定义菜单");
-        //隐藏小图标
-        actionBar.setDisplayShowHomeEnabled(false);
         if (getSupportFragmentManager().findFragmentByTag(CustomMenuFragment.class.getName()) == null) {
             getSupportFragmentManager()
                     .beginTransaction()

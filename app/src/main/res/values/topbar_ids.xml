@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 默认的左边图标返回图标Id -->
+    <item name="topbar_item_left_back" type="id"/>
+</resources>

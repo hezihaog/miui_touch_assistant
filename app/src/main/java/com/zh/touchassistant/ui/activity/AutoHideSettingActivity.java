@@ -1,7 +1,5 @@
 package com.zh.touchassistant.ui.activity;
 
-import android.app.ActionBar;
-
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.base.BaseTouchAssistantActivity;
 import com.zh.touchassistant.ui.fragment.AutoHideSettingFragment;
@@ -23,11 +21,6 @@ public class AutoHideSettingActivity extends BaseTouchAssistantActivity {
     @Override
     public void onLayoutAfter() {
         super.onLayoutAfter();
-        ActionBar actionBar = getActionBar();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("隐藏悬浮球");
-        actionBar.setDisplayShowHomeEnabled(false);
         if (getSupportFragmentManager().findFragmentByTag(AutoHideSettingFragment.class.getName()) == null) {
             getSupportFragmentManager()
                     .beginTransaction()

@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/view_top_bar" />
+
     <FrameLayout
         android:id="@+id/main_container"
         android:layout_width="match_parent"

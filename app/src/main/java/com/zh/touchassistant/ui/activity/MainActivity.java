@@ -28,8 +28,6 @@ public class MainActivity extends BaseTouchAssistantActivity {
     @Override
     public void onLayoutAfter() {
         super.onLayoutAfter();
-        //隐藏小图标
-        getActionBar().setDisplayShowHomeEnabled(false);
         PermissionHelper.request(this, new PermissionCallback() {
             @Override
             public void onGranted() {

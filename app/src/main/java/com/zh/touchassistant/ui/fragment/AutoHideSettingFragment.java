@@ -16,12 +16,14 @@ import com.zh.touchassistant.database.biz.IAutoHideFloatBiz;
 import com.zh.touchassistant.database.biz.impl.AutoHideFloatBiz;
 import com.zh.touchassistant.database.model.dto.AutoHideFloatDTO;
 import com.zh.touchassistant.database.model.vo.AutoHideFloatVO;
+import com.zh.touchassistant.listener.DelayOnClickListener;
 import com.zh.touchassistant.model.AutoHideModel;
 import com.zh.touchassistant.model.InstallAppInfoModel;
 import com.zh.touchassistant.provider.ContextProvider;
 import com.zh.touchassistant.util.AppInfoUtil;
 import com.zh.touchassistant.util.singleton.ISingletonStorage;
 import com.zh.touchassistant.widget.SwitchButton;
+import com.zh.touchassistant.widget.TopBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +51,16 @@ public class AutoHideSettingFragment extends BaseTouchAssistantFragment {
 
     @Override
     public void onLayoutAfter() {
-        View view = getView();
         super.onLayoutAfter();
+        View view = getView();
+        TopBar topBar = view.findViewById(R.id.top_bar);
+        topBar.setTitle("隐藏悬浮球");
+        topBar.addLeftBackImageButton().setOnClickListener(new DelayOnClickListener() {
+            @Override
+            public void onDelayClick(View view) {
+                getActivity().finish();
+            }
+        });
         ISingletonStorage storage = (ISingletonStorage) ContextProvider.get().getApplication();
         final AutoHideFloatBiz biz = storage.getInstance(IAutoHideFloatBiz.class, AutoHideFloatBiz.class);
         mRecyclerView = view.findViewById(R.id.recycler_view);
