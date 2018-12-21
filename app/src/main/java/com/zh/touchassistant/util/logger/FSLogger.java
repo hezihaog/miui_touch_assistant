@@ -23,10 +23,6 @@ public class FSLogger {
         void i(final String msg, final Object... obj);
 
         void d(final String msg, final Object... obj);
-
-        void json(final String json);
-
-        void xml(final String xml);
     }
 
     private static FSLogDelegate sDelegate = null;
@@ -57,18 +53,6 @@ public class FSLogger {
     public static void d(final String msg, final Object... obj) {
         if (sDelegate != null) {
             sDelegate.d(msg, obj);
-        }
-    }
-
-    public static void json(final String json) {
-        if (sDelegate != null) {
-            sDelegate.json(json);
-        }
-    }
-
-    public static void xml(final String xml) {
-        if (sDelegate != null) {
-            sDelegate.json(xml);
         }
     }
 }

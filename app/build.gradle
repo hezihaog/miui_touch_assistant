@@ -82,10 +82,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.zhy.base:fileprovider:1.0.0'
     //Logger
-    debugImplementation 'com.apkfuns.logutils:library:1.6.1'
-    releaseImplementation 'com.apkfuns.logutils:logutils-no-op:1.6.1'
-    //Logger需要依赖
-    implementation 'com.android.support:support-annotations:28.0.0'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
     //GreenDao
     implementation 'org.greenrobot:greendao:3.2.2'
     //数据库升级帮助类库
@@ -95,4 +92,5 @@ dependencies {
     implementation "com.github.yjfnypeu:EasyThread:0.6.0"
     //RecyclerView多Type
     implementation 'me.drakeet.multitype:multitype:3.4.4'
+    implementation 'com.pnikosis:materialish-progress:1.7'
 }

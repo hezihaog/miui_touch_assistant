@@ -9,7 +9,7 @@ package com.zh.touchassistant.util.json;
  * Email: hezihao@linghit.com
  */
 
-public interface JsonParser {
+public interface JsonHandler {
     /**
      * 抽象解析方法，开放解析者给使用者，使用者需要一个实现类实现该接口，重写解析方法
      *
@@ -18,4 +18,9 @@ public interface JsonParser {
      * @return 解析转换出来的bean
      */
     <Result> Result parse(String json, Class<Result> clazz);
+
+    /**
+     * 模型转Json
+     */
+    String toJson(Object model);
 }

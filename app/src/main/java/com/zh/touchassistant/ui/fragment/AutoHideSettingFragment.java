@@ -5,9 +5,9 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import com.lzh.easythread.EasyThread;
+import com.pnikosis.materialishprogress.ProgressWheel;
 import com.zh.touchassistant.R;
 import com.zh.touchassistant.base.BaseTouchAssistantFragment;
 import com.zh.touchassistant.database.biz.IAutoHideFloatBiz;
@@ -37,7 +37,7 @@ import me.drakeet.multitype.MultiTypeAdapter;
 public class AutoHideSettingFragment extends BaseTouchAssistantFragment {
     private RecyclerView mRecyclerView;
     private List<AutoHideModel> mDatas;
-    private ProgressBar mWaitProgressBar;
+    private ProgressWheel mWaitProgressWheel;
 
     public static AutoHideSettingFragment newInstance() {
         return new AutoHideSettingFragment();
@@ -61,14 +61,14 @@ public class AutoHideSettingFragment extends BaseTouchAssistantFragment {
             }
         });
         mRecyclerView = view.findViewById(R.id.recycler_view);
-        mWaitProgressBar = view.findViewById(R.id.wait_progress_bar);
+        mWaitProgressWheel = view.findViewById(R.id.wait_progress_wheel);
         mDatas = new ArrayList<>();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         final MultiTypeAdapter adapter = new MultiTypeAdapter(mDatas);
         adapter.register(AutoHideModel.class, new AutoHideViewBinder());
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL));
-        mWaitProgressBar.setVisibility(View.VISIBLE);
+        mWaitProgressWheel.setVisibility(View.VISIBLE);
         EasyThread.Builder.createCacheable().build().execute(new Runnable() {
             @Override
             public void run() {
@@ -97,7 +97,7 @@ public class AutoHideSettingFragment extends BaseTouchAssistantFragment {
                         @Override
                         public void run() {
                             adapter.notifyDataSetChanged();
-                            mWaitProgressBar.setVisibility(View.GONE);
+                            mWaitProgressWheel.setVisibility(View.GONE);
                         }
                     });
                 }

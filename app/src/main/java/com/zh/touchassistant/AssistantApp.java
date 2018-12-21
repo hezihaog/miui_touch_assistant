@@ -14,8 +14,8 @@ import com.zh.touchassistant.util.AccessibilityHelper;
 import com.zh.touchassistant.util.AppBroadcastManager;
 import com.zh.touchassistant.util.FloatServiceUtil;
 import com.zh.touchassistant.util.Property;
-import com.zh.touchassistant.util.json.GsonParserImpl;
-import com.zh.touchassistant.util.json.JsonParser;
+import com.zh.touchassistant.util.json.GsonHandlerImpl;
+import com.zh.touchassistant.util.json.JsonHandler;
 import com.zh.touchassistant.util.logger.FSLogger;
 import com.zh.touchassistant.util.logger.LoggerImpl;
 import com.zh.touchassistant.util.singleton.SingletonStorageApplication;
@@ -39,11 +39,11 @@ public class AssistantApp extends SingletonStorageApplication {
         //SP工具
         new Property.PropertyBuilder().fileName(Const.Config.APP_SP_FILE_NAME).installDefaultProperty();
         //Json解析器
-        JsonParser jsonParser = new GsonParserImpl();
+        JsonHandler jsonHandler = new GsonHandlerImpl();
         //初始化悬浮按钮数据
         FloatWindowSetting
                 .getInstance()
-                .initFloatWindowActions(jsonParser);
+                .initFloatWindowActions(jsonHandler);
         mFloatViewLiveData = new FloatViewLiveData();
         //监听前台App
         AppBroadcastManager.registerReceiver(this, new BroadcastReceiver() {

@@ -13,9 +13,8 @@ import com.zh.touchassistant.model.FloatWindowActionListModel;
 import com.zh.touchassistant.model.FloatWindowActionModel;
 import com.zh.touchassistant.provider.ContextProvider;
 import com.zh.touchassistant.util.AppBroadcastManager;
-import com.zh.touchassistant.util.GsonUtils;
 import com.zh.touchassistant.util.Property;
-import com.zh.touchassistant.util.json.JsonParser;
+import com.zh.touchassistant.util.json.JsonHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +53,8 @@ public class FloatWindowSetting {
         actionMap.put(homeAction.getActionId(), homeAction);
     }
 
+    private JsonHandler mJsonHandler;
+
     private static final class SingleHolder {
         private static final FloatWindowSetting INSTANCE = new FloatWindowSetting();
     }
@@ -69,12 +70,13 @@ public class FloatWindowSetting {
         return SingleHolder.INSTANCE;
     }
 
-    public void initFloatWindowActions(JsonParser jsonParser) {
+    public void initFloatWindowActions(JsonHandler jsonHandler) {
+        this.mJsonHandler = jsonHandler;
         String actionDatas = Property.getDefault().getProperty(Const.Config.KEY_CUSTOM_MENU_DATA, "");
         if (TextUtils.isEmpty(actionDatas)) {
             initActionFromDefault();
         } else {
-            initActionFromCustom(jsonParser.parse(actionDatas, FloatWindowActionListModel.class));
+            initActionFromCustom(actionDatas);
         }
     }
 
@@ -88,11 +90,12 @@ public class FloatWindowSetting {
         //第一次初始化完后，保存到Sp
         FloatWindowActionListModel listModel = new FloatWindowActionListModel();
         listModel.setModels(actions);
-        String json = GsonUtils.toJson(listModel);
+        String json = mJsonHandler.toJson(listModel);
         Property.getDefault().setProperty(Const.Config.KEY_CUSTOM_MENU_DATA, json);
     }
 
-    private void initActionFromCustom(FloatWindowActionListModel customActions) {
+    private void initActionFromCustom(String actionDatas) {
+        FloatWindowActionListModel customActions = mJsonHandler.parse(actionDatas, FloatWindowActionListModel.class);
         List<FloatWindowActionModel> customActionsModels = customActions.getModels();
         ArrayList<FloatWindowActionModel> actions = getActionModels();
         actions.addAll(customActionsModels);
@@ -106,7 +109,7 @@ public class FloatWindowSetting {
         //更新本地
         FloatWindowActionListModel listModel = new FloatWindowActionListModel();
         listModel.setModels(newActions);
-        String json = GsonUtils.toJson(listModel);
+        String json = mJsonHandler.toJson(listModel);
         Property.getDefault().setProperty(Const.Config.KEY_CUSTOM_MENU_DATA, json);
         //通知更新
         AppBroadcastManager.sendBroadcast(

@@ -2,7 +2,7 @@ package com.zh.touchassistant.util.logger;
 
 import android.content.Context;
 
-import com.apkfuns.logutils.LogUtils;
+import timber.log.Timber;
 
 /**
  * <b>Package:</b> com.zh.touchassistant.util.logger <br>
@@ -20,36 +20,37 @@ public class LoggerImpl implements FSLogger.FSLogDelegate {
 
     @Override
     public void init(Context context) {
-        LogUtils.getLogConfig().configAllowLog(mDebugAble).configShowBorders(false);
+        if (mDebugAble) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            Timber.plant(new CrashReportingTree());
+        }
+    }
+
+    private static class CrashReportingTree extends Timber.Tree {
+        @Override
+        protected void log(int priority, String tag, String message, Throwable t) {
+
+        }
     }
 
     @Override
     public void e(String msg, Object... obj) {
-        LogUtils.e(msg, obj);
+        Timber.e(msg, obj);
     }
 
     @Override
     public void w(String msg, Object... obj) {
-        LogUtils.w(msg, obj);
+        Timber.w(msg, obj);
     }
 
     @Override
     public void i(String msg, Object... obj) {
-        LogUtils.i(msg, obj);
+        Timber.i(msg, obj);
     }
 
     @Override
     public void d(String msg, Object... obj) {
-        LogUtils.d(msg, obj);
-    }
-
-    @Override
-    public void json(String json) {
-        LogUtils.json(json);
-    }
-
-    @Override
-    public void xml(String xml) {
-        LogUtils.json(xml);
+        Timber.d(msg, obj);
     }
 }
