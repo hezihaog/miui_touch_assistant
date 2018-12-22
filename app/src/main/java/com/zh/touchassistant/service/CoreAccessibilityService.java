@@ -198,5 +198,8 @@ public class CoreAccessibilityService extends AccessibilityService {
         if (mFloatButtonVC != null) {
             mFloatButtonVC.hideFloatWindow();
         }
+        if (mFloatForegroundVC != null) {
+            mFloatForegroundVC.hideFloatWindow();
+        }
     }
 }

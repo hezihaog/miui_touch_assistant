@@ -25,7 +25,7 @@ import com.zh.touchassistant.util.StatusBarUtil;
  * <b>Description:</b>  <br>
  */
 public class FloatForegroundWindowController extends BaseFloatWindowController {
-    private static final String TAG = "foreground";
+    private static final String TAG_FOREGROUND = "foreground";
 
     private View mRootView;
     private FloatWindowManager mFloatWindowManager;
@@ -74,7 +74,7 @@ public class FloatForegroundWindowController extends BaseFloatWindowController {
     }
 
     private void attachFloatWindow() {
-        mFloatWindowManager.makeFloatWindow(mRootView, TAG, FloatWindowOption
+        mFloatWindowManager.makeFloatWindow(mRootView, TAG_FOREGROUND, FloatWindowOption
                 .create(new FloatWindowOption
                         .Builder()
                         .setX(0)
@@ -86,6 +86,12 @@ public class FloatForegroundWindowController extends BaseFloatWindowController {
                         .setNotTouchable(true)
                         .setFloatMoveType(FloatMoveEnum.INACTIVE)
                         .desktopShow(true)));
+    }
+
+    public void hideFloatWindow() {
+        this.mFloatWindowManager
+                .getFloatWindow(TAG_FOREGROUND)
+                .hide();
     }
 
     @Override
