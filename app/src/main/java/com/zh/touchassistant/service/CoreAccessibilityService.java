@@ -22,6 +22,7 @@ import com.zh.touchassistant.floating.FloatWindowManager;
 import com.zh.touchassistant.model.ForegroundAppInfoModel;
 import com.zh.touchassistant.util.AppBroadcastManager;
 import com.zh.touchassistant.util.logger.FSLogger;
+import com.zh.touchassistant.widget.ControlPanelView;
 
 /**
  * <b>Package:</b> com.zh.touchassistant <br>
@@ -145,6 +146,15 @@ public class CoreAccessibilityService extends AccessibilityService {
                 @Override
                 public void onFloatButtonPositionUpdate(int newX, int newY) {
                     mFloatPanelVC.followButtonPosition(newX, newY);
+                }
+            });
+            mFloatPanelVC.setOnPanelSizeChangeCallback(new ControlPanelView.OnPanelSizeChangeCallback() {
+                @Override
+                public void onPanelSizeChange(int newWidth, int newHeight) {
+                    //使用该监听，主要是为了解决第一次进入时，没有手动移动过悬浮球，控制面板没有跟随位置的问题
+                    int buttonX = mFloatButtonVC.getFloatWindow().getX();
+                    int buttonY = mFloatButtonVC.getFloatWindow().getY();
+                    mFloatPanelVC.followButtonPosition(buttonX, buttonY);
                 }
             });
             mFloatButtonVC.setOnStatusChangeListener(new FloatButtonWindowController.OnStatusChangeListener() {

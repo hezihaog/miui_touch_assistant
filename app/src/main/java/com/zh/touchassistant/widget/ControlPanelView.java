@@ -63,6 +63,7 @@ public class ControlPanelView extends FrameLayout {
      */
     private int mOffset;
     private OnTogglePanelListener mTogglePanelListener;
+    private OnPanelSizeChangeCallback mOnPanelSizeChangeCallback;
 
     public ControlPanelView(Context context) {
         this(context, null);
@@ -95,8 +96,11 @@ public class ControlPanelView extends FrameLayout {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mWidth = w;
-        mHeight = h;
+        this.mWidth = w;
+        this.mHeight = h;
+        if (mOnPanelSizeChangeCallback != null) {
+            mOnPanelSizeChangeCallback.onPanelSizeChange(mWidth, mHeight);
+        }
     }
 
     @Override
@@ -335,6 +339,14 @@ public class ControlPanelView extends FrameLayout {
          * @param isOpen 当前是否是打开
          */
         void onToggleChange(boolean isOpen);
+    }
+
+    public interface OnPanelSizeChangeCallback {
+        void onPanelSizeChange(int newWidth, int newHeight);
+    }
+
+    public void setOnPanelSizeChangeCallback(OnPanelSizeChangeCallback onPanelSizeChangeCallback) {
+        this.mOnPanelSizeChangeCallback = onPanelSizeChangeCallback;
     }
 
     public void setOnTogglePanelListener(OnTogglePanelListener togglePanelListener) {

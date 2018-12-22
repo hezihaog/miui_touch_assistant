@@ -112,6 +112,10 @@ public class FloatPanelWindowController extends BaseFloatWindowController {
         });
     }
 
+    public void setOnPanelSizeChangeCallback(ControlPanelView.OnPanelSizeChangeCallback onPanelSizeChangeCallback) {
+        mFloatControlPanelView.setOnPanelSizeChangeCallback(onPanelSizeChangeCallback);
+    }
+
     private void addActionButton() {
         HashMap<FloatWindowActionModel, IFloatWindowAction> actions = FloatWindowSetting.getInstance().getCurrentActions();
         for (final Map.Entry<FloatWindowActionModel, IFloatWindowAction> entry : actions.entrySet()) {
