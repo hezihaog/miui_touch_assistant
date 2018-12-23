@@ -20,6 +20,7 @@ import com.zh.touchassistant.controller.FloatForegroundWindowController;
 import com.zh.touchassistant.controller.FloatPanelWindowController;
 import com.zh.touchassistant.floating.FloatWindowManager;
 import com.zh.touchassistant.model.ForegroundAppInfoModel;
+import com.zh.touchassistant.receiver.ScreenLockReceiver;
 import com.zh.touchassistant.util.AppBroadcastManager;
 import com.zh.touchassistant.util.logger.FSLogger;
 import com.zh.touchassistant.widget.ControlPanelView;
@@ -39,10 +40,13 @@ public class CoreAccessibilityService extends AccessibilityService {
     private FloatForegroundWindowController mFloatForegroundVC;
     private boolean isFirst = true;
     private FloatTimeTaskHolder mFloatTimeTaskHolder;
+    private ScreenLockReceiver mScreenLockReceiver;
 
     public static class Action {
         public static final String ACTION_SHOW_FLOATING_WINDOW = "com.zh.touchassistant.SHOW_FLOATING_WINDOW";
         public static final String ACTION_HIDE_FLOATING_WINDOW = "com.zh.touchassistant.HIDE_FLOATING_WINDOW";
+        public static final String ACTION_START_LOOP_CHECK = "com.zh.touchassistant.START_LOOP_CHECK";
+        public static final String ACTION_STOP_LOOP_CHECK = "com.zh.touchassistant.STOP_LOOP_CHECK";
     }
 
     @Override
@@ -82,6 +86,11 @@ public class CoreAccessibilityService extends AccessibilityService {
     public void onCreate() {
         super.onCreate();
         ((AssistantApp) getApplication()).setAccessibility(this);
+        mScreenLockReceiver = new ScreenLockReceiver();
+        //接收锁屏广播
+        AppBroadcastManager
+                .registerReceiver(this.getApplicationContext(),
+                        mScreenLockReceiver, Intent.ACTION_SCREEN_OFF, Intent.ACTION_USER_PRESENT);
     }
 
     @Override
@@ -89,6 +98,11 @@ public class CoreAccessibilityService extends AccessibilityService {
         super.onDestroy();
         if (mFloatTimeTaskHolder != null) {
             mFloatTimeTaskHolder.dispatchDestroy();
+        }
+        if (mScreenLockReceiver != null) {
+            AppBroadcastManager
+                    .unregisterReceiver(this.getApplicationContext(),
+                            mScreenLockReceiver);
         }
     }
 
@@ -101,6 +115,14 @@ public class CoreAccessibilityService extends AccessibilityService {
             showFloatWindow();
         } else if (Action.ACTION_HIDE_FLOATING_WINDOW.equals(intent.getAction())) {
             hideFloatWindow();
+        } else if (Action.ACTION_START_LOOP_CHECK.equals(intent.getAction())) {
+            if (mFloatTimeTaskHolder != null) {
+                mFloatTimeTaskHolder.startLoopCheck();
+            }
+        } else if (Action.ACTION_START_LOOP_CHECK.equals(intent.getAction())) {
+            if (mFloatTimeTaskHolder != null) {
+                mFloatTimeTaskHolder.cancelLoopCheck();
+            }
         }
         //大于9.0不保活
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -191,6 +213,7 @@ public class CoreAccessibilityService extends AccessibilityService {
             isFirst = false;
         } else {
             mFloatButtonVC.showFloatWindow();
+            mFloatForegroundVC.showFloatWindow();
         }
     }
 

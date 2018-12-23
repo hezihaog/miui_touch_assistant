@@ -77,6 +77,20 @@ public class FloatServiceUtil {
     }
 
     /**
+     * 开启循环检测
+     */
+    public static void startLoopCheck(Context context) {
+        setEnableLoopCheck(context, true);
+    }
+
+    /**
+     * 停止循环检测
+     */
+    public static void stopLoopCheck(Context context) {
+        setEnableLoopCheck(context, false);
+    }
+
+    /**
      * 开关悬浮窗
      */
     public static void setEnableFloatWindow(Context context, boolean isEnable) {
@@ -85,6 +99,19 @@ public class FloatServiceUtil {
             intent.setAction(CoreAccessibilityService.Action.ACTION_SHOW_FLOATING_WINDOW);
         } else {
             intent.setAction(CoreAccessibilityService.Action.ACTION_HIDE_FLOATING_WINDOW);
+        }
+        context.startService(intent);
+    }
+
+    /**
+     * 开关循环检测
+     */
+    public static void setEnableLoopCheck(Context context, boolean isEnable) {
+        Intent intent = new Intent(context, CoreAccessibilityService.class);
+        if (isEnable) {
+            intent.setAction(CoreAccessibilityService.Action.ACTION_START_LOOP_CHECK);
+        } else {
+            intent.setAction(CoreAccessibilityService.Action.ACTION_STOP_LOOP_CHECK);
         }
         context.startService(intent);
     }

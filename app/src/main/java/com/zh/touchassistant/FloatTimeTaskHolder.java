@@ -31,7 +31,7 @@ public class FloatTimeTaskHolder {
         this.mFloatButtonVC = floatButtonVC;
         this.mMainHandler = new Handler(Looper.getMainLooper());
         //开始循环，2秒检查一次
-        loopCheck();
+        startLoopCheck();
         //注册悬浮球广播，开时关闭循环，关时开启循环
         mOpenReceiver = new BroadcastReceiver() {
             @Override
@@ -43,19 +43,19 @@ public class FloatTimeTaskHolder {
         mOffReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                loopCheck();
+                startLoopCheck();
             }
         };
         AppBroadcastManager.registerReceiver(context, mOffReceiver, Const.Action.ACTION_FLOAT_BUTTON_CLOSE);
     }
 
-    private void loopCheck() {
+    public void startLoopCheck() {
         this.mMainHandler
-                .postDelayed(mTask, 1200);
+                .postDelayed(mTask, 3000);
         isLoop = true;
     }
 
-    private void cancelLoopCheck() {
+    public void cancelLoopCheck() {
         if (!isLoop) {
             return;
         }
@@ -85,7 +85,7 @@ public class FloatTimeTaskHolder {
                     }
                 }
             }
-            loopCheck();
+            startLoopCheck();
         }
     };
 

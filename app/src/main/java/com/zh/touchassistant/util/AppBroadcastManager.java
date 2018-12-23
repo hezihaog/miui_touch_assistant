@@ -44,6 +44,14 @@ public class AppBroadcastManager {
                 .registerReceiver(receiver, filter);
     }
 
+    public static void registerReceiver(Context context, BroadcastReceiver receiver, String... actions) {
+        IntentFilter intentFilter = new IntentFilter();
+        for (String action : actions) {
+            intentFilter.addAction(action);
+        }
+        registerReceiver(context, receiver, intentFilter);
+    }
+
     public static void registerReceiver(Context context, BroadcastReceiver receiver, String action) {
         registerReceiver(context, receiver, new IntentFilter(action));
     }
