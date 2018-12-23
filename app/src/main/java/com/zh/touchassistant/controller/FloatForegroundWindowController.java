@@ -89,15 +89,19 @@ public class FloatForegroundWindowController extends BaseFloatWindowController {
     }
 
     public void showFloatWindow() {
-        this.mFloatWindowManager
-                .getFloatWindow(TAG_FOREGROUND)
-                .show();
+        if (!Const.isDebug) {
+            this.mFloatWindowManager
+                    .getFloatWindow(TAG_FOREGROUND)
+                    .show();
+        }
     }
 
     public void hideFloatWindow() {
-        this.mFloatWindowManager
-                .getFloatWindow(TAG_FOREGROUND)
-                .hide();
+        if (!Const.isDebug) {
+            this.mFloatWindowManager
+                    .getFloatWindow(TAG_FOREGROUND)
+                    .hide();
+        }
     }
 
     @Override
