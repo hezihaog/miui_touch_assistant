@@ -4,6 +4,7 @@ import android.accessibilityservice.AccessibilityService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import com.zh.touchassistant.constant.Const;
 import com.zh.touchassistant.database.biz.IAutoHideFloatBiz;
@@ -12,6 +13,7 @@ import com.zh.touchassistant.model.ForegroundAppInfoModel;
 import com.zh.touchassistant.setting.FloatWindowSetting;
 import com.zh.touchassistant.util.AccessibilityHelper;
 import com.zh.touchassistant.util.AppBroadcastManager;
+import com.zh.touchassistant.util.AppShortcutManager;
 import com.zh.touchassistant.util.FloatServiceUtil;
 import com.zh.touchassistant.util.Property;
 import com.zh.touchassistant.util.json.GsonHandlerImpl;
@@ -63,6 +65,12 @@ public class AssistantApp extends SingletonStorageApplication {
                 }
             }
         }, Const.Action.ACTION_FOREGROUND_APP_CHANGE);
+        //创建Shortcut
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            AppShortcutManager
+                    .getInstance()
+                    .createAppShortcuts();
+        }
     }
 
     public FloatViewLiveData getFloatViewLiveData() {
