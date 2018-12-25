@@ -163,7 +163,7 @@ public class CoreAccessibilityService extends AccessibilityService {
             //填充和浮动面板浮动按钮
             mFloatPanelVC = new FloatPanelWindowController(this, floatWindowManager);
             mFloatButtonVC = new FloatButtonWindowController(this, floatWindowManager, mFloatPanelVC);
-            mFloatForegroundVC = new FloatForegroundWindowController(this, floatWindowManager);
+            //mFloatForegroundVC = new FloatForegroundWindowController(this, floatWindowManager);
             mFloatButtonVC.setOnFloatButtonPositionUpdateListener(new FloatButtonWindowController.OnFloatButtonPositionUpdateListener() {
                 @Override
                 public void onFloatButtonPositionUpdate(int newX, int newY) {
@@ -212,8 +212,12 @@ public class CoreAccessibilityService extends AccessibilityService {
             });
             isFirst = false;
         } else {
-            mFloatButtonVC.showFloatWindow();
-            mFloatForegroundVC.showFloatWindow();
+            if (mFloatButtonVC != null) {
+                mFloatButtonVC.showFloatWindow();
+            }
+            if (mFloatForegroundVC != null) {
+                mFloatForegroundVC.showFloatWindow();
+            }
         }
     }
 
