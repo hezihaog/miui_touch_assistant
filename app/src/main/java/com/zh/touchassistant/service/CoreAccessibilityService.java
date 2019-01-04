@@ -189,7 +189,7 @@ public class CoreAccessibilityService extends AccessibilityService {
                 public void onStatusChange(int newStatus) {
                 }
             });
-            mFloatTimeTaskHolder = FloatTimeTaskHolder.create(CoreAccessibilityService.this.getApplicationContext(), mFloatButtonVC);
+            //mFloatTimeTaskHolder = FloatTimeTaskHolder.create(CoreAccessibilityService.this.getApplicationContext(), mFloatButtonVC);
             FloatViewLiveData floatViewLiveData = assistantApp.getFloatViewLiveData();
             floatViewLiveData.addOnDataChangeCallback(new FloatViewLiveData.OnDataChangeCallback() {
                 @Override
