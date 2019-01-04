@@ -3,6 +3,8 @@ package com.zh.touchassistant.service;
 import android.accessibilityservice.AccessibilityService;
 import android.app.Notification;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,13 +16,14 @@ import android.view.accessibility.AccessibilityEvent;
 import com.zh.touchassistant.AssistantApp;
 import com.zh.touchassistant.FloatTimeTaskHolder;
 import com.zh.touchassistant.FloatViewLiveData;
-import com.zh.touchassistant.constant.Const;
+import com.zh.touchassistant.constant.AccessibilityConstant;
 import com.zh.touchassistant.controller.FloatButtonWindowController;
 import com.zh.touchassistant.controller.FloatForegroundWindowController;
 import com.zh.touchassistant.controller.FloatPanelWindowController;
 import com.zh.touchassistant.floating.FloatWindowManager;
 import com.zh.touchassistant.model.ForegroundAppInfoModel;
 import com.zh.touchassistant.receiver.ScreenLockReceiver;
+import com.zh.touchassistant.util.AccessibilityHelper;
 import com.zh.touchassistant.util.AppBroadcastManager;
 import com.zh.touchassistant.util.logger.FSLogger;
 import com.zh.touchassistant.widget.ControlPanelView;
@@ -41,6 +44,7 @@ public class CoreAccessibilityService extends AccessibilityService {
     private boolean isFirst = true;
     private FloatTimeTaskHolder mFloatTimeTaskHolder;
     private ScreenLockReceiver mScreenLockReceiver;
+    private BroadcastReceiver mActionReceiver;
 
     public static class Action {
         public static final String ACTION_SHOW_FLOATING_WINDOW = "com.zh.touchassistant.SHOW_FLOATING_WINDOW";
@@ -64,10 +68,10 @@ public class CoreAccessibilityService extends AccessibilityService {
                 ForegroundAppInfoModel foregroundAppInfoModel = new ForegroundAppInfoModel(
                         foregroundAppPackageName.toString(), foregroundActivityClassName.toString());
                 Bundle args = new Bundle();
-                args.putSerializable(Const.Extras.EXTRAS_FOREGROUND_APP_DATA, foregroundAppInfoModel);
+                args.putSerializable(AccessibilityConstant.Extras.EXTRAS_FOREGROUND_APP_DATA, foregroundAppInfoModel);
                 AppBroadcastManager
                         .sendBroadcast(this.getApplicationContext(),
-                                Const.Action.ACTION_FOREGROUND_APP_CHANGE, args);
+                                AccessibilityConstant.Action.ACTION_FOREGROUND_APP_CHANGE, args);
             }
         }
     }
@@ -85,12 +89,45 @@ public class CoreAccessibilityService extends AccessibilityService {
     @Override
     public void onCreate() {
         super.onCreate();
-        ((AssistantApp) getApplication()).setAccessibility(this);
+        final AccessibilityHelper accessibilityHelper = new AccessibilityHelper(this);
         mScreenLockReceiver = new ScreenLockReceiver();
         //接收锁屏广播
         AppBroadcastManager
                 .registerReceiver(this.getApplicationContext(),
                         mScreenLockReceiver, Intent.ACTION_SCREEN_OFF, Intent.ACTION_USER_PRESENT);
+        mActionReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction() == null) {
+                    return;
+                }
+                if (!accessibilityHelper.checkAccessibilityIsOpen(getApplicationContext())) {
+                    return;
+                }
+                switch (intent.getAction()) {
+                    case AccessibilityConstant.Action.ACTION_DO_BACK:
+                        accessibilityHelper.doBack();
+                        break;
+                    case AccessibilityConstant.Action.ACTION_PULL_DOWN_NOTIFICATION_BAR:
+                        accessibilityHelper.doPullDownNotificationBar();
+                        break;
+                    case AccessibilityConstant.Action.ACTION_DO_GO_HOME:
+                        accessibilityHelper.doGoHome();
+                        break;
+                    case AccessibilityConstant.Action.ACTION_DO_GO_TASK:
+                        accessibilityHelper.doGoTask();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+        AppBroadcastManager.registerReceiver(this,
+                mActionReceiver,
+                AccessibilityConstant.Action.ACTION_DO_BACK,
+                AccessibilityConstant.Action.ACTION_PULL_DOWN_NOTIFICATION_BAR,
+                AccessibilityConstant.Action.ACTION_DO_GO_HOME,
+                AccessibilityConstant.Action.ACTION_DO_GO_TASK);
     }
 
     @Override
@@ -101,8 +138,10 @@ public class CoreAccessibilityService extends AccessibilityService {
         }
         if (mScreenLockReceiver != null) {
             AppBroadcastManager
-                    .unregisterReceiver(this.getApplicationContext(),
-                            mScreenLockReceiver);
+                    .unregisterReceiver(this.getApplicationContext(), mScreenLockReceiver);
+        }
+        if (mActionReceiver != null) {
+            AppBroadcastManager.unregisterReceiver(this.getApplicationContext(), mActionReceiver);
         }
     }
 
@@ -200,13 +239,13 @@ public class CoreAccessibilityService extends AccessibilityService {
                         mFloatPanelVC.open();
                         AppBroadcastManager
                                 .sendBroadcast(CoreAccessibilityService.this,
-                                        Const.Action.ACTION_FLOAT_BUTTON_OPEN);
+                                        AccessibilityConstant.Action.ACTION_FLOAT_BUTTON_OPEN);
                     } else {
                         mFloatButtonVC.off();
                         mFloatPanelVC.off();
                         AppBroadcastManager
                                 .sendBroadcast(CoreAccessibilityService.this,
-                                        Const.Action.ACTION_FLOAT_BUTTON_CLOSE);
+                                        AccessibilityConstant.Action.ACTION_FLOAT_BUTTON_CLOSE);
                     }
                 }
             });

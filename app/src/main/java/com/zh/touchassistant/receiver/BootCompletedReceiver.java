@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.zh.touchassistant.constant.Const;
+import com.zh.touchassistant.constant.AccessibilityConstant;
 import com.zh.touchassistant.util.FloatServiceUtil;
 import com.zh.touchassistant.util.Property;
 
@@ -19,7 +19,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        boolean isEnable = Property.getDefault().getProperty(Const.Config.KEY_ENABLE, false);
+        boolean isEnable = Property.getDefault().getProperty(AccessibilityConstant.Config.KEY_ENABLE, false);
         FloatServiceUtil.setEnableFloatWindow(context, isEnable);
     }
 }

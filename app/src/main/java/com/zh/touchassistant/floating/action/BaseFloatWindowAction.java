@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 
 import com.zh.touchassistant.AssistantApp;
 import com.zh.touchassistant.provider.ContextProvider;
-import com.zh.touchassistant.util.AccessibilityHelper;
 
 /**
  * <b>Package:</b> com.zh.touchassistant.floating.action <br>
@@ -15,18 +14,6 @@ import com.zh.touchassistant.util.AccessibilityHelper;
  * <b>Description:</b>  <br>
  */
 public abstract class BaseFloatWindowAction implements IFloatWindowAction {
-    /**
-     * 检查辅助服务是否开启
-     */
-    protected boolean checkAccessibilityIsOpen() {
-        AssistantApp application = getApplication();
-        return getApplication().getAccessibilityHelper().guideAccessibilityIsOpen(application);
-    }
-
-    protected AccessibilityHelper getAccessibilityHelper() {
-        return getApplication().getAccessibilityHelper();
-    }
-
     protected AssistantApp getApplication() {
         Application application = ContextProvider
                 .get()

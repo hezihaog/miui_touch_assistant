@@ -6,7 +6,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.zh.touchassistant.R;
-import com.zh.touchassistant.constant.Const;
+import com.zh.touchassistant.constant.AccessibilityConstant;
 import com.zh.touchassistant.floating.FloatMoveEnum;
 import com.zh.touchassistant.floating.FloatWindow;
 import com.zh.touchassistant.floating.FloatWindowManager;
@@ -82,8 +82,8 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                                     @Override
                                     public void onPositionUpdate(int oldX, int oldY, int newX, int newY) {
                                         super.onPositionUpdate(oldX, oldY, newX, newY);
-                                        Property.getDefault().setProperty(Const.Config.KEY_FLOAT_BUTTON_X, newX);
-                                        Property.getDefault().setProperty(Const.Config.KEY_FLOAT_BUTTON_Y, newY);
+                                        Property.getDefault().setProperty(AccessibilityConstant.Config.KEY_FLOAT_BUTTON_X, newX);
+                                        Property.getDefault().setProperty(AccessibilityConstant.Config.KEY_FLOAT_BUTTON_Y, newY);
                                         //让面板跟随按钮
                                         if (mButtonPositionUpdateListener != null) {
                                             mButtonPositionUpdateListener.onFloatButtonPositionUpdate(newX, newY);
@@ -100,9 +100,9 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                                     public void onDragging(float moveX, float moveY) {
                                         super.onDragging(moveX, moveY);
                                         //将Alpha调整比较容易可见的值
-                                        if (getView().getAlpha() != Const.Config.ALPHA_SHOW) {
+                                        if (getView().getAlpha() != AccessibilityConstant.Config.ALPHA_SHOW) {
                                             getView()
-                                                    .setAlpha(Const.Config.ALPHA_SHOW);
+                                                    .setAlpha(AccessibilityConstant.Config.ALPHA_SHOW);
                                         }
                                     }
 
@@ -201,7 +201,7 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
             mOpenAnimatorSet = new AnimatorSet();
             ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.SCALE_X, 0.8f);
             ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.SCALE_Y, 0.8f);
-            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.ALPHA, Const.Config.ALPHA_SHOW);
+            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mFloatButtonView, View.ALPHA, AccessibilityConstant.Config.ALPHA_SHOW);
             mOpenAnimatorSet
                     .play(scaleXAnimator)
                     .with(scaleYAnimator)

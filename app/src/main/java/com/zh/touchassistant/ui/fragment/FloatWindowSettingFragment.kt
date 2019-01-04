@@ -7,7 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.zh.touchassistant.R
 import com.zh.touchassistant.base.BaseTouchAssistantFragment
-import com.zh.touchassistant.constant.Const
+import com.zh.touchassistant.constant.AccessibilityConstant
 import com.zh.touchassistant.ext.isNull
 import com.zh.touchassistant.floating.FloatWindowPermissionCallback
 import com.zh.touchassistant.floating.WindowPermissionAgent
@@ -48,7 +48,7 @@ class FloatWindowSettingFragment : BaseTouchAssistantFragment() {
         if (activity.isNull()) return
         //回显
         executeWindowAction(Runnable {
-            val isEnable = Property.getDefault().getProperty(Const.Config.KEY_ENABLE, false)
+            val isEnable = Property.getDefault().getProperty(AccessibilityConstant.Config.KEY_ENABLE, false)
             FloatServiceUtil.setEnableFloatWindow(activity, isEnable)
             mEnableSwitch.isChecked = isEnable
         })
@@ -58,7 +58,7 @@ class FloatWindowSettingFragment : BaseTouchAssistantFragment() {
                 FSLogger.d("isChecked -> $isChecked")
                 executeWindowAction(Runnable {
                     FloatServiceUtil.setEnableFloatWindow(activity, isChecked)
-                    Property.getDefault().setProperty(Const.Config.KEY_ENABLE, isChecked)
+                    Property.getDefault().setProperty(AccessibilityConstant.Config.KEY_ENABLE, isChecked)
                 })
             }
         })

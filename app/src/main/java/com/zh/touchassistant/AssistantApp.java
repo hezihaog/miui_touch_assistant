@@ -1,17 +1,15 @@
 package com.zh.touchassistant;
 
-import android.accessibilityservice.AccessibilityService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-import com.zh.touchassistant.constant.Const;
+import com.zh.touchassistant.constant.AccessibilityConstant;
 import com.zh.touchassistant.database.biz.IAutoHideFloatBiz;
 import com.zh.touchassistant.database.biz.impl.AutoHideFloatBiz;
 import com.zh.touchassistant.model.ForegroundAppInfoModel;
 import com.zh.touchassistant.setting.FloatWindowSetting;
-import com.zh.touchassistant.util.AccessibilityHelper;
 import com.zh.touchassistant.util.AppBroadcastManager;
 import com.zh.touchassistant.util.AppShortcutManager;
 import com.zh.touchassistant.util.FloatServiceUtil;
@@ -30,16 +28,15 @@ import com.zh.touchassistant.util.singleton.SingletonStorageApplication;
  * <b>Description:</b>  <br>
  */
 public class AssistantApp extends SingletonStorageApplication {
-    private AccessibilityHelper mAccessibilityHelper;
     private FloatViewLiveData mFloatViewLiveData;
 
     @Override
     public void onCreate() {
         super.onCreate();
         //Logger
-        FSLogger.setDelegate(new LoggerImpl(Const.isDebug));
+        FSLogger.setDelegate(new LoggerImpl(AccessibilityConstant.isDebug));
         //SP工具
-        new Property.PropertyBuilder().fileName(Const.Config.APP_SP_FILE_NAME).installDefaultProperty();
+        new Property.PropertyBuilder().fileName(AccessibilityConstant.Config.APP_SP_FILE_NAME).installDefaultProperty();
         //Json解析器
         JsonHandler jsonHandler = new GsonHandlerImpl();
         //初始化悬浮按钮数据
@@ -53,7 +50,7 @@ public class AssistantApp extends SingletonStorageApplication {
             @Override
             public void onReceive(Context context, Intent intent) {
                 //前台Activity发生改变
-                ForegroundAppInfoModel foregroundAppInfoModel = (ForegroundAppInfoModel) intent.getSerializableExtra(Const.Extras.EXTRAS_FOREGROUND_APP_DATA);
+                ForegroundAppInfoModel foregroundAppInfoModel = (ForegroundAppInfoModel) intent.getSerializableExtra(AccessibilityConstant.Extras.EXTRAS_FOREGROUND_APP_DATA);
                 AutoHideFloatBiz biz = getInstance(IAutoHideFloatBiz.class, AutoHideFloatBiz.class);
                 //查数据库，是否添加过该包名
                 if (biz != null) {
@@ -64,7 +61,7 @@ public class AssistantApp extends SingletonStorageApplication {
                     }
                 }
             }
-        }, Const.Action.ACTION_FOREGROUND_APP_CHANGE);
+        }, AccessibilityConstant.Action.ACTION_FOREGROUND_APP_CHANGE);
         //创建Shortcut
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             AppShortcutManager
@@ -75,15 +72,5 @@ public class AssistantApp extends SingletonStorageApplication {
 
     public FloatViewLiveData getFloatViewLiveData() {
         return mFloatViewLiveData;
-    }
-
-    public void setAccessibility(AccessibilityService service) {
-        this.mAccessibilityHelper = new AccessibilityHelper(service);
-        //检查辅助服务
-        this.mAccessibilityHelper.guideAccessibilityIsOpen(this);
-    }
-
-    public AccessibilityHelper getAccessibilityHelper() {
-        return mAccessibilityHelper;
     }
 }

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zh.touchassistant.R;
-import com.zh.touchassistant.constant.Const;
+import com.zh.touchassistant.constant.AccessibilityConstant;
 import com.zh.touchassistant.floating.FloatMoveEnum;
 import com.zh.touchassistant.floating.FloatWindowManager;
 import com.zh.touchassistant.floating.FloatWindowOption;
@@ -51,7 +51,7 @@ public class FloatForegroundWindowController extends BaseFloatWindowController {
                 if (mRootView != null) {
                     TextView foregroundAppPackageName = mRootView.findViewById(R.id.foreground_app_package_name);
                     TextView foregroundAppActivityName = mRootView.findViewById(R.id.foreground_app_activity_name);
-                    ForegroundAppInfoModel model = (ForegroundAppInfoModel) intent.getSerializableExtra(Const.Extras.EXTRAS_FOREGROUND_APP_DATA);
+                    ForegroundAppInfoModel model = (ForegroundAppInfoModel) intent.getSerializableExtra(AccessibilityConstant.Extras.EXTRAS_FOREGROUND_APP_DATA);
                     foregroundAppPackageName.setText(model.getForegroundAppPackageName());
                     foregroundAppActivityName.setText(model.getForegroundActivityClassName());
                 }
@@ -62,7 +62,7 @@ public class FloatForegroundWindowController extends BaseFloatWindowController {
             public void onViewAttachedToWindow(View v) {
                 AppBroadcastManager
                         .registerReceiver(getApplicationContext(),
-                                receiver, Const.Action.ACTION_FOREGROUND_APP_CHANGE);
+                                receiver, AccessibilityConstant.Action.ACTION_FOREGROUND_APP_CHANGE);
             }
 
             @Override
@@ -81,7 +81,7 @@ public class FloatForegroundWindowController extends BaseFloatWindowController {
                         .setY(0)
                         .setWidth(ViewGroup.LayoutParams.MATCH_PARENT)
                         .setHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
-                        .setShow(Const.isDebug)
+                        .setShow(AccessibilityConstant.isDebug)
                         //设置无需接收点击事件，否则点击事件无法穿透到底下的Window
                         .setNotTouchable(true)
                         .setFloatMoveType(FloatMoveEnum.INACTIVE)
@@ -89,7 +89,7 @@ public class FloatForegroundWindowController extends BaseFloatWindowController {
     }
 
     public void showFloatWindow() {
-        if (!Const.isDebug) {
+        if (!AccessibilityConstant.isDebug) {
             this.mFloatWindowManager
                     .getFloatWindow(TAG_FOREGROUND)
                     .show();
@@ -97,7 +97,7 @@ public class FloatForegroundWindowController extends BaseFloatWindowController {
     }
 
     public void hideFloatWindow() {
-        if (!Const.isDebug) {
+        if (!AccessibilityConstant.isDebug) {
             this.mFloatWindowManager
                     .getFloatWindow(TAG_FOREGROUND)
                     .hide();

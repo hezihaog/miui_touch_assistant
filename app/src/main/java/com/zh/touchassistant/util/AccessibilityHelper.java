@@ -75,9 +75,9 @@ public class AccessibilityHelper {
     }
 
     /**
-     * 引导跳转开启辅助服务
+     * 检查服务服务，如果未开启就引导跳转开启辅助服务
      */
-    public boolean guideAccessibilityIsOpen(Context context) {
+    public boolean checkAccessibilityIsOpen(Context context) {
         if (context != null) {
             boolean isOpen = isAccessibilitySettingsOn(context);
             if (!isOpen) {

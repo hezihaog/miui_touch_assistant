@@ -5,7 +5,7 @@ import android.content.Intent;
 
 import com.zh.touchassistant.AssistantApp;
 import com.zh.touchassistant.FloatViewLiveData;
-import com.zh.touchassistant.constant.Const;
+import com.zh.touchassistant.constant.AccessibilityConstant;
 import com.zh.touchassistant.provider.ContextProvider;
 import com.zh.touchassistant.service.CoreAccessibilityService;
 
@@ -21,21 +21,21 @@ public class FloatServiceUtil {
     }
 
     public static int getFloatButtonX(Context context) {
-        return Property.getDefault().getProperty(Const.Config.KEY_FLOAT_BUTTON_X,
+        return Property.getDefault().getProperty(AccessibilityConstant.Config.KEY_FLOAT_BUTTON_X,
                 ScreenUtil.getPointFromScreenWidthRatio(context.getApplicationContext(), 0.8f));
     }
 
     public static int getFloatButtonY(Context context) {
-        return Property.getDefault().getProperty(Const.Config.KEY_FLOAT_BUTTON_Y,
+        return Property.getDefault().getProperty(AccessibilityConstant.Config.KEY_FLOAT_BUTTON_Y,
                 ScreenUtil.getPointFromScreenHeightRatio(context.getApplicationContext(), 0.3f));
     }
 
     public static int getFloatPanelX() {
-        return Property.getDefault().getProperty(Const.Config.KEY_FLOAT_PANEL_X, 0);
+        return Property.getDefault().getProperty(AccessibilityConstant.Config.KEY_FLOAT_PANEL_X, 0);
     }
 
     public static int getFloatPanelY() {
-        return Property.getDefault().getProperty(Const.Config.KEY_FLOAT_PANEL_Y, 0);
+        return Property.getDefault().getProperty(AccessibilityConstant.Config.KEY_FLOAT_PANEL_Y, 0);
     }
 
     public static void openFloatButton() {

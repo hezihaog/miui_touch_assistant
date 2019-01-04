@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.zh.touchassistant.R;
-import com.zh.touchassistant.constant.Const;
+import com.zh.touchassistant.constant.AccessibilityConstant;
 import com.zh.touchassistant.floating.FloatMoveEnum;
 import com.zh.touchassistant.floating.FloatWindow;
 import com.zh.touchassistant.floating.FloatWindowManager;
@@ -63,7 +63,7 @@ public class FloatPanelWindowController extends BaseFloatWindowController {
         mPanelContainerLayout.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View v) {
-                AppBroadcastManager.registerReceiver(getApplicationContext(), mUpdatePanelActionReceiver, Const.Action.ACTION_UPDATE_PANEL_ACTIONS);
+                AppBroadcastManager.registerReceiver(getApplicationContext(), mUpdatePanelActionReceiver, AccessibilityConstant.Action.ACTION_UPDATE_PANEL_ACTIONS);
             }
 
             @Override
@@ -75,7 +75,7 @@ public class FloatPanelWindowController extends BaseFloatWindowController {
         //根据数据添加子View，并先隐藏
         addActionButton();
         //恢复上一次保存的位置
-        mFloatControlPanelView.setOrientation(Property.getDefault().getProperty(Const.Config.KEY_FLOAT_WINDOW_IS_LEFT, false));
+        mFloatControlPanelView.setOrientation(Property.getDefault().getProperty(AccessibilityConstant.Config.KEY_FLOAT_WINDOW_IS_LEFT, false));
         initListener();
         attachFloatWindow();
     }
@@ -156,7 +156,7 @@ public class FloatPanelWindowController extends BaseFloatWindowController {
         //判断在屏幕左边还是右边，切换位置
         boolean isLeft = ScreenUtil.isScreenLeft(getApplicationContext(), buttonX);
         panelView.setOrientation(isLeft);
-        Property.getDefault().setProperty(Const.Config.KEY_FLOAT_WINDOW_IS_LEFT, isLeft);
+        Property.getDefault().setProperty(AccessibilityConstant.Config.KEY_FLOAT_WINDOW_IS_LEFT, isLeft);
         //更新浮窗
         FloatWindow panelWindow = mFloatWindowManager.getFloatWindow(TAG_PANEL);
         int[] result = panelView.followButtonPosition(buttonX, buttonY);
@@ -164,8 +164,8 @@ public class FloatPanelWindowController extends BaseFloatWindowController {
         int fixY = result[1];
         panelWindow.updateXY(fixX, fixY);
         //记录位置
-        Property.getDefault().setProperty(Const.Config.KEY_FLOAT_PANEL_X, fixX);
-        Property.getDefault().setProperty(Const.Config.KEY_FLOAT_PANEL_Y, fixY);
+        Property.getDefault().setProperty(AccessibilityConstant.Config.KEY_FLOAT_PANEL_X, fixX);
+        Property.getDefault().setProperty(AccessibilityConstant.Config.KEY_FLOAT_PANEL_Y, fixY);
     }
 
     /**

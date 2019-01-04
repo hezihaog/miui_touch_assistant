@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.zh.touchassistant.constant.Const;
+import com.zh.touchassistant.constant.AccessibilityConstant;
 import com.zh.touchassistant.controller.FloatButtonWindowController;
 import com.zh.touchassistant.util.AppBroadcastManager;
 import com.zh.touchassistant.widget.FloatButton;
@@ -39,14 +39,14 @@ public class FloatTimeTaskHolder {
                 cancelLoopCheck();
             }
         };
-        AppBroadcastManager.registerReceiver(context, mOpenReceiver, Const.Action.ACTION_FLOAT_BUTTON_OPEN);
+        AppBroadcastManager.registerReceiver(context, mOpenReceiver, AccessibilityConstant.Action.ACTION_FLOAT_BUTTON_OPEN);
         mOffReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 startLoopCheck();
             }
         };
-        AppBroadcastManager.registerReceiver(context, mOffReceiver, Const.Action.ACTION_FLOAT_BUTTON_CLOSE);
+        AppBroadcastManager.registerReceiver(context, mOffReceiver, AccessibilityConstant.Action.ACTION_FLOAT_BUTTON_CLOSE);
     }
 
     public void startLoopCheck() {
@@ -75,10 +75,10 @@ public class FloatTimeTaskHolder {
                     if (mFloatButtonVC.isOpen()) {
                         view.clearAnimation();
                     } else {
-                        if (view.getAlpha() != Const.Config.ALPHA_HIDDEN) {
+                        if (view.getAlpha() != AccessibilityConstant.Config.ALPHA_HIDDEN) {
                             view
                                     .animate()
-                                    .alpha(Const.Config.ALPHA_HIDDEN)
+                                    .alpha(AccessibilityConstant.Config.ALPHA_HIDDEN)
                                     .setDuration(400)
                                     .start();
                         }

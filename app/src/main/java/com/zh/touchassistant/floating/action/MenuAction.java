@@ -3,6 +3,8 @@ package com.zh.touchassistant.floating.action;
 import android.graphics.drawable.Drawable;
 
 import com.zh.touchassistant.R;
+import com.zh.touchassistant.constant.AccessibilityConstant;
+import com.zh.touchassistant.util.AppBroadcastManager;
 
 /**
  * <b>Package:</b> com.zh.touchassistant.floating.action <br>
@@ -14,9 +16,8 @@ import com.zh.touchassistant.R;
 public class MenuAction extends BaseFloatWindowAction {
     @Override
     public void onAction() {
-        if (checkAccessibilityIsOpen()) {
-            getAccessibilityHelper().doGoTask();
-        }
+        AppBroadcastManager
+                .sendBroadcast(getApplication(), AccessibilityConstant.Action.ACTION_DO_GO_TASK);
     }
 
     @Override

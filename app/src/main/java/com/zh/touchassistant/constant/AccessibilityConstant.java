@@ -9,7 +9,7 @@ import com.zh.touchassistant.BuildConfig;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class Const {
+public class AccessibilityConstant {
     public static boolean isDebug = BuildConfig.DEBUG;
 
     public static final class Config {
@@ -63,6 +63,22 @@ public class Const {
          * 当悬浮球关闭
          */
         public static final String ACTION_FLOAT_BUTTON_CLOSE = "action_float_button_close";
+        /**
+         * 返回键
+         */
+        public static final String ACTION_DO_BACK = "action_do_back";
+        /**
+         * 下拉状态栏
+         */
+        public static final String ACTION_PULL_DOWN_NOTIFICATION_BAR = "action_pull_down_notification_bar";
+        /**
+         * 返回桌面
+         */
+        public static final String ACTION_DO_GO_HOME = "action_do_go_home";
+        /**
+         * 打开任务
+         */
+        public static final String ACTION_DO_GO_TASK = "action_do_go_task";
     }
 
     /**

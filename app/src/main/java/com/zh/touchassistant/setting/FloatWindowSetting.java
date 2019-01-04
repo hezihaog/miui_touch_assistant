@@ -2,7 +2,7 @@ package com.zh.touchassistant.setting;
 
 import android.text.TextUtils;
 
-import com.zh.touchassistant.constant.Const;
+import com.zh.touchassistant.constant.AccessibilityConstant;
 import com.zh.touchassistant.floating.action.BackAction;
 import com.zh.touchassistant.floating.action.HomeAction;
 import com.zh.touchassistant.floating.action.IFloatWindowAction;
@@ -72,7 +72,7 @@ public class FloatWindowSetting {
 
     public void initFloatWindowActions(JsonHandler jsonHandler) {
         this.mJsonHandler = jsonHandler;
-        String actionDatas = Property.getDefault().getProperty(Const.Config.KEY_CUSTOM_MENU_DATA, "");
+        String actionDatas = Property.getDefault().getProperty(AccessibilityConstant.Config.KEY_CUSTOM_MENU_DATA, "");
         if (TextUtils.isEmpty(actionDatas)) {
             initActionFromDefault();
         } else {
@@ -91,7 +91,7 @@ public class FloatWindowSetting {
         FloatWindowActionListModel listModel = new FloatWindowActionListModel();
         listModel.setModels(actions);
         String json = mJsonHandler.toJson(listModel);
-        Property.getDefault().setProperty(Const.Config.KEY_CUSTOM_MENU_DATA, json);
+        Property.getDefault().setProperty(AccessibilityConstant.Config.KEY_CUSTOM_MENU_DATA, json);
     }
 
     private void initActionFromCustom(String actionDatas) {
@@ -110,10 +110,10 @@ public class FloatWindowSetting {
         FloatWindowActionListModel listModel = new FloatWindowActionListModel();
         listModel.setModels(newActions);
         String json = mJsonHandler.toJson(listModel);
-        Property.getDefault().setProperty(Const.Config.KEY_CUSTOM_MENU_DATA, json);
+        Property.getDefault().setProperty(AccessibilityConstant.Config.KEY_CUSTOM_MENU_DATA, json);
         //通知更新
         AppBroadcastManager.sendBroadcast(
-                ContextProvider.get().getContext(), Const.Action.ACTION_UPDATE_PANEL_ACTIONS);
+                ContextProvider.get().getContext(), AccessibilityConstant.Action.ACTION_UPDATE_PANEL_ACTIONS);
     }
 
     public LinkedHashMap<Integer, IFloatWindowAction> getActionMap() {
