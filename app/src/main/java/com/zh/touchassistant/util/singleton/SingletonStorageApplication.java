@@ -1,6 +1,6 @@
 package com.zh.touchassistant.util.singleton;
 
-import android.app.Application;
+import com.zh.touchassistant.base.UIApplication;
 
 import java.util.HashMap;
 
@@ -11,7 +11,7 @@ import java.util.HashMap;
  * <b>Author:</b> zihe <br>
  * <b>Description:</b>  <br>
  */
-public class SingletonStorageApplication extends Application implements ISingletonStorage {
+public abstract class SingletonStorageApplication extends UIApplication implements ISingletonStorage {
     private HashMap<Class<?>, Object> mInstanceMap;
 
     public SingletonStorageApplication() {
