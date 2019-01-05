@@ -39,7 +39,7 @@ public class PropertyWorker implements AppDelegate.IWorker {
 
     @Override
     public Integer getId() {
-        return null;
+        return 2;
     }
 
     @Override

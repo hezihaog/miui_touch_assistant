@@ -57,7 +57,7 @@ public class ForegroundGuardWorker implements AppDelegate.IWorker {
 
     @Override
     public Integer getId() {
-        return null;
+        return 3;
     }
 
     @Override

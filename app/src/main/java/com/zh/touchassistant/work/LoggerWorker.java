@@ -38,7 +38,7 @@ public class LoggerWorker implements AppDelegate.IWorker {
 
     @Override
     public Integer getId() {
-        return null;
+        return 1;
     }
 
     @Override

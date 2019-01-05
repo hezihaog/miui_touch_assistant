@@ -38,7 +38,7 @@ public class CrashHandlerWorker implements AppDelegate.IWorker {
 
     @Override
     public Integer getId() {
-        return 1;
+        return 4;
     }
 
     @Override

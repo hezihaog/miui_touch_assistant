@@ -32,7 +32,6 @@ public class FloatWindow {
     private final FloatWindowOption mWindowOption;
     private final int mSlop;
     private ValueAnimator mAnimator;
-    private TimeInterpolator mAnimatorInterpolator;
     /**
      * 是否正在拽托
      */
@@ -248,9 +247,9 @@ public class FloatWindow {
     }
 
     private void startAnimator() {
-        mAnimatorInterpolator =
-                mWindowOption.getInterpolator() == null ? new DecelerateInterpolator() : mWindowOption.getInterpolator();
-        mAnimator.setInterpolator(mAnimatorInterpolator);
+        TimeInterpolator animatorInterpolator = mWindowOption.getInterpolator() == null ?
+                new DecelerateInterpolator() : mWindowOption.getInterpolator();
+        mAnimator.setInterpolator(animatorInterpolator);
         mAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
