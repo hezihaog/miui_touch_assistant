@@ -189,9 +189,10 @@ public class FloatWindow {
                             long touchDuration = upTime - downTime;
                             float upX = event.getRawX();
                             float upY = event.getRawY();
-                            //重置
+                            //长按是不移动的，所以直接返回
                             if (isLongPress) {
                                 isLongPress = false;
+                                return true;
                             }
                             //判断是点击还是移动，这里记录时间，避免移动过去又移动回来被当时点击的情况
                             boolean isClick = touchDuration < 400 &&
