@@ -4,6 +4,5 @@
     android:layout_width="@dimen/float_ball_size"
     android:layout_height="@dimen/float_ball_size"
     android:layout_gravity="center"
-    android:alpha="0.2"
     android:background="@drawable/float_icon_bg"
     android:src="@drawable/ic_float" />

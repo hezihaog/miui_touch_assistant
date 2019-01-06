@@ -97,12 +97,37 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                                     }
 
                                     @Override
+                                    public boolean isCanLongPress() {
+                                        //展开时，不算长按
+                                        boolean isOpen = isOpen();
+                                        if (isOpen) {
+                                            return false;
+                                        } else {
+                                            return true;
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onLongPress() {
+                                        super.onLongPress();
+                                        //长按
+                                        //Toast.makeText(mContext.getApplicationContext(), "长按了", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
                                     public void onDragging(float moveX, float moveY) {
                                         super.onDragging(moveX, moveY);
                                         //将Alpha调整比较容易可见的值
                                         if (getView().getAlpha() != AccessibilityConstant.Config.ALPHA_SHOW) {
-                                            getView()
-                                                    .setAlpha(AccessibilityConstant.Config.ALPHA_SHOW);
+                                            getView().setAlpha(AccessibilityConstant.Config.ALPHA_SHOW);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onDragFinish() {
+                                        super.onDragFinish();
+                                        if (getView().getAlpha() != AccessibilityConstant.Config.ALPHA_SHOW) {
+                                            getView().setAlpha(AccessibilityConstant.Config.ALPHA_SHOW);
                                         }
                                     }
 

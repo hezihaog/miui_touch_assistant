@@ -30,6 +30,16 @@ public class SimpleFloatWindowViewStateCallback implements FloatWindowViewStateC
     }
 
     @Override
+    public boolean isCanLongPress() {
+        return false;
+    }
+
+    @Override
+    public void onLongPress() {
+
+    }
+
+    @Override
     public void onPrepareDrag() {
 
     }

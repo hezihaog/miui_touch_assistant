@@ -2,7 +2,8 @@
 <resources>
     <color name="icon_foreground_pressed">#1AFFFFFF</color>
     <color name="primary_color_normal">#80000000</color>
-    <color name="primary_color_pressed">#30000000</color>
+    <!--<color name="primary_color_pressed">#30000000</color>-->
+    <color name="primary_color_pressed">#80000000</color>
     <color name="primary_color_normal_dark">#DDFFFFFF</color>
 
     <color name="colorPrimary">#008577</color>

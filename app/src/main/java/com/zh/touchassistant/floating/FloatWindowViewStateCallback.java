@@ -34,6 +34,16 @@ public interface FloatWindowViewStateCallback {
     void onRemove();
 
     /**
+     * 是否可以允许长按
+     */
+    boolean isCanLongPress();
+
+    /**
+     * 当长按时回调
+     */
+    void onLongPress();
+
+    /**
      * 当准备拖动时回调
      */
     void onPrepareDrag();

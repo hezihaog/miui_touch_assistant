@@ -105,6 +105,10 @@ public class FloatWindow {
                     private int newY;
                     private long downTime;
                     private boolean isCanDrag;
+                    private long lastDownTime;
+                    private boolean isLongPress;
+                    private boolean isTouching;
+                    private boolean isMoving;
 
                     @SuppressLint("ClickableViewAccessibility")
                     @Override
@@ -116,20 +120,42 @@ public class FloatWindow {
                             }
                             return false;
                         } else if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            isTouching = true;
                             downTime = System.currentTimeMillis();
                             downX = event.getRawX();
                             downY = event.getRawY();
                             lastX = event.getRawX();
                             lastY = event.getRawY();
+                            lastDownTime = System.currentTimeMillis();
                             cancelAnimator();
                             //准备拽托前，回调给外面
                             if (mWindowOption.getViewStateCallback() != null) {
                                 mWindowOption.getViewStateCallback().onPrepareDrag();
                             }
+                            //判断是否是长按
+                            if (mWindowOption.getViewStateCallback() != null
+                                    && mWindowOption.getViewStateCallback().isCanLongPress()) {
+                                getView().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        long timeMillis = System.currentTimeMillis();
+                                        if (isTouching && !isMoving && (timeMillis - lastDownTime >= 300)) {
+                                            //长按
+                                            isLongPress = true;
+                                            if (mWindowOption.getViewStateCallback() != null) {
+                                                mWindowOption.getViewStateCallback().onLongPress();
+                                            }
+                                        }
+                                    }
+                                }, 300);
+                            }
                             return false;
                         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                            isMoving = true;
                             float moveX = event.getRawX();
                             float moveY = event.getRawY();
+                            //长按了就不能算移动了
+                            isLongPress = false;
                             if (mWindowOption.getViewStateCallback() != null) {
                                 //移动前，回调给外面，如果外面限制不能拖动，则不拖动
                                 isCanDrag = mWindowOption.getViewStateCallback().isCanDrag(moveX, moveY);
@@ -156,11 +182,17 @@ public class FloatWindow {
                             lastY = event.getRawY();
                             return false;
                         } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                            isMoving = false;
+                            isTouching = false;
                             long upTime = System.currentTimeMillis();
                             //点击时间
                             long touchDuration = upTime - downTime;
                             float upX = event.getRawX();
                             float upY = event.getRawY();
+                            //重置
+                            if (isLongPress) {
+                                isLongPress = false;
+                            }
                             //判断是点击还是移动，这里记录时间，避免移动过去又移动回来被当时点击的情况
                             boolean isClick = touchDuration < 400 &&
                                     getDistanceBetween2Points(new PointF(downX, downY), new PointF(upX, upY)) <= mSlop;
