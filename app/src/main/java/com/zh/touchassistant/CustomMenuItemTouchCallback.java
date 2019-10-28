@@ -10,7 +10,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
  * <b>FileName:</b> CustomMenuItemTouchCallback <br>
  * <b>Create Date:</b> 2018/12/21  下午8:42 <br>
  * <b>Author:</b> zihe <br>
- * <b>Description:</b>  <br>
+ * <b>Description:</b> ItemTouchHelper.Callback回调封装 <br>
  */
 public class CustomMenuItemTouchCallback extends ItemTouchHelper.Callback {
     private OnItemMoveCallback mOnItemMoveCallback;
@@ -19,6 +19,9 @@ public class CustomMenuItemTouchCallback extends ItemTouchHelper.Callback {
         this.mOnItemMoveCallback = onItemMoveCallback;
     }
 
+    /**
+     * 设置支持滑动的方向
+     */
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         int dragFlags;
@@ -34,12 +37,18 @@ public class CustomMenuItemTouchCallback extends ItemTouchHelper.Callback {
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 
+    /**
+     * 是否长按后才进行操作拽托操作
+     */
     @Override
     public boolean isLongPressDragEnabled() {
         super.isLongPressDragEnabled();
         return true;
     }
 
+    /**
+     * 是否支持条目滑动，我们只需要拽托，所以这个滑动我们不需要
+     */
     @Override
     public boolean isItemViewSwipeEnabled() {
         super.isItemViewSwipeEnabled();
@@ -47,6 +56,9 @@ public class CustomMenuItemTouchCallback extends ItemTouchHelper.Callback {
         return false;
     }
 
+    /**
+     * 发生拽托时，回调该方法，返回true、false决定是否可以拽托，可以使用target参数判断条目的ViewType来决定
+     */
     @Override
     public boolean canDropOver(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder current, @NonNull RecyclerView.ViewHolder target) {
         if (mOnItemMoveCallback != null) {
@@ -59,6 +71,9 @@ public class CustomMenuItemTouchCallback extends ItemTouchHelper.Callback {
         return super.canDropOver(recyclerView, current, target);
     }
 
+    /**
+     * 条目发生交换时回调
+     */
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
         //Item交换回调，交换adapter的数据
@@ -68,11 +83,17 @@ public class CustomMenuItemTouchCallback extends ItemTouchHelper.Callback {
         return true;
     }
 
+    /**
+     * 当滑动时回调，我们只有拽托，所以不处理
+     */
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         //不支持滑动，不做处理
     }
 
+    /**
+     * 提供给外部实现的接口
+     */
     public interface OnItemMoveCallback {
         /**
          * 是否可以移动，
