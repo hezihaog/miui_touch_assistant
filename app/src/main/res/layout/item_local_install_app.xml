@@ -17,7 +17,7 @@
         android:id="@+id/app_name_tv"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:textColor="#202020"
@@ -31,5 +31,6 @@
         app:sb_checked="false"
         app:sb_checked_bg="#0F83E1"
         app:sb_circle_bg_margin="2.5dp"
-        app:sb_unchecked_bg="#EAEAEA" />
+        app:sb_unchecked_bg="#EAEAEA"
+        tools:sb_checked="true" />
 </LinearLayout>

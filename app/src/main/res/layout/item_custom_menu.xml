@@ -17,7 +17,7 @@
         android:id="@+id/action_icon_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
         android:tint="#202020"
         tools:src="@drawable/ic_key_home" />
 
@@ -25,7 +25,7 @@
         android:id="@+id/action_name_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
         android:layout_weight="1"
         android:textColor="#202020"
         android:textSize="15sp"

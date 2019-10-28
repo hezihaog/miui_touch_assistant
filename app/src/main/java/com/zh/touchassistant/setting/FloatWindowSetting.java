@@ -40,7 +40,7 @@ public class FloatWindowSetting {
 
     static {
         //添加ActionId和Action的映射
-        actionMap = new LinkedHashMap();
+        actionMap = new LinkedHashMap<>();
         BackAction backAction = new BackAction();
         ScreenshotAction screenshotAction = new ScreenshotAction();
         LockAction lockAction = new LockAction();
