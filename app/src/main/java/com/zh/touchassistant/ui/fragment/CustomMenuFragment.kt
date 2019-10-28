@@ -1,6 +1,7 @@
 package com.zh.touchassistant.ui.fragment
 
-import android.support.v7.widget.DividerItemDecoration
+import android.os.Handler
+import android.os.Looper
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
@@ -27,6 +28,7 @@ import java.util.*
 class CustomMenuFragment : BaseTouchAssistantFragment() {
     private val mTopBar: TopBar by bindView(R.id.top_bar)
     private val mRecyclerView: RecyclerView by bindView(R.id.recycler_view)
+
     private val mAdapter: MultiTypeAdapter by lazy {
         val adapter = MultiTypeAdapter(mDatas)
         adapter.register(FloatWindowActionModel::class.java, FloatWindowActionViewBinder(FloatWindowSetting.getInstance().actionMap))
@@ -34,6 +36,15 @@ class CustomMenuFragment : BaseTouchAssistantFragment() {
     }
     private val mDatas: ArrayList<FloatWindowActionModel> by lazy {
         ArrayList<FloatWindowActionModel>()
+    }
+
+    private val mMainHandler by lazy {
+        Handler(Looper.getMainLooper())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mMainHandler.removeCallbacksAndMessages(null)
     }
 
     override fun onLayoutId(): Int {
@@ -53,7 +64,6 @@ class CustomMenuFragment : BaseTouchAssistantFragment() {
         mRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = mAdapter
-            addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
         }
         val currentActions = FloatWindowSetting.getInstance().currentActions
         for ((key) in currentActions) {
@@ -68,8 +78,11 @@ class CustomMenuFragment : BaseTouchAssistantFragment() {
                 //交换数据
                 Collections.swap(mDatas, fromPosition, toPosition)
                 mAdapter.notifyItemMoved(fromPosition, toPosition)
-                //将新数据保存
-                FloatWindowSetting.getInstance().saveNewActions(mDatas)
+                //延迟将新数据保存，主要是为了不要频发保存数据
+                mMainHandler.removeCallbacksAndMessages(null)
+                mMainHandler.postDelayed({
+                    FloatWindowSetting.getInstance().saveNewActions(mDatas)
+                }, 450)
             }
         })
         val itemTouchHelper = ItemTouchHelper(touchCallback)

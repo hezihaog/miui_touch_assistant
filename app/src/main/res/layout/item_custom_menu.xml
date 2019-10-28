@@ -3,38 +3,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/magic_white"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:padding="30dp">
+    android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_drag_tag" />
+        android:background="@color/magic_white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="30dp">
 
-    <ImageView
-        android:id="@+id/action_icon_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:tint="#202020"
-        tools:src="@drawable/ic_key_home" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_drag_tag" />
 
-    <TextView
-        android:id="@+id/action_name_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_weight="1"
-        android:textColor="#202020"
-        android:textSize="15sp"
-        tools:text="@string/name_press_home_key" />
+        <ImageView
+            android:id="@+id/action_icon_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:tint="#202020"
+            tools:src="@drawable/ic_key_home" />
 
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:rotation="180"
-        android:src="@drawable/ic_key_back"
-        android:tint="#909090" />
+        <TextView
+            android:id="@+id/action_name_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_weight="1"
+            android:textColor="#202020"
+            android:textSize="15sp"
+            tools:text="@string/name_press_home_key" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:rotation="180"
+            android:src="@drawable/ic_key_back"
+            android:tint="#909090" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/base_list_divider" />
 </LinearLayout>

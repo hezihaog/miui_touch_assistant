@@ -13,4 +13,5 @@
     <color name="window_bg">#F3F5F7</color>
     <color name="magic_black">#000000</color>
     <color name="magic_white">#FFFFFF</color>
+    <color name="base_list_divider">#F5F5F5</color>
 </resources>
