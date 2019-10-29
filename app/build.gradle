@@ -22,17 +22,16 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file(SUANMING_STOREFILE)
-            storePassword SUANMING_STOREPASSWORD
-            keyAlias SUANMING_KEY_ALIAS
-            keyPassword SUANMING_KEY_PASSWORD
+            storeFile file("../keystore.jks")
+            storePassword "123456"
+            keyAlias "keystore.jks"
+            keyPassword "123456"
         }
-
         release {
-            storeFile file(SUANMING_STOREFILE)
-            storePassword SUANMING_STOREPASSWORD
-            keyAlias SUANMING_KEY_ALIAS
-            keyPassword SUANMING_KEY_PASSWORD
+            storeFile file("../keystore.jks")
+            storePassword "123456"
+            keyAlias "keystore.jks"
+            keyPassword "123456"
         }
     }
 

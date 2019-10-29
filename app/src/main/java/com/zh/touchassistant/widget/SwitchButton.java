@@ -12,13 +12,24 @@ import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 
 import com.zh.touchassistant.R;
 
+/**
+ * 仿微信切换按钮
+ *
+ * @author wally
+ */
 public class SwitchButton extends View {
+    /**
+     * 背景动画开始前的延时时间
+     */
+    private static final int BG_ANIMATOR_START_DELAY = 0;
+    /**
+     * 背景动画执行时间
+     */
     private static final int BG_ANIMATOR_DURATION = 200;
 
     /**
@@ -38,13 +49,13 @@ public class SwitchButton extends View {
      */
     private int mSmallCircleMargin;
     /**
-     * 内容画笔
+     * 背景画笔
      */
-    private Paint mContentPaint;
+    private Paint mBgPaint;
     /**
-     * 描边画笔
+     * 小圆画笔
      */
-    private Paint mOutlinePaint;
+    private Paint mSmallCirclePaint;
     /**
      * 默认的宽度
      */
@@ -84,7 +95,7 @@ public class SwitchButton extends View {
     /**
      * 是否打开
      */
-    private boolean isChecked = false;
+    private boolean isChecked;
     /**
      * 状态监听
      */
@@ -95,9 +106,12 @@ public class SwitchButton extends View {
     private int mSmallCircleStartX;
     private int mSmallCircleEndX;
     /**
-     * 背景颜色估值器
+     * 背景颜色估值器，用来做2种背景颜色过渡切换时，估算过渡颜色值
      */
     final ArgbEvaluator mArgbEvaluator = new ArgbEvaluator();
+    /**
+     * 开关的开、关动画
+     */
     private AnimatorSet mOffAnimatorSet;
     private AnimatorSet mOpenAnimatorSet;
 
@@ -106,18 +120,32 @@ public class SwitchButton extends View {
     }
 
     public SwitchButton(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SwitchButton);
+        this(context, attrs, 0);
+    }
+
+    public SwitchButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        this(context, attrs, defStyleAttr, 0);
+    }
+
+    public SwitchButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SwitchButton, defStyleAttr, defStyleRes);
+        //开关-开时，背景颜色
         this.mCheckedBg = typedArray.getColor(R.styleable.SwitchButton_sb_checked_bg, Color.BLUE);
+        //开关-关时，背景颜色
         this.mUncheckedBg = typedArray.getColor(R.styleable.SwitchButton_sb_unchecked_bg, Color.GRAY);
+        //是否打开
         this.isChecked = typedArray.getBoolean(R.styleable.SwitchButton_sb_checked, false);
+        //小圆距离背景边缘时的距离
         this.mSmallCircleMargin = (int) typedArray.getDimension(R.styleable.SwitchButton_sb_circle_bg_margin, dip2px(getContext(), 3f));
         typedArray.recycle();
+        //按状态切换按钮背景颜色
         if (isChecked) {
             this.mCurrentBoundBg = mCheckedBg;
         } else {
             this.mCurrentBoundBg = mUncheckedBg;
         }
+        //定义默认宽度和高度
         this.mDefaultWidth = dip2px(getContext(), 50f);
         this.mDefaultHeight = dip2px(getContext(), 30f);
         init();
@@ -125,14 +153,15 @@ public class SwitchButton extends View {
 
     private void init() {
         //内容画笔
-        mContentPaint = new Paint();
-        mContentPaint.setAntiAlias(true);
-        mContentPaint.setStyle(Paint.Style.FILL);
-        //描边画笔
-        mOutlinePaint = new Paint();
-        mOutlinePaint.setAntiAlias(true);
-        mOutlinePaint.setStyle(Paint.Style.STROKE);
-        mOutlinePaint.setColor(getResources().getColor(android.R.color.darker_gray));
+        mBgPaint = new Paint();
+        mBgPaint.setAntiAlias(true);
+        mBgPaint.setStyle(Paint.Style.FILL);
+        //小圆画笔
+        mSmallCirclePaint = new Paint();
+        mSmallCirclePaint.setAntiAlias(true);
+        mSmallCirclePaint.setStyle(Paint.Style.FILL);
+        mSmallCirclePaint.setColor(getResources().getColor(android.R.color.white));
+        //设置点击监听来进行开关切换
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,12 +191,16 @@ public class SwitchButton extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         this.mWidth = w;
         this.mHeight = h;
+        //定义小圆的半径
         this.mSmallCircleRadius = (mHeight - (mSmallCircleMargin * 2)) / 2;
+        //定义背景圆弧的半径
         this.mBoundRadius = mHeight / 2;
+        //定义小圆的中间点Y
         this.mSmallCircleCenterY = mHeight / 2;
-        //小圆的起点X和终点x坐标
-        mSmallCircleStartX = mWidth / 4;
-        mSmallCircleEndX = (mWidth / 4) * 3;
+        //定义小圆的起点X，为宽度的4分之一
+        this.mSmallCircleStartX = mWidth / 4;
+        //定义小圆的终点x坐标，为宽度4分之一的3倍
+        this.mSmallCircleEndX = (mWidth / 4) * 3;
         //因为一开始外部调用setChecked()会比onSizeChanged方法快，所以回显状态时，马上就得改变当前状态的相关配置
         updateCheckStatus();
     }
@@ -181,6 +214,7 @@ public class SwitchButton extends View {
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int resultWidth;
         int resultHeight;
+        //处理wrap_content时的，默认宽、高
         if (widthMode == MeasureSpec.EXACTLY
                 || heightMode == MeasureSpec.EXACTLY) {
             resultWidth = widthSize;
@@ -194,24 +228,17 @@ public class SwitchButton extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        //关闭状态下，要描边
-//        if (!isChecked) {
-//            //更新当前背景颜色
-//            drawBg(canvas, mOutlinePaint);
-//            drawCircle(canvas, mOutlinePaint);
-//        }
         //画内容
-        mContentPaint.setColor(mCurrentBoundBg);
-        drawBg(canvas, mContentPaint);
-        //小圆为白色
-        mContentPaint.setColor(Color.WHITE);
-        drawCircle(canvas, mContentPaint);
+        drawBg(canvas, mBgPaint);
+        //画小圆
+        drawCircle(canvas, mSmallCirclePaint);
     }
 
     /**
      * 画背景
      */
     private void drawBg(Canvas canvas, Paint paint) {
+        mBgPaint.setColor(mCurrentBoundBg);
         //画边界背景
         if (mBoundRect == null) {
             mBoundRect = new RectF(0, 0, mWidth, mHeight);
@@ -227,6 +254,9 @@ public class SwitchButton extends View {
         canvas.drawCircle(mSmallCircleCenterX, mSmallCircleCenterY, mSmallCircleRadius, paint);
     }
 
+    /**
+     * 开启按钮
+     */
     private void open() {
         //从左到右
         final int startX = mSmallCircleStartX;
@@ -243,7 +273,7 @@ public class SwitchButton extends View {
         });
         ValueAnimator bgAnimator = ValueAnimator.ofFloat(0, 1f);
         //开关切换完后，再切换背景
-        bgAnimator.setStartDelay(200);
+        bgAnimator.setStartDelay(BG_ANIMATOR_START_DELAY);
         bgAnimator.setDuration(BG_ANIMATOR_DURATION);
         bgAnimator.setInterpolator(new AccelerateInterpolator());
         bgAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -254,12 +284,13 @@ public class SwitchButton extends View {
                 invalidate();
             }
         });
-        mOpenAnimatorSet
-                .play(openAnimator)
-                .before(bgAnimator);
+        mOpenAnimatorSet.playTogether(openAnimator, bgAnimator);
         mOpenAnimatorSet.start();
     }
 
+    /**
+     * 关闭按钮
+     */
     private void off() {
         //从右到左
         final int startX = mSmallCircleEndX;
@@ -276,7 +307,7 @@ public class SwitchButton extends View {
             }
         });
         ValueAnimator bgAnimator = ValueAnimator.ofFloat(0, 1f);
-        bgAnimator.setStartDelay(200);
+        bgAnimator.setStartDelay(BG_ANIMATOR_START_DELAY);
         bgAnimator.setDuration(BG_ANIMATOR_DURATION);
         bgAnimator.setInterpolator(new AccelerateInterpolator());
         bgAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -287,12 +318,13 @@ public class SwitchButton extends View {
                 invalidate();
             }
         });
-        mOffAnimatorSet
-                .play(offAnimator)
-                .before(bgAnimator);
+        mOffAnimatorSet.playTogether(offAnimator, bgAnimator);
         mOffAnimatorSet.start();
     }
 
+    /**
+     * 设置按钮开、关
+     */
     public void setChecked(final boolean checked) {
         this.isChecked = checked;
         updateCheckStatus();
@@ -312,11 +344,20 @@ public class SwitchButton extends View {
         }
     }
 
+    /**
+     * 是否打开
+     */
     public boolean isChecked() {
         return isChecked;
     }
 
     public interface OnCheckedChangeListener {
+        /**
+         * 按钮开关改变
+         *
+         * @param button    按钮
+         * @param isChecked 是否打开
+         */
         void onCheckedChanged(SwitchButton button, boolean isChecked);
     }
 
@@ -331,21 +372,6 @@ public class SwitchButton extends View {
     public static int dip2px(Context context, float dipValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
-    }
-
-    public static int px2dp(Context context, float pxValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (pxValue / scale + 0.5f);
-    }
-
-    private int sp2px(Context context, float spVal) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
-                spVal, context.getResources().getDisplayMetrics());
-    }
-
-    public static int spToPixel(Context context, float spValue) {
-        final float fontScale = getDisplayMetrics(context).scaledDensity;
-        return (int) (spValue * fontScale + 0.5f);
     }
 
     public static DisplayMetrics getDisplayMetrics(Context context) {
