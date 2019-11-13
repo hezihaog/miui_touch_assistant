@@ -3,6 +3,8 @@ package com.zh.touchassistant.controller;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 
 import com.zh.touchassistant.R;
@@ -41,11 +43,13 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
     private FloatPanelWindowController mPanelViewController;
     private AnimatorSet mOpenAnimatorSet;
     private AnimatorSet mOffAnimatorSet;
+    private final Handler mMainHandler;
 
     public FloatButtonWindowController(Context context, FloatWindowManager floatWindowManager, FloatPanelWindowController panelViewController) {
         super(context);
         this.mFloatWindowManager = floatWindowManager;
         this.mPanelViewController = panelViewController;
+        mMainHandler = new Handler((Looper.getMainLooper()));
         init();
     }
 
@@ -80,10 +84,16 @@ public class FloatButtonWindowController extends BaseFloatWindowController {
                                 .setViewStateCallback(new SimpleFloatWindowViewStateCallback() {
 
                                     @Override
-                                    public void onPositionUpdate(int oldX, int oldY, int newX, int newY) {
+                                    public void onPositionUpdate(int oldX, int oldY, final int newX, final int newY) {
                                         super.onPositionUpdate(oldX, oldY, newX, newY);
-                                        Property.getDefault().setProperty(AccessibilityConstant.Config.KEY_FLOAT_BUTTON_X, newX);
-                                        Property.getDefault().setProperty(AccessibilityConstant.Config.KEY_FLOAT_BUTTON_Y, newY);
+                                        mMainHandler.removeCallbacksAndMessages(null);
+                                        mMainHandler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Property.getDefault().setProperty(AccessibilityConstant.Config.KEY_FLOAT_BUTTON_X, newX);
+                                                Property.getDefault().setProperty(AccessibilityConstant.Config.KEY_FLOAT_BUTTON_Y, newY);
+                                            }
+                                        }, 550);
                                         //让面板跟随按钮
                                         if (mButtonPositionUpdateListener != null) {
                                             mButtonPositionUpdateListener.onFloatButtonPositionUpdate(newX, newY);

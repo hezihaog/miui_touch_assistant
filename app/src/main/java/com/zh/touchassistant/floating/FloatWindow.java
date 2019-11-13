@@ -53,6 +53,8 @@ public class FloatWindow {
                         //表示Window不需要获取焦点，也不需要接收各种输入事件，最终事件会直接传递给下层的具有焦点的Window
                         //不加入该Flag能响应返回键回调，但是返回键一直被屏蔽，加入后又不能收到监听
                         | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                        //加入该Flag，让浮窗层级在软键盘之下，否则如果软键盘覆盖弹窗后，点击软键盘和浮窗重合位置会被浮窗响应
+                        | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
                         //忽略周围的装饰，例如状态栏。解决切换全屏模式时，位置上移的问题
                         | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
                         //允许悬浮窗范围越界到屏幕外
@@ -60,7 +62,9 @@ public class FloatWindow {
                         //设置该Flag，当触摸事件在悬浮窗以外区域时，发送一个MotionEvent.ACTION_OUTSIDE事件
                         //不会接收到悬浮窗区域以外的move、up事件，只有一次ACTION_OUTSIDE事件
                         //这里设置这个Flag，来关闭悬浮窗
-                        | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+                        | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+                        //允许窗体浮动在锁屏之上，国产ROM无效
+                        | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
         if (option.isNotTouchable()) {
             //表示这个Window不会收到点击事件，否则点击事件无法穿透
             mLayoutParams.flags = mLayoutParams.flags | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
